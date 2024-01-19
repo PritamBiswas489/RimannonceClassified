@@ -42,6 +42,11 @@ export default function ProductDetails() {
 
   const mediaItems = [
     {
+      type:'video',
+      uri: 'https://pritamaqua.aqualeafitsol.com/videos/ElephantsDream.mp4',
+    },
+    
+    {
       type:'image',
       uri: 'https://i.imgur.com/UYiroysl.jpg',
     },
@@ -54,16 +59,8 @@ export default function ProductDetails() {
       uri: 'https://i.imgur.com/MABUbpDl.jpg',
     },
     {
-      type:'image',
-      uri: 'https://i.imgur.com/KZsmUi2l.jpg',
-    },
-    {
-      type:'image',
-      uri: 'https://i.imgur.com/2nCt3Sbl.jpg',
-    },
-    {
-      type:'image',
-      uri: 'https://i.imgur.com/lceHsT6l.jpg',
+      type:'video',
+      uri: 'https://pritamaqua.aqualeafitsol.com/videos/BigBuckBunny.mp4',
     },
   ];
   const sliderWidth = 400;
