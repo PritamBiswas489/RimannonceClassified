@@ -5,6 +5,7 @@ import styles from './Style';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
 // import car from '../../assets/images/car.jpg';
+import MediaSlider from '../../components/MediaSlider/MediaSlider';
 
 // import Carousel from 'react-native-snap-carousel';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -39,36 +40,30 @@ export default function ProductDetails() {
     {label: 'Kilométrage', value: '147.800 km = 92.000 miles'},
   ];
 
-  const entries = [
+  const mediaItems = [
     {
-      // title: 'Beautiful and dramatic Antelope Canyon',
-      // subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-      illustration: 'https://i.imgur.com/UYiroysl.jpg',
+      type:'image',
+      uri: 'https://i.imgur.com/UYiroysl.jpg',
     },
     {
-      // title: 'Earlier this morning, NYC',
-      // subtitle: 'Lorem ipsum dolor sit amet',
-      illustration: 'https://i.imgur.com/UPrs1EWl.jpg',
+      type:'image',
+      uri: 'https://i.imgur.com/UPrs1EWl.jpg',
     },
     {
-      // title: 'White Pocket Sunset',
-      // subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
-      illustration: 'https://i.imgur.com/MABUbpDl.jpg',
+      type:'image',
+      uri: 'https://i.imgur.com/MABUbpDl.jpg',
     },
     {
-      // title: 'Acrocorinth, Greece',
-      // subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-      illustration: 'https://i.imgur.com/KZsmUi2l.jpg',
+      type:'image',
+      uri: 'https://i.imgur.com/KZsmUi2l.jpg',
     },
     {
-      // title: 'The lone tree, majestic landscape of New Zealand',
-      // subtitle: 'Lorem ipsum dolor sit amet',
-      illustration: 'https://i.imgur.com/2nCt3Sbl.jpg',
+      type:'image',
+      uri: 'https://i.imgur.com/2nCt3Sbl.jpg',
     },
     {
-      // title: 'Middle Earth, Germany',
-      // subtitle: 'Lorem ipsum dolor sit amet',
-      illustration: 'https://i.imgur.com/lceHsT6l.jpg',
+      type:'image',
+      uri: 'https://i.imgur.com/lceHsT6l.jpg',
     },
   ];
   const sliderWidth = 400;
@@ -97,6 +92,7 @@ export default function ProductDetails() {
             }>
             <View style={styles.container}>
               <View style={styles.sliderBox}>
+                <MediaSlider mediaItems={mediaItems}/> 
                 {/* <Carousel
                   data={entries}
                   renderItem={renderItem}

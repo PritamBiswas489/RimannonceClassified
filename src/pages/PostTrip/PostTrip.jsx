@@ -28,7 +28,6 @@ const PostTrip = () => {
       setRefreshing(false);
     }, 2000);
   }, []);
-
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
@@ -36,10 +35,7 @@ const PostTrip = () => {
     {key: 'second', title: 'Second'},
   ]);
 
-
-
-  return (
-     
+  return (   
     <TabView
     navigationState={{ index, routes }}
     renderScene={renderScene}
