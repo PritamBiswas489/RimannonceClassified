@@ -9,6 +9,11 @@ import Home from '../pages/Home/Home';
 import Register from '../pages/Register/Register';
 import Favorites from '../pages/Favorites/Favorites';
 import ProductDetails from '../pages/ProductDetails/ProductDetails';
+import GetInTouch from '../pages/GetInTouch/GetInTouch';
+import LastAnnounces from '../pages/LastAnnounces/LastAnnounces';
+import PersonalDetails from '../pages/PersonalDetails/PersonalDetails';
+import Details from '../pages/Details/Details';
+import PostTrip from '../pages/PostTrip/PostTrip';
 
 const Drawer = createDrawerNavigator();
 function Root() {
@@ -19,6 +24,11 @@ function Root() {
       <Drawer.Screen name="Register" component={Register} />
       <Drawer.Screen name="Favorites" component={Favorites} />
       <Drawer.Screen name="ProductDetails" component={ProductDetails} />
+      <Drawer.Screen name="GetInTouch" component={GetInTouch} />
+      <Drawer.Screen name="LastAnnounces" component={LastAnnounces} />
+      <Drawer.Screen name="PersonalDetails" component={PersonalDetails} />
+      <Drawer.Screen name="Details" component={Details} />
+      <Drawer.Screen name="PostTrip" component={PostTrip} />
     </Drawer.Navigator>
   );
 }
@@ -34,7 +44,6 @@ const Routers = () => {
           component={Root}
           options={{headerShown: false}}
         />
-        
       </Stack.Navigator>
     </NavigationContainer>
   );

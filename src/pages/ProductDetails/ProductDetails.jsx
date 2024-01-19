@@ -7,6 +7,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 // import car from '../../assets/images/car.jpg';
 
 import Carousel from 'react-native-snap-carousel';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 export default function ProductDetails() {
   const [refreshing, setRefreshing] = React.useState(false);
@@ -86,62 +87,64 @@ export default function ProductDetails() {
   return (
     <>
       <SafeAreaView style={styles.body}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.scrollView}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }>
-          <View style={styles.container}>
-            <View style={styles.sliderBox}>
-              <Carousel
-                data={entries}
-                renderItem={renderItem}
-                sliderWidth={sliderWidth}
-                itemWidth={itemWidth}
-              />
-            </View>
-            <View style={styles.descriptionDetails}>
-              <Text style={styles.descTitle}>Lorem Ipsum is simply</Text>
-              <Text style={styles.descSubTitle}>vendue loue</Text>
-              <Text style={styles.descPrice}>395,000 MRU</Text>
-            </View>
-            <View style={styles.description}>
-              <Text style={styles.descriptionTitle}>Description</Text>
-              <View style={styles.descriptionArea}>
-                {data.map((item, index) => (
-                  <View
-                    key={index}
-                    style={[
-                      styles.descriptionBox,
-                      index % 2 === 0 ? styles.evenBox : styles.oddBox,
-                    ]}>
-                    <Text style={styles.left}>{item.label}</Text>
-                    <Text style={styles.right}>{item.value}</Text>
+        <GestureHandlerRootView>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.scrollView}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
+            <View style={styles.container}>
+              <View style={styles.sliderBox}>
+                <Carousel
+                  data={entries}
+                  renderItem={renderItem}
+                  sliderWidth={sliderWidth}
+                  itemWidth={itemWidth}
+                />
+              </View>
+              <View style={styles.descriptionDetails}>
+                <Text style={styles.descTitle}>Lorem Ipsum is simply</Text>
+                <Text style={styles.descSubTitle}>vendue loue</Text>
+                <Text style={styles.descPrice}>395,000 MRU</Text>
+              </View>
+              <View style={styles.description}>
+                <Text style={styles.descriptionTitle}>Description</Text>
+                <View style={styles.descriptionArea}>
+                  {data.map((item, index) => (
+                    <View
+                      key={index}
+                      style={[
+                        styles.descriptionBox,
+                        index % 2 === 0 ? styles.evenBox : styles.oddBox,
+                      ]}>
+                      <Text style={styles.left}>{item.label}</Text>
+                      <Text style={styles.right}>{item.value}</Text>
+                    </View>
+                  ))}
+                </View>
+              </View>
+              <View style={styles.submitArea}>
+                <Pressable
+                  style={({pressed}) => [
+                    {
+                      backgroundColor: pressed
+                        ? 'rgba(0, 169, 184, 0.1)'
+                        : 'transparent',
+                    },
+                    styles.pressableContainer,
+                  ]}
+                  android_ripple={{color: 'rgba(0, 169, 184, 0.1)'}} // Ripple effect for Android
+                  onPress={handlePress}>
+                  <View style={styles.nextBtnArea}>
+                    <Text style={styles.nextBtn}>Submit your Request</Text>
                   </View>
-                ))}
+                </Pressable>
               </View>
             </View>
-            <View style={styles.submitArea}>
-              <Pressable
-                style={({pressed}) => [
-                  {
-                    backgroundColor: pressed
-                      ? 'rgba(0, 169, 184, 0.1)'
-                      : 'transparent',
-                  },
-                  styles.pressableContainer,
-                ]}
-                android_ripple={{color: 'rgba(0, 169, 184, 0.1)'}} // Ripple effect for Android
-                onPress={handlePress}>
-                <View style={styles.nextBtnArea}>
-                  <Text style={styles.nextBtn}>Submit your Request</Text>
-                </View>
-              </Pressable>
-            </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </GestureHandlerRootView>
       </SafeAreaView>
     </>
   );
