@@ -43,7 +43,7 @@ export default function ProductDetails() {
   const mediaItems = [
     {
       type:'video',
-      uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+      uri: 'https://pritamaqua.aqualeafitsol.com/videos/ElephantsDream.mp4',
     },
     
     {
@@ -60,7 +60,7 @@ export default function ProductDetails() {
     },
     {
       type:'video',
-      uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+      uri: 'https://pritamaqua.aqualeafitsol.com/videos/BigBuckBunny.mp4',
     },
   ];
   const sliderWidth = 400;
