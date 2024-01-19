@@ -79,7 +79,7 @@ const Favorites = () => {
     if (response.data.status === 200) {
         setIsLoading(false);
         setAnnouncements((prevData) => [...prevData, ...response?.data?.data?.records]);
-        setPage((prevPage) => prevPage + 1);
+       
     } else {
       setIsLoading(false);
       Alert.alert(
@@ -119,16 +119,16 @@ const Favorites = () => {
     ) : null;
   };
   const handleEndReached = () => {
-      announcementList();
+    setPage((prevPage) => prevPage + 1);
   };
 
   useEffect(() => {
-    console.log(announcements);
+    //console.log(announcements);
      
   }, [announcements]);
   useEffect(() => {
     announcementList();
-  }, []);
+  }, [page]);
 
   
 
