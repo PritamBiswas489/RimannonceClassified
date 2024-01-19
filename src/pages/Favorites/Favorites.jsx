@@ -195,6 +195,7 @@ const Favorites = () => {
           ListFooterComponent={renderFooter}
           onEndReached={handleEndReached}
           onEndReachedThreshold={0.1}
+          showsVerticalScrollIndicator={false}
         />
       </View>
     </SafeAreaView>
