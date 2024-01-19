@@ -3,12 +3,12 @@ import {TabView, SceneMap} from 'react-native-tab-view';
 
 const FirstRoute = () => (
   <View style={{backgroundColor: '#ff4081', height: 300}}>
-    <Text>fsfsdfds</Text>
+    <Text>FirstRoute</Text>
   </View>
 );
 const SecondRoute = () => (
   <View style={{backgroundColor: '#673ab7', height: 300}}>
-    <Text>2222</Text>
+    <Text>SecondRoute</Text>
   </View>
 );
 
