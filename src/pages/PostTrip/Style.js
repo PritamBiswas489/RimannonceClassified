@@ -14,31 +14,26 @@ const styles = StyleSheet.create({
   },
 
   labelIcon: {
-    fontSize: 16,
-    color: '#009DE0',
-    marginRight: 5,
+    width: 22,
+    height: 22,
   },
   iconBox: {
     position: 'absolute',
-    top: 18,
+    top: 15,
     zIndex: 9,
     left: 15,
   },
-  inputLabel: {
-    fontSize: 16,
-    color: '#030233',
-    fontFamily: 'Mulish-Bold',
-  },
+
   input: {
     backgroundColor: '#fff',
     borderColor: '#EDEDED',
     borderWidth: 1,
     paddingLeft: 50,
     paddingRight: 15,
-    color: '#090b0c',
+    color: '#090b0d',
     fontSize: 16,
     height: 50,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Mulish-Bold',
     borderRadius: 10,
     ...Platform.select({
       ios: {
@@ -54,12 +49,38 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  input2: {
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
   tabInner: {
     paddingHorizontal: 15,
   },
   formGroup: {
     position: 'relative',
     marginBottom: 20,
+  },
+  flex: {
+    flexDirection: 'row',
+  },
+  //   code: {
+  //     width: 50,
+  //   },
+  codeInput: {
+    flexGrow: 1,
+    marginLeft: 10,
+  },
+  textArea: {
+    backgroundColor: '#fff',
+    borderColor: '#ededed',
+    borderWidth: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
+    color: '#090b0c',
+    fontSize: 16,
+    height: 150,
+    fontFamily: 'Mulish-Regular',
+    borderRadius: 10,
   },
 });
 export default styles;
