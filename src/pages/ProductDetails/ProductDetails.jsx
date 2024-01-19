@@ -6,7 +6,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
 // import car from '../../assets/images/car.jpg';
 
-import Carousel from 'react-native-snap-carousel';
+// import Carousel from 'react-native-snap-carousel';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 export default function ProductDetails() {
@@ -97,12 +97,12 @@ export default function ProductDetails() {
             }>
             <View style={styles.container}>
               <View style={styles.sliderBox}>
-                <Carousel
+                {/* <Carousel
                   data={entries}
                   renderItem={renderItem}
                   sliderWidth={sliderWidth}
                   itemWidth={itemWidth}
-                />
+                /> */}
               </View>
               <View style={styles.descriptionDetails}>
                 <Text style={styles.descTitle}>Lorem Ipsum is simply</Text>
