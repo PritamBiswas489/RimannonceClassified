@@ -25,13 +25,14 @@ import {listAnnouncementService} from '../../services/announcements.service';
 const handlePress = () => {
   console.log('Button Pressed!');
 };
-const Item = ({title}) => (
-  <View style={styles.item}>
-    <Pressable onPress={handlePress} style={styles.pressable}>
-      <Text style={styles.title}>{title}</Text>
-    </Pressable>
-  </View>
+const Item = ({title, isActive, onPress}) => (
+  <TouchableOpacity
+    style={[styles.item, isActive && styles.activeItem]}
+    onPress={onPress}>
+    <Text style={[styles.title, isActive && styles.activeTitle]}>{title}</Text>
+  </TouchableOpacity>
 );
+
 const DATA = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -71,15 +72,16 @@ const Favorites = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [selectCatagory, setSelectCatagory] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
-  
-   
+  const [activeIndex, setActiveIndex] = useState(0);
   const announcementList = async () => {
     setIsLoading(true);
     const response = await listAnnouncementService(page);
     if (response.data.status === 200) {
-        setIsLoading(false);
-        setAnnouncements((prevData) => [...prevData, ...response?.data?.data?.records]);
-       
+      setIsLoading(false);
+      setAnnouncements(prevData => [
+        ...prevData,
+        ...response?.data?.data?.records,
+      ]);
     } else {
       setIsLoading(false);
       Alert.alert(
@@ -89,29 +91,29 @@ const Favorites = () => {
       );
     }
   };
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <View style={styles.listBox}>
-          <TouchableOpacity style={styles.listBoxInner}>
-            <View style={styles.listImageBox}>
-              <Image source={favorite} style={styles.listImage} />
-            </View>
-            <View style={styles.listDesc}>
-              <Text style={styles.listTitle}>{item.id}</Text>
-              <Text style={styles.listSubTitle}>vendue loue</Text>
-              <Text style={styles.listPrice}>395,000 MRU</Text>
-              <View style={styles.dateTime}>
-                <Text>
-                  <Icon name="calendar" style={styles.icon} />
-                  08-12-2023
-                </Text>
-                <Text>
-                  <Icons name="clock-time-four" style={styles.icon} />
-                  11.25
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
+      <TouchableOpacity style={styles.listBoxInner}>
+        <View style={styles.listImageBox}>
+          <Image source={favorite} style={styles.listImage} />
         </View>
+        <View style={styles.listDesc}>
+          <Text style={styles.listTitle}>{item.id}</Text>
+          <Text style={styles.listSubTitle}>vendue loue</Text>
+          <Text style={styles.listPrice}>395,000 MRU</Text>
+          <View style={styles.dateTime}>
+            <Text>
+              <Icon name="calendar" style={styles.icon} />
+              08-12-2023
+            </Text>
+            <Text>
+              <Icons name="clock-time-four" style={styles.icon} />
+              11.25
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    </View>
   );
   const renderFooter = () => {
     return isLoading ? (
@@ -119,28 +121,38 @@ const Favorites = () => {
     ) : null;
   };
   const handleEndReached = () => {
-    setPage((prevPage) => prevPage + 1);
+    setPage(prevPage => prevPage + 1);
   };
 
   useEffect(() => {
     //console.log(announcements);
-     
   }, [announcements]);
   useEffect(() => {
     announcementList();
   }, [page]);
 
-  
-
   return (
     <SafeAreaView style={styles.body}>
       <View style={styles.listTop}>
         <SearchBar />
-        <FlatList
+        {/* <FlatList
           horizontal
           data={DATA}
           showsHorizontalScrollIndicator={false}
           renderItem={({item}) => <Item title={item.title} />}
+          keyExtractor={item => item.id}
+        /> */}
+        <FlatList
+          horizontal
+          data={DATA}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({item, index}) => (
+            <Item
+              title={item.title}
+              isActive={index === activeIndex}
+              onPress={() => setActiveIndex(index)}
+            />
+          )}
           keyExtractor={item => item.id}
         />
       </View>
@@ -178,13 +190,12 @@ const Favorites = () => {
 
         <FlatList
           data={announcements}
-          keyExtractor={(item) => item.uuid  }
+          keyExtractor={item => item.uuid}
           renderItem={renderItem}
           ListFooterComponent={renderFooter}
           onEndReached={handleEndReached}
           onEndReachedThreshold={0.1}
         />
-        
       </View>
     </SafeAreaView>
   );

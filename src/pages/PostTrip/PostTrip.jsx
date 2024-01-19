@@ -1,11 +1,29 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState} from 'react';
+import styles from './Style';
+import {Text, View, useWindowDimensions, TextInput, Image} from 'react-native';
 import {TabView, SceneMap} from 'react-native-tab-view';
+import profile from '../../assets/images/profile.png';
+
+import Icon from 'react-native-vector-icons/Feather';
 
 const FirstRoute = () => (
-  <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
+  <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <View style={styles.tabInner}>
+      <View style={styles.formGroup}>
+        <View style={styles.iconBox}>
+          <Image source={profile} style={styles.labelIcon} />
+        </View>
+
+        <TextInput placeholder="" style={styles.input} />
+      </View>
+    </View>
+  </View>
 );
+
 const SecondRoute = () => (
-  <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
+  <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <Text>Arrival</Text>
+  </View>
 );
 
 const renderScene = SceneMap({
@@ -13,35 +31,22 @@ const renderScene = SceneMap({
   second: SecondRoute,
 });
 
-import {View, Text, RefreshControl, useWindowDimensions} from 'react-native';
-
-import styles from './Style';
-
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {ScrollView, GestureHandlerRootView} from 'react-native-gesture-handler';
-
 const PostTrip = () => {
-  const [refreshing, setRefreshing] = useState(false);
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    {key: 'first', title: 'First'},
-    {key: 'second', title: 'Second'},
+    {key: 'first', title: 'Departure'},
+    {key: 'second', title: 'Arrival'},
   ]);
 
-  return (   
+  return (
     <TabView
-    navigationState={{ index, routes }}
-    renderScene={renderScene}
-    onIndexChange={setIndex}
-    initialLayout={{ width: layout.width }}
-  />
+      navigationState={{index, routes}}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={{width: layout.width}}
+      tabBarStyle={{backgroundColor: '#f00'}}
+    />
   );
 };
 

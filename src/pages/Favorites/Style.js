@@ -19,35 +19,37 @@ const styles = StyleSheet.create({
   },
   item: {
     marginRight: 10,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderStyle: 'solid',
   },
+  activeItem: {
+    backgroundColor: '#0e0a4a',
+    borderColor: '#0e0a4a',
+  },
+
+  // item: {
+  //   marginRight: 10,
+  // },
   pressable: {
     // padding: 10,
     borderRadius: 20,
   },
   title: {
-    marginBottom: 10,
+    // marginBottom: 10,
     color: '#08a7eb',
     fontSize: 17,
     // borderWidth: 1,
     // borderColor: '#f2f2f2',
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+
     fontFamily: 'Mulish-Medium',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#ccc',
-        shadowOffset: {width: 0, height: 3},
-        shadowOpacity: 0.1,
-        shadowRadius: 6,
-      },
-      android: {
-        elevation: 6,
-        shadowOpacity: 0.1,
-        shadowColor: '#ccc',
-      },
-    }),
+  },
+  activeTitle: {
+    color: '#ffffff', // Your active title color
   },
   sortedByPopular: {
     flexDirection: 'row',
