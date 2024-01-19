@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { config } from '../../config';
-const {API_URL} = config;
+import { API_URL } from '@env';
 console.log(API_URL);
 const api = axios.create({
 	baseURL: API_URL + '/api',
