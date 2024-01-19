@@ -1,42 +1,53 @@
-import React, { useRef, useState } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { SliderBox } from "react-native-image-slider-box";
+import React, { useRef } from 'react';
+import { View, StyleSheet, Dimensions, Image, TouchableOpacity, Text } from 'react-native';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 import Video from 'react-native-video';
 
 const { width } = Dimensions.get('window');
 
 const MediaSlider = ({ mediaItems }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const videoRef = useRef(null);
+  const carouselRef = useRef(null);
+  const [activeIndex, setActiveIndex] = React.useState(0);
 
-  const renderMedia = (media, index) => {
-    if (media.type === 'image') {
-      return <SliderBox key={index} images={[media.uri]} />;
-    } else if (media.type === 'video') {
-      return (
-        <Video
-          key={index}
-          ref={videoRef}
-          source={{ uri: media.uri }}
-          style={styles.video}
-          paused={currentIndex !== index}
-        />
-      );
-    }
-    return null;
+  const renderItem = ({ item, index }) => {
+    return (
+      <TouchableOpacity activeOpacity={1} onPress={() => handleItemClick(item)}>
+        {item.type === 'image' ? (
+          <Image source={{ uri: item.uri }} style={styles.image} />
+        ) : (
+          <Video
+            source={{ uri: item.uri }}
+            style={styles.video}
+            paused={index !== activeIndex}
+            resizeMode="contain"
+          />
+        )}
+      </TouchableOpacity>
+    );
+  };
+
+  const handleItemClick = (item) => {
+    // Handle item click if needed
   };
 
   return (
     <View style={styles.container}>
-      {/* {mediaItems.map((media, index) => renderMedia(media, index))} */}
-      <SliderBox
-        images={mediaItems.filter((media) => media.type === 'image').map((media) => media.uri)}
-        onPositionChanged={(index) => {
-          setCurrentIndex(index);
-          if (videoRef.current) {
-            videoRef.current.seek(0); // Reset video playback when switching images
-          }
-        }}
+      <Carousel
+        ref={carouselRef}
+        data={mediaItems}
+        renderItem={renderItem}
+        sliderWidth={width}
+        itemWidth={width}
+        onSnapToItem={(index) => setActiveIndex(index)}
+      />
+      <Pagination
+        dotsLength={mediaItems.length}
+        activeDotIndex={activeIndex}
+        containerStyle={styles.paginationContainer}
+        dotStyle={styles.paginationDot}
+        inactiveDotStyle={styles.paginationInactiveDot}
+        inactiveDotOpacity={0.6}
+        inactiveDotScale={0.8}
       />
     </View>
   );
@@ -48,9 +59,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  image: {
+    width,
+    height: 200,
+    resizeMode: 'cover',
+  },
   video: {
     width,
     height: 200,
+  },
+  paginationContainer: {
+    paddingVertical: 8,
+  },
+  paginationDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.92)',
+  },
+  paginationInactiveDot: {
+    backgroundColor: 'rgba(0, 0, 0, 0.92)',
   },
 });
 
