@@ -94,7 +94,7 @@ const Login = props => {
             <View style={styles.formGroup}>
               <Pressable
                 style={styles.signInBtn}
-                onPress={() => showErrorAlert()}>
+                onPress={() => props.navigation.navigate('Home')}>
                 <Text style={styles.text}>Sign In</Text>
               </Pressable>
             </View>

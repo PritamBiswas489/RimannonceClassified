@@ -27,7 +27,17 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 const Drawer = createDrawerNavigator();
 function Root() {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator
+      screenOptions={{
+        headerShown: false,
+        drawerActiveBackgroundColor: '#aa18ea',
+        drawerActiveTintColor: '#fff',
+        drawerInactiveTintColor: '#333',
+        drawerLabelStyle: {
+          fontFamily: 'Roboto-Medium',
+          fontSize: 15,
+        },
+      }}>
       <Drawer.Screen name="Home" component={Tabs} />
       <Drawer.Screen name="Login" component={Login} />
       <Drawer.Screen name="Register" component={Register} />
@@ -79,6 +89,9 @@ const CustomTabBarButton = ({children, onPress}) => (
 function Tabs() {
   return (
     <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
       tabBarOptions={{
         showLabel: false,
         style: {

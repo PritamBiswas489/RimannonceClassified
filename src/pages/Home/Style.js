@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
   buttonIcon: {
     height: 30,
     width: 30,
+    resizeMode: 'contain',
   },
   buttonText: {
     fontSize: 20,

@@ -23,6 +23,8 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Dropdown} from 'react-native-element-dropdown';
 import SearchBar from '../../components/SearchBar/Search';
+import NavigationDrawerHeader from '../../components/drawerHeader';
+import {useNavigation} from '@react-navigation/native';
 
 const data = [
   {label: 'Sorted by ', value: '1'},
@@ -31,6 +33,7 @@ const data = [
 ];
 
 const Home = props => {
+  const navigation = useNavigation();
   const [refreshing, setRefreshing] = React.useState(false);
   const [search, setSearch] = useState('');
   const updateSearch = search => {
@@ -51,6 +54,7 @@ const Home = props => {
     <>
       <SafeAreaView>
         <GestureHandlerRootView>
+          <NavigationDrawerHeader navigationProps={navigation} />
           <ScrollView
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
