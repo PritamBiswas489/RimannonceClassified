@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -15,9 +15,21 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView, GestureHandlerRootView} from 'react-native-gesture-handler';
 import profile from '../../assets/images/profile.png';
+import { getAuthTokens } from '../../config/auth';
 
 const PersonalDetails = props => {
-  const [refreshing, setRefreshing] = React.useState(false);
+  const check = async ()=>{
+    const { accessToken, refreshToken } = await getAuthTokens();
+    console.log("=============== checking ==================");
+    console.log({ accessToken, refreshToken });
+  }
+  useEffect(()=>{
+    check();
+  },[])
+  
+
+  
+  const [refreshing, setRefreshing] = useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
@@ -55,11 +67,6 @@ const PersonalDetails = props => {
                       style={styles.input}
                       placeholderTextColor="#9c9c9c"
                     />
-
-                    {/* <Button
-                  title="Check Phone Number"
-                  onPress={handleCheckPhoneNumber}
-                /> */}
                   </View>
                   <View style={styles.formGroup}>
                     <View style={styles.inputIconBox}>

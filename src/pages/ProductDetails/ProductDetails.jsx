@@ -1,13 +1,9 @@
 import React from 'react';
 import {View, RefreshControl, Text, Pressable, Image} from 'react-native';
 import styles from './Style';
-// import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
-// import car from '../../assets/images/car.jpg';
 import MediaSlider from '../../components/MediaSlider/MediaSlider';
-
-// import Carousel from 'react-native-snap-carousel';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 export default function ProductDetails() {
@@ -23,7 +19,6 @@ export default function ProductDetails() {
     // Handle press event
     console.log('Pressed!');
   };
-
   const data = [
     {label: 'Marque', value: 'Toyota'},
     {label: 'Modèle', value: 'Corolla'},

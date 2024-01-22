@@ -30,7 +30,7 @@ function Root() {
       <Drawer.Screen name="Home" component={Tabs} />
       <Drawer.Screen name="Login" component={Login} />
       <Drawer.Screen name="Register" component={Register} />
-      <Drawer.Screen name="Favorites" component={Tabs} />
+      {/* <Drawer.Screen name="Favorites" component={Tabs} /> */}
       <Drawer.Screen name="ProductDetails" component={ProductDetails} />
       <Drawer.Screen name="GetInTouch" component={GetInTouch} />
       <Drawer.Screen name="LastAnnounces" component={LastAnnounces} />

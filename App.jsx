@@ -6,20 +6,17 @@
  */
 
 import React from 'react';
-import {Text, View} from 'react-native';
-import Home from './src/pages/Home/Home';
-import Favorites from './src/pages/Favorites/Favorites';
-import Login from './src/pages/Login/Login';
-import Register from './src/pages/Register/Register';
-import ProductDetails from './src/pages/ProductDetails/ProductDetails';
+
 import Routers from './src/routes/Routers';
-
-
+import { Provider } from 'react-redux';
+import store from './src/store';
 
 
 const App = () => {
   return (
-    <Routers/>
+    <Provider store={store}>
+       <Routers/>
+    </Provider>
   );
 };
 export default App;
