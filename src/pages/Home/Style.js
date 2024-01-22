@@ -1,12 +1,19 @@
 import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
-  container: {
+  body: {
     display: 'flex',
+    flexDirection: 'column',
     height: '100%',
-    paddingHorizontal: 15,
     backgroundColor: '#fff',
-    // flexDirection: 'row',
   },
+  listTop: {
+    paddingHorizontal: 15,
+  },
+  container: {
+    paddingHorizontal: 15,
+    marginBottom: 70,
+  },
+
   roundList: {
     display: 'flex',
     flexWrap: 'wrap',

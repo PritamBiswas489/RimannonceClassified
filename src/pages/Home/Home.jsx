@@ -52,7 +52,7 @@ const Home = props => {
 
   return (
     <>
-      <SafeAreaView>
+      <SafeAreaView style={styles.body}>
         <GestureHandlerRootView>
           <NavigationDrawerHeader navigationProps={navigation} />
           <ScrollView
