@@ -10,6 +10,11 @@ import {
 import styles from './Style';
 
 import icon1 from '../../assets/images/home/car.png';
+import icon2 from '../../assets/images/home/apartment.png';
+import icon3 from '../../assets/images/home/clothes.png';
+import icon4 from '../../assets/images/home/land-sale.png';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import image1 from '../../assets/images/home/1.jpg';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -59,11 +64,11 @@ const Home = props => {
               </View>
               <View style={styles.categoryHeader}>
                 <Text style={styles.category}>Category</Text>
-                <Text
+                {/* <Text
                   style={styles.seeAll}
                   onPress={() => props.navigation.navigate('')}>
                   See all
-                </Text>
+                </Text> */}
               </View>
               <View style={styles.roundList}>
                 <View style={styles.roundCol}>
@@ -78,14 +83,14 @@ const Home = props => {
                     <Text style={styles.buttonText}>Cars</Text>
                   </TouchableOpacity>
                 </View>
-                <View style={styles.roundCol}>
+                {/* <View style={styles.roundCol}>
                   <TouchableOpacity style={styles.roundBox}>
                     <View
                       style={[
                         {backgroundColor: '#8e64ec'},
                         styles.buttonIconSec,
                       ]}>
-                      <Image source={icon1} style={styles.buttonIcon} />
+                      <Image source={icon2} style={styles.buttonIcon} />
                     </View>
                     <Text style={styles.buttonText}>Real estate</Text>
                   </TouchableOpacity>
@@ -97,11 +102,11 @@ const Home = props => {
                         {backgroundColor: '#f9ad56'},
                         styles.buttonIconSec,
                       ]}>
-                      <Image source={icon1} style={styles.buttonIcon} />
+                      <Image source={icon3} style={styles.buttonIcon} />
                     </View>
                     <Text style={styles.buttonText}>CV</Text>
                   </TouchableOpacity>
-                </View>
+                </View> */}
                 <View style={styles.roundCol}>
                   <TouchableOpacity style={styles.roundBox}>
                     <View
@@ -109,7 +114,7 @@ const Home = props => {
                         {backgroundColor: '#71b3f0'},
                         styles.buttonIconSec,
                       ]}>
-                      <Image source={icon1} style={styles.buttonIcon} />
+                      <Image source={icon2} style={styles.buttonIcon} />
                     </View>
                     <Text style={styles.buttonText}>Apartment</Text>
                   </TouchableOpacity>
@@ -121,9 +126,9 @@ const Home = props => {
                         {backgroundColor: '#59c7a5'},
                         styles.buttonIconSec,
                       ]}>
-                      <Image source={icon1} style={styles.buttonIcon} />
+                      <Image source={icon3} style={styles.buttonIcon} />
                     </View>
-                    <Text style={styles.buttonText}>Cars</Text>
+                    <Text style={styles.buttonText}>Clothes</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={styles.roundCol}>
@@ -133,24 +138,27 @@ const Home = props => {
                         {backgroundColor: '#F18C86'},
                         styles.buttonIconSec,
                       ]}>
-                      <Image source={icon1} style={styles.buttonIcon} />
+                      <Image source={icon4} style={styles.buttonIcon} />
                     </View>
-                    <Text style={styles.buttonText}>Real estate</Text>
+                    <Text style={styles.buttonText}>land sale</Text>
                   </TouchableOpacity>
                 </View>
-                <View style={styles.roundCol}>
+                <View style={styles.fullRoundCol}>
                   <TouchableOpacity style={styles.roundBox}>
                     <View
                       style={[
                         {backgroundColor: '#68cbeb'},
-                        styles.buttonIconSec,
+                        styles.fullButtonIconSec,
                       ]}>
-                      <Image source={icon1} style={styles.buttonIcon} />
+                      <Text style={styles.othersText}>Others</Text>
+                      <Ionicons
+                        name="arrow-forward-circle-sharp"
+                        style={styles.arrowIcon}
+                      />
                     </View>
-                    <Text style={styles.buttonText}>Parcel Delivery</Text>
                   </TouchableOpacity>
                 </View>
-                <View style={styles.roundCol}>
+                {/* <View style={styles.roundCol}>
                   <TouchableOpacity style={styles.roundBox}>
                     <View
                       style={[
@@ -161,7 +169,7 @@ const Home = props => {
                     </View>
                     <Text style={styles.buttonText}>More</Text>
                   </TouchableOpacity>
-                </View>
+                </View> */}
               </View>
               <View style={styles.trendingAdd}>
                 <Text style={styles.trendingAddTitle}>Trending Add</Text>

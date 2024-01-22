@@ -13,13 +13,14 @@ import ProductDetails from '../pages/ProductDetails/ProductDetails';
 import GetInTouch from '../pages/GetInTouch/GetInTouch';
 import LastAnnounces from '../pages/LastAnnounces/LastAnnounces';
 import PersonalDetails from '../pages/PersonalDetails/PersonalDetails';
+import Splash from '../pages/Splash/Splash';
 import Details from '../pages/Details/Details';
 import PostTrip from '../pages/PostTrip/PostTrip';
 
 import home from '../assets/images/tab/home.png';
-import heart from '../assets/images/tab/heart.png';
-import chat from '../assets/images/tab/chat.png';
-import bell from '../assets/images/tab/bell.png';
+import global from '../assets/images/tab/global.png';
+import appartment from '../assets/images/tab/appartment.png';
+import delivery from '../assets/images/tab/delivery.png';
 import plus from '../assets/images/tab/plus.png';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -37,6 +38,7 @@ function Root() {
       <Drawer.Screen name="PersonalDetails" component={PersonalDetails} />
       <Drawer.Screen name="Details" component={Details} />
       <Drawer.Screen name="PostTrip" component={PostTrip} />
+      <Drawer.Screen name="Splash" component={Splash} />
     </Drawer.Navigator>
   );
 }
@@ -115,7 +117,7 @@ function Tabs() {
           tabBarIcon: ({focused}) => (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Image
-                source={heart}
+                source={global}
                 resizeMode="contain"
                 style={{
                   width: 21,
@@ -155,7 +157,7 @@ function Tabs() {
           tabBarIcon: ({focused}) => (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Image
-                source={chat}
+                source={appartment}
                 resizeMode="contain"
                 style={{
                   width: 21,
@@ -175,7 +177,7 @@ function Tabs() {
           tabBarIcon: ({focused}) => (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Image
-                source={bell}
+                source={delivery}
                 resizeMode="contain"
                 style={{
                   width: 21,
