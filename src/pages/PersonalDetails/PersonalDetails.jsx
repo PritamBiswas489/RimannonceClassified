@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -15,20 +15,28 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView, GestureHandlerRootView} from 'react-native-gesture-handler';
 import profile from '../../assets/images/profile.png';
-import { getAuthTokens } from '../../config/auth';
+import {getAuthTokens} from '../../config/auth';
+import {useSelector} from 'react-redux';
+import NavigationDrawerHeader from '../../components/drawerHeader';
 
 const PersonalDetails = props => {
-  const check = async ()=>{
-    const { accessToken, refreshToken } = await getAuthTokens();
-    console.log("=============== checking ==================");
-    console.log({ accessToken, refreshToken });
-  }
-  useEffect(()=>{
-    check();
-  },[])
-  
+  const name = useSelector(state => state['userAccountData'].name);
+  const email = useSelector(state => state['userAccountData'].email);
+  const phone = useSelector(state => state['userAccountData'].phone);
+  const avatar = useSelector(state => state['userAccountData'].avatar);
+
 
   
+
+  const check = async () => {
+    const {accessToken, refreshToken} = await getAuthTokens();
+    console.log('=============== checking ==================');
+    console.log({accessToken, refreshToken});
+  };
+  useEffect(() => {
+    check();
+  }, []);
+
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -39,6 +47,7 @@ const PersonalDetails = props => {
   return (
     <>
       <SafeAreaView style={styles.body}>
+      <NavigationDrawerHeader navigationProps={props.navigation} />
         <GestureHandlerRootView>
           <ScrollView
             showsVerticalScrollIndicator={false}
@@ -65,6 +74,7 @@ const PersonalDetails = props => {
                     <TextInput
                       placeholder="Enter Your name"
                       style={styles.input}
+                      value={name}
                       placeholderTextColor="#9c9c9c"
                     />
                   </View>
@@ -77,15 +87,11 @@ const PersonalDetails = props => {
                     <TextInput
                       placeholder="+91 12345 67890"
                       style={styles.input}
+                      value={phone}
                       placeholderTextColor="#9c9c9c"
                       keyboardType="phone-pad" // This makes the keyboard show numbers and symbols suitable for phone numbers
                       // onChangeText={handlePhoneInputChange}
                     />
-
-                    {/* <Button
-                  title="Check Phone Number"
-                  onPress={handleCheckPhoneNumber}
-                /> */}
                   </View>
                   <View style={styles.formGroup}>
                     <View style={styles.inputIconBox}>
@@ -99,27 +105,24 @@ const PersonalDetails = props => {
                     <TextInput
                       placeholder="Enter Your e-mail"
                       style={styles.input}
+                      value={email}
                       placeholderTextColor="#9c9c9c"
                     />
                   </View>
+
                   <View style={styles.formGroup}>
                     <View style={styles.inputIconBox}>
-                      <Ionicons
-                        name="chatbox-outline"
-                        style={styles.labelIcon}
-                      />
-                      <Text style={styles.inputLabel}>Message</Text>
+                      <SimpleLineIcons name="lock" style={styles.labelIcon} />
+                      <Text style={styles.inputLabel}>New password</Text>
                     </View>
-
                     <TextInput
-                      placeholder="Enter Your message.............."
-                      style={styles.textArea}
+                      style={styles.input}
+                      placeholder="***********"
+                      secureTextEntry={true}
                       placeholderTextColor="#9c9c9c"
-                      multiline={true}
-                      numberOfLines={4}
-                      textAlignVertical="top"
                     />
                   </View>
+
                   <View style={[styles.formGroup, styles.submit]}>
                     <Pressable
                       style={styles.signInBtn}

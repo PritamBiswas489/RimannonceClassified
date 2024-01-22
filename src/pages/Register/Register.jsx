@@ -9,8 +9,13 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { registrationService } from '../../services/signup.service';
 import { setAuthTokens } from '../../config/auth';
+import NavigationDrawerHeader from '../../components/drawerHeader';
+
+import { useDispatch } from 'react-redux';
+import { userAccountDataActions } from '../../store/redux/user-account-data.redux';
 
 const Register = props => {
+  const dispatch = useDispatch();  
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const onRefresh = React.useCallback(() => {
@@ -65,11 +70,53 @@ const Register = props => {
       };
       const response = await registrationService(data);
 			if (response.data.status === 200) {
-          const { accessToken, refreshToken } = response.data.data;
+          const { accessToken, refreshToken, user } = response.data.data;
           setAuthTokens(accessToken, refreshToken);
-          //setStep(4);
+          dispatch(
+            userAccountDataActions.setData({
+              field: "id",
+              data:  user.id,
+            })
+          );
+          dispatch(
+            userAccountDataActions.setData({
+              field: "name",
+              data:  user.name,
+            })
+          );
+          dispatch(
+            userAccountDataActions.setData({
+               field: "email",
+               data:  user.email,
+            })
+          );
+          dispatch(
+            userAccountDataActions.setData({
+               field: "phone",
+               data:  user.phone,
+            })
+          );
+          dispatch(
+            userAccountDataActions.setData({
+               field: "avatar",
+               data:  user.avatar,
+            })
+          );
+          dispatch(
+            userAccountDataActions.setData({
+               field: "isPromoted",
+               data:  user.isPromoted,
+            })
+          );
+          dispatch(
+            userAccountDataActions.setData({
+               field: "isLoggedIn",
+               data:  true,
+            })
+          );
+           
           setIsLoading(false);
-          Alert.alert('Success', 'Account successfully registered.You can login with your phone number and password', [
+          Alert.alert('Success', 'Account successfully registered and logged in', [
             {text: 'OK', onPress: () => console.log('OK Pressed')},
           ]);
           setSelection(false);
@@ -93,6 +140,7 @@ const Register = props => {
     <>
       <SafeAreaView style={styles.container}>
         <GestureHandlerRootView>
+        <NavigationDrawerHeader navigationProps={props.navigation} />
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={

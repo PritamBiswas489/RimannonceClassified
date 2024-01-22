@@ -1,12 +1,19 @@
 import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
-  container: {
+  body: {
     display: 'flex',
+    flexDirection: 'column',
     height: '100%',
-    paddingHorizontal: 15,
     backgroundColor: '#fff',
-    // flexDirection: 'row',
   },
+  listTop: {
+    paddingHorizontal: 15,
+  },
+  container: {
+    paddingHorizontal: 15,
+    marginBottom: 70,
+  },
+
   roundList: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -21,6 +28,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
   },
+  fullRoundCol: {
+    width: '100%',
+    paddingLeft: 5,
+    paddingRight: 5,
+    marginTop: 10,
+    marginBottom: 10,
+  },
   buttonIconSec: {
     width: '100%',
     height: 90,
@@ -29,9 +43,32 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  fullButtonIconSec: {
+    width: '100%',
+    borderRadius: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  othersText: {
+    color: '#fff',
+    fontFamily: 'Mulish-Bold',
+    fontSize: 17,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  arrowIcon: {
+    fontSize: 20,
+    color: '#fff',
+    marginLeft: 10,
+  },
+
   buttonIcon: {
     height: 30,
     width: 30,
+    resizeMode: 'contain',
   },
   buttonText: {
     fontSize: 20,
@@ -45,11 +82,11 @@ const styles = StyleSheet.create({
     height: 50,
   },
   categoryHeader: {
-    display: 'flex',
-    flexDirection: 'row',
+    // display: 'flex',
+    // flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    // justifyContent: 'space-between',
+    // alignItems: 'center',
     paddingHorizontal: 5,
     paddingVertical: 15,
   },

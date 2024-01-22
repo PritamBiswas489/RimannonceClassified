@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, Alert, Button} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -13,30 +13,63 @@ import ProductDetails from '../pages/ProductDetails/ProductDetails';
 import GetInTouch from '../pages/GetInTouch/GetInTouch';
 import LastAnnounces from '../pages/LastAnnounces/LastAnnounces';
 import PersonalDetails from '../pages/PersonalDetails/PersonalDetails';
+import Splash from '../pages/Splash/Splash';
 import Details from '../pages/Details/Details';
 import PostTrip from '../pages/PostTrip/PostTrip';
+import Logout from '../pages/Logout/Logout';
 
 import home from '../assets/images/tab/home.png';
-import heart from '../assets/images/tab/heart.png';
-import chat from '../assets/images/tab/chat.png';
-import bell from '../assets/images/tab/bell.png';
+import global from '../assets/images/tab/global.png';
+import appartment from '../assets/images/tab/appartment.png';
+import delivery from '../assets/images/tab/delivery.png';
 import plus from '../assets/images/tab/plus.png';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
 
 const Drawer = createDrawerNavigator();
+
 function Root() {
+  const isLoggedIn = useSelector(state => state['userAccountData'].isLoggedIn);
+  const handleLogout = ()=>{
+     Alert.alert('logout');
+  }
+
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator
+      screenOptions={{
+        headerShown: false,
+        drawerActiveBackgroundColor: '#aa18ea',
+        drawerActiveTintColor: '#fff',
+        drawerInactiveTintColor: '#333',
+        drawerLabelStyle: {
+          fontFamily: 'Roboto-Medium',
+          fontSize: 15,
+        },
+      }}>
       <Drawer.Screen name="Home" component={Tabs} />
-      <Drawer.Screen name="Login" component={Login} />
-      <Drawer.Screen name="Register" component={Register} />
+      {!isLoggedIn && (
+        <>
+          <Drawer.Screen name="Login" component={Login} />
+          <Drawer.Screen name="Register" component={Register} />
+        </>
+      )}
+
+      {isLoggedIn && (
+        <>
+          <Drawer.Screen name="Account" component={PersonalDetails} />
+          <Drawer.Screen name="My Favorites" component={Favorites} />
+          <Drawer.Screen name="Logout" component={Logout} />
+        </>
+      )}
+
       {/* <Drawer.Screen name="Favorites" component={Tabs} /> */}
-      <Drawer.Screen name="ProductDetails" component={ProductDetails} />
+      {/* <Drawer.Screen name="ProductDetails" component={ProductDetails} />
       <Drawer.Screen name="GetInTouch" component={GetInTouch} />
       <Drawer.Screen name="LastAnnounces" component={LastAnnounces} />
       <Drawer.Screen name="PersonalDetails" component={PersonalDetails} />
       <Drawer.Screen name="Details" component={Details} />
       <Drawer.Screen name="PostTrip" component={PostTrip} />
+      <Drawer.Screen name="Splash" component={Splash} /> */}
     </Drawer.Navigator>
   );
 }
@@ -77,19 +110,15 @@ const CustomTabBarButton = ({children, onPress}) => (
 function Tabs() {
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        showLabel: false,
-        style: {
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarStyle: {
           position: 'absolute',
-          bottom: 25,
-          left: 25,
-          right: 20,
-          backgroundColor: '#00ff00',
-          height: 90,
         },
       }}>
       <Tab.Screen
-        name="Home"
+        name="Main"
         component={Home}
         options={{
           tabBarIcon: ({focused}) => (
@@ -115,7 +144,7 @@ function Tabs() {
           tabBarIcon: ({focused}) => (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Image
-                source={heart}
+                source={global}
                 resizeMode="contain"
                 style={{
                   width: 21,
@@ -149,13 +178,13 @@ function Tabs() {
       />
 
       <Tab.Screen
-        name="ProductDetails"
+        name="PersonalDetails"
         component={PersonalDetails}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Image
-                source={chat}
+                source={appartment}
                 resizeMode="contain"
                 style={{
                   width: 21,
@@ -175,7 +204,7 @@ function Tabs() {
           tabBarIcon: ({focused}) => (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Image
-                source={bell}
+                source={delivery}
                 resizeMode="contain"
                 style={{
                   width: 21,

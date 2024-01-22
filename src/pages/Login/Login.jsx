@@ -4,6 +4,9 @@ import Icon from 'react-native-vector-icons/Feather';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { loginService } from '../../services/login.service';
 import { setAuthTokens } from '../../config/auth';
+import NavigationDrawerHeader from '../../components/drawerHeader';
+import { useDispatch } from 'react-redux';
+import { userAccountDataActions } from '../../store/redux/user-account-data.redux';
 
 import {
   Text,
@@ -30,11 +33,10 @@ const CustomCheckBox = ({label, checked, onChange}) => {
 };
 
 const Login = props => {
-  const [isSelected, setSelection] = useState(false);
+  const dispatch = useDispatch();  
   const [isLoading, setIsLoading] = useState(false);
   const [loginPhoneNumber,setPhoneNumber] =  useState('12234567890');
   const [loginPassword,setLoginPassword] =  useState('Pritam123@#');  
-
 
   const processLogin = async ()=>{
     if(loginPhoneNumber.trim() === ''){
@@ -52,18 +54,58 @@ const Login = props => {
         password: loginPassword,
       };
       const response = await loginService(data);
-      //console.log(response);
+       
 			if (response.data.status === 200) {
-          const { accessToken, refreshToken } = response.data.data;
-          // console.log(accessToken);
-          // console.log(refreshToken);
-           setAuthTokens(accessToken, refreshToken);
-          //setStep(4);
+          const { accessToken, refreshToken, user } = response.data.data;
+          setAuthTokens(accessToken, refreshToken);
+          dispatch(
+            userAccountDataActions.setData({
+              field: "id",
+              data:  user.id,
+            })
+          );
+          dispatch(
+            userAccountDataActions.setData({
+              field: "name",
+              data:  user.name,
+            })
+          );
+          dispatch(
+            userAccountDataActions.setData({
+               field: "email",
+               data:  user.email,
+            })
+          );
+          dispatch(
+            userAccountDataActions.setData({
+               field: "phone",
+               data:  user.phone,
+            })
+          );
+          dispatch(
+            userAccountDataActions.setData({
+               field: "avatar",
+               data:  user.avatar,
+            })
+          );
+          dispatch(
+            userAccountDataActions.setData({
+               field: "isPromoted",
+               data:  user.isPromoted,
+            })
+          );
+          dispatch(
+            userAccountDataActions.setData({
+               field: "isLoggedIn",
+               data:  true,
+            })
+          );
+
           setIsLoading(false);
           Alert.alert('Success', 'Successfully logged in', [
             {text: 'OK', onPress: () => console.log('OK Pressed')},
           ]);
-          setSelection(false);
+          
           setPhoneNumber('');
           setLoginPassword('');
           props.navigation.navigate('PersonalDetails');
@@ -73,12 +115,12 @@ const Login = props => {
             {text: 'OK', onPress: () => console.log('OK Pressed')},
           ]);
 			}
-
     }
   }
 
   return (
     <SafeAreaView>
+      <NavigationDrawerHeader navigationProps={props.navigation} />
       <View style={styles.container}>
         <View style={[{flex: 1}, styles.loginContainer]}>
           <View style={[{flex: 4}, styles.loginTop]}>
@@ -135,7 +177,10 @@ const Login = props => {
             <View style={styles.formGroup}>
               <Pressable
                 style={styles.signInBtn}
+ 
                 onPress={() => processLogin()}>
+ 
+    
                 <Text style={styles.text}>Sign In</Text>
               </Pressable>
             </View>

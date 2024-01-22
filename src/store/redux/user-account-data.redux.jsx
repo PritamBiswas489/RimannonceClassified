@@ -6,7 +6,8 @@ const initialState = {
     phone:'',
     avatar:'',
     role:'',
-    is_promoted:'',
+    isPromoted:'',
+    isLoggedIn:false
  };
  const userAccountDataSlice = createSlice({
     name: "user",
