@@ -7,7 +7,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
+    paddingVertical: 20,
+    paddingHorizontal: 20,
     backgroundColor: '#fff',
   },
   topbarlogoContainer: {
