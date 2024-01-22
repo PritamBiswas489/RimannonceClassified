@@ -29,16 +29,6 @@ const styles = StyleSheet.create({
     height: 25,
     resizeMode: 'contain',
   },
-  cartIconContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cartItemCountText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 10,
-  },
 });
 
 export default styles;
