@@ -87,30 +87,7 @@ const Home = props => {
                     <Text style={styles.buttonText}>Cars</Text>
                   </TouchableOpacity>
                 </View>
-                {/* <View style={styles.roundCol}>
-                  <TouchableOpacity style={styles.roundBox}>
-                    <View
-                      style={[
-                        {backgroundColor: '#8e64ec'},
-                        styles.buttonIconSec,
-                      ]}>
-                      <Image source={icon2} style={styles.buttonIcon} />
-                    </View>
-                    <Text style={styles.buttonText}>Real estate</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.roundCol}>
-                  <TouchableOpacity style={styles.roundBox}>
-                    <View
-                      style={[
-                        {backgroundColor: '#f9ad56'},
-                        styles.buttonIconSec,
-                      ]}>
-                      <Image source={icon3} style={styles.buttonIcon} />
-                    </View>
-                    <Text style={styles.buttonText}>CV</Text>
-                  </TouchableOpacity>
-                </View> */}
+               
                 <View style={styles.roundCol}>
                   <TouchableOpacity style={styles.roundBox}>
                     <View
@@ -162,18 +139,7 @@ const Home = props => {
                     </View>
                   </TouchableOpacity>
                 </View>
-                {/* <View style={styles.roundCol}>
-                  <TouchableOpacity style={styles.roundBox}>
-                    <View
-                      style={[
-                        {backgroundColor: '#f9ad56'},
-                        styles.buttonIconSec,
-                      ]}>
-                      <Image source={icon1} style={styles.buttonIcon} />
-                    </View>
-                    <Text style={styles.buttonText}>More</Text>
-                  </TouchableOpacity>
-                </View> */}
+                 
               </View>
               <View style={styles.trendingAdd}>
                 <Text style={styles.trendingAddTitle}>Trending Add</Text>

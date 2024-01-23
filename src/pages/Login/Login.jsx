@@ -7,6 +7,7 @@ import { setAuthTokens } from '../../config/auth';
 import NavigationDrawerHeader from '../../components/drawerHeader';
 import { useDispatch } from 'react-redux';
 import { userAccountDataActions } from '../../store/redux/user-account-data.redux';
+import ForgotPasswordModal from '../../components/ForgetPassword/ForgotPasswordModal';
 
 import {
   Text,
@@ -35,9 +36,13 @@ const CustomCheckBox = ({label, checked, onChange}) => {
 const Login = props => {
   const dispatch = useDispatch();  
   const [isLoading, setIsLoading] = useState(false);
-  const [loginPhoneNumber,setPhoneNumber] =  useState('12234567890');
+  const [loginPhoneNumber,setPhoneNumber] =  useState('12234567891');
   const [loginPassword,setLoginPassword] =  useState('Pritam123@#');  
+  const [isForgetPassowordVisible,setForgetPassowordIsVisible] =  useState(false);
 
+  const onCloseModal = () =>{
+    setForgetPassowordIsVisible(false);
+  }
   const processLogin = async ()=>{
     if(loginPhoneNumber.trim() === ''){
       Alert.alert('Error', 'Enter login phone number.', [
@@ -156,17 +161,10 @@ const Login = props => {
                 />
               </View>
               <View style={styles.checkboxForgetPassword}>
-                {/* <View style={styles.checkboxContainer}>
-                  <CustomCheckBox
-                    label="Remember me"
-                    checked={isSelected}
-                    onChange={() => setSelection(!isSelected)}
-                  />
-                </View> */}
                 <View>
                   <Text
                     style={styles.forgetPassWord}
-                    onPress={() => props.navigation.navigate('')}>
+                    onPress={() => setForgetPassowordIsVisible(true)}>
                     Forget Password?
                   </Text>
                 </View>
@@ -202,6 +200,7 @@ const Login = props => {
         textContent={'Loading...'}
         textStyle={{ color: '#FFF' }}
       />
+      <ForgotPasswordModal isVisible={isForgetPassowordVisible} onClose={onCloseModal}/>
     </SafeAreaView>
   );
 };

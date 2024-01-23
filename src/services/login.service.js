@@ -8,3 +8,11 @@ export const loginService = async (data) => {
 		return error;
 	}
 };
+export const forgetPasswordService = async (email) => {
+	try {
+		const response = await api.get(`/front/send-forget-password-email?email=${email}`);
+		return response;
+	} catch (error) {
+		return error;
+	}
+}

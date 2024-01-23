@@ -4,11 +4,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     height: '100%',
   },
-
   loginContainer: {
     backgroundColor: '#fff',
     paddingHorizontal: 30,
     paddingVertical: 30,
+    marginBottom:100
   },
   LoginTitle: {
     color: '#030233',
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 5,
   },
   checkboxContainer: {
     flexDirection: 'row',

@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
   },
   listTop: {
     paddingHorizontal: 15,
+    
   },
   container: {
     paddingHorizontal: 15,
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     flexDirection: 'row',
     width: '100%',
-    marginBottom: 20,
+    marginBottom: 80,
   },
   col6: {
     width: '50%',

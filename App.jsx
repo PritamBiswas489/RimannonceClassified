@@ -22,7 +22,7 @@ const App = () => {
      const response = await getAuthUserService();
      if (response?.data?.status === 200) {
          const { user } = response.data.data;
-         console.log({user});
+        //  console.log({user});
          dispatch(
           userAccountDataActions.setData({
             field: "id",
