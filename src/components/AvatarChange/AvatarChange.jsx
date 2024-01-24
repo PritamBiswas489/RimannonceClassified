@@ -6,12 +6,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { uploadProfilePic } from '../../services/profile.service';
 import { userAccountDataActions } from '../../store/redux/user-account-data.redux';
+import { getMediaUrl } from '../../config/utility';
 
 const AvatarChange = () => {
     const dispatch = useDispatch();  
     const [isLoading, setIsLoading] = useState(false);
     let avatar = useSelector(state => state['userAccountData'].avatar);
-    avatar = avatar && process.env.MEDIA_URL+`/`+avatar ;
+    avatar = avatar && getMediaUrl()+`/`+avatar ;
     const [avatarUri, setAvatarUri] = useState(avatar);
     const [avatarChange, setAvatarChange] = useState(false);
     useEffect(()=>{
@@ -24,7 +25,11 @@ const AvatarChange = () => {
               type: 'image/jpeg',
               name: 'avatar.jpg',
             });
-            // console.log({formData})
+            console.log({
+              uri: avatarUri,
+              type: 'image/jpeg',
+              name: 'avatar.jpg',
+            });
             const response  = await uploadProfilePic(formData);
             if (response?.data?.status === 200) {
               setIsLoading(false);

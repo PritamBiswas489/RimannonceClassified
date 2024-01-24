@@ -1,14 +1,16 @@
 import axios from 'axios';
 import { getAuthTokens, setAuthTokens } from './auth';
-import { API_URL } from '@env';
+ 
 import { useNavigation } from '@react-navigation/native';
 import { Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { userAccountDataActions } from '../store/redux/user-account-data.redux';
+import { getAppUrl } from './utility';
 
-
+const app_url =  getAppUrl();
+console.log(app_url);
 const api = axios.create({
-	baseURL: process.env.API_URL + '/api',
+	baseURL: app_url + '/api',
 	timeout: 15000,
 });
 

@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { userAccountDataActions } from '../../store/redux/user-account-data.redux';
 import ForgotPasswordModal from '../../components/ForgetPassword/ForgotPasswordModal';
 
+
 import {
   Text,
   View,
@@ -34,6 +35,7 @@ const CustomCheckBox = ({label, checked, onChange}) => {
 };
 
 const Login = props => {
+   
   const dispatch = useDispatch();  
   const [isLoading, setIsLoading] = useState(false);
   const [loginPhoneNumber,setPhoneNumber] =  useState('12234567891');
@@ -113,7 +115,7 @@ const Login = props => {
           
           setPhoneNumber('');
           setLoginPassword('');
-          props.navigation.navigate('PersonalDetails');
+          props.navigation.navigate('Account');
 			} else {
           setIsLoading(false);
           Alert.alert('Error', response.data.error?.message, [

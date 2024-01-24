@@ -20,12 +20,12 @@ const Register = props => {
   const [isLoading, setIsLoading] = useState(false);
   const onRefresh = React.useCallback(() => {
   }, []);
-  const [isSelected, setSelection] = useState(true);
-  const [name,setName] =  useState('demo demo');
-  const [email,setEmail] =  useState('demo1@gmail.com');
-  const [phoneNumber,setPhoneNumber] =  useState('12234567890');
-  const [password,setPassword] =  useState('Pritam123@#');
-  const [confirmPassword,setConfirmPassword] =  useState('Pritam123@#');
+  const [isSelected, setSelection] = useState(false);
+  const [name,setName] =  useState('');
+  const [email,setEmail] =  useState('');
+  const [phoneNumber,setPhoneNumber] =  useState('');
+  const [password,setPassword] =  useState('');
+  const [confirmPassword,setConfirmPassword] =  useState('');
 
   const registerProcess = async () => {
     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

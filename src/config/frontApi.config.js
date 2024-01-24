@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { API_URL } from '@env';
-// console.log("hello");
- console.log(process.env.API_URL);
+import { getAppUrl } from './utility';
+const app_url =  getAppUrl();
+console.log(app_url);
 const api = axios.create({
-	baseURL: process.env.API_URL + '/api',
+	baseURL: app_url + '/api',
 	timeout: 15000,
 });
 export default api;

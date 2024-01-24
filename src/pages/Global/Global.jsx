@@ -67,7 +67,7 @@ const dataSort = [
   {label: 'Item 3', value: '3'},  
 ];
 
-const Favorites = (props) => {
+const Global = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [announcements, setAnnouncements] = useState([]);
@@ -202,4 +202,4 @@ const Favorites = (props) => {
   );
 };
 
-export default Favorites;
+export default Global;

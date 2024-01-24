@@ -13,127 +13,45 @@ import fUp from '../../assets/images/f-up.png';
 import calender from '../../assets/images/calender.png';
 import map from '../../assets/images/map.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import ApartmentRoute from '../../components/PostAnnouncements/ApartmentRoute/ApartmentRoute';
+import CarRoute from '../../components/PostAnnouncements/CarRoute/CarRoute';
+import GpDliveryRoute from '../../components/PostAnnouncements/GpDliveryRoute/GpDliveryRoute';
+import ClothsRoute from '../../components/PostAnnouncements/ClothsRoute/ClothsRoute';
+import LandSaleRoute from '../../components/PostAnnouncements/LandSaleRoute/LandSaleRoute';
+import OtherRoute from '../../components/PostAnnouncements/OtherRoute/OtherRoute';
+import NavigationDrawerHeader from '../../components/drawerHeader';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-const FirstRoute = () => (
-  <View style={{flex: 1, backgroundColor: '#fff'}}>
-    <View style={styles.tabInner}>
-      <View style={styles.formGroup}>
-        <View style={styles.iconBox}>
-          <Image source={fUp} style={styles.labelIcon} />
-        </View>
-        <TextInput placeholder="Departure city" style={styles.input} />
-      </View>
-      <View style={[styles.formGroup, styles.flex]}>
-        <View style={styles.code}>
-          <TextInput placeholder="+33" style={[styles.input, styles.input2]} />
-        </View>
-        <View style={styles.codeInput}>
-          <TextInput
-            placeholder="0123456789"
-            style={[styles.input, styles.input2]}
-          />
-        </View>
-      </View>
-      <View style={styles.formGroup}>
-        <View style={styles.iconBox}>
-          <Image source={calender} style={styles.labelIcon} />
-        </View>
-        <TextInput placeholder="Day of departure" style={styles.input} />
-      </View>
-      <View style={styles.formGroup}>
-        <View style={styles.iconBox}>
-          <Image source={map} style={styles.labelIcon} />
-        </View>
-        <TextInput placeholder="deposit local" style={styles.input} />
-      </View>
-      <View style={styles.formGroup}>
-        <TextInput
-          placeholder="Enter Your message.............."
-          style={styles.textArea}
-          placeholderTextColor="#9c9c9c"
-          multiline={true}
-          numberOfLines={4}
-          textAlignVertical="top"
-        />
-      </View>
-      <View style={[styles.formGroup, styles.dFlex]}>
-        <Pressable style={styles.addFlyerBtn} onPress={() => showErrorAlert()}>
-          <Text style={styles.addFlyer}>Add your flyer</Text>
-        </Pressable>
-        <Pressable style={styles.galleryBtn} onPress={() => showErrorAlert()}>
-          <View style={styles.gallery}>
-            <AntDesign name="pluscircle" style={styles.plusCircle} />
-            <Text style={styles.galleryInner}>Gallery</Text>
-          </View>
-        </Pressable>
-      </View>
+const ApartmentTab = () => <ApartmentRoute />;
+const GpDliveryTab = () => <GpDliveryRoute />;
+const CarTab = () => <CarRoute />;
+const ClothsTab = () => <ClothsRoute />;
+const LandSaleTab = () => <LandSaleRoute />;
+const OtherTab = () => <OtherRoute />;
 
-      <View style={[styles.formGroup, styles.dFlexCenter]}>
-        <Pressable style={styles.addFlyerBtn} onPress={() => showErrorAlert()}>
-          <Text style={styles.publish}>Publish</Text>
-        </Pressable>
-      </View>
-    </View>
-  </View>
-);
-
-const SecondRoute = () => (
-  <View style={{flex: 1, backgroundColor: '#fff'}}>
-    <Text>Arrival</Text>
-  </View>
-);
-const ThirdRoute = () => (
-  <View style={{flex: 1, backgroundColor: '#fff'}}>
-    <Text>Arrival</Text>
-  </View>
-);
-const ForthRoute = () => (
-  <View style={{flex: 1, backgroundColor: '#fff'}}>
-    <Text>ForthRoute</Text>
-  </View>
-);
-const FifthRoute = () => (
-  <View style={{flex: 1, backgroundColor: '#fff'}}>
-    <Text>FifthRoute</Text>
-  </View>
-);
-const renderScene = SceneMap({
-  first: FirstRoute,
-  second: SecondRoute,
-  third: ThirdRoute,
-  forth: ForthRoute,
-  fifth: FifthRoute,
-});
-
-// const renderTabBar = props => (
-//   <TabBar
-//     {...props}
-//     indicatorStyle={{backgroundColor: '#ff0'}} // Change active tab indicator color
-//     style={{backgroundColor: '#f00'}} // Change tab bar background color
-//     labelStyle={{color: '#fff'}} // Change text color
-//   />
-// );
-
-const PostTrip = () => {
+const PostTrip = (props) => {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    {key: 'first', title: 'Car'},
-    {key: 'second', title: 'apartment'},
-    {key: 'third', title: 'clothes'},
-    {key: 'forth', title: 'land sale'},
-    {key: 'fifth', title: 'Others'},
+    {key: 'first', title: 'Apartment'},
+    {key: 'second', title: 'GP Delivery'},
+    {key: 'third', title: 'Car'},
+    {key: 'fourth', title: 'Clothes'},
+    {key: 'fifth', title: 'Land sale'},
+    {key: 'sixth', title: 'Other'},
   ]);
 
   return (
+     
     <TabView
       navigationState={{index, routes}}
       renderScene={SceneMap({
-        first: FirstRoute,
-        second: SecondRoute,
-        third: ThirdRoute,
-        forth: ForthRoute,
-        fifth: FifthRoute,
+        first: ApartmentTab,
+        second: GpDliveryTab,
+        third: CarTab,
+        fourth: ClothsTab,
+        fifth: LandSaleTab,
+        sixth: OtherTab,
       })}
       onIndexChange={setIndex}
       initialLayout={{width: layout.width}}
@@ -149,6 +67,7 @@ const PostTrip = () => {
         />
       )}
     />
+    
   );
 };
 

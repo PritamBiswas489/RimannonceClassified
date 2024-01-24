@@ -17,6 +17,9 @@ import Splash from '../pages/Splash/Splash';
 import Details from '../pages/Details/Details';
 import PostTrip from '../pages/PostTrip/PostTrip';
 import Logout from '../pages/Logout/Logout';
+import Global from '../pages/Global/Global';
+import Apartment from '../pages/Apartment/Apartment';
+import GpDelivery from '../pages/GpDelivery/GpDelivery';
 
 import home from '../assets/images/tab/home.png';
 import global from '../assets/images/tab/global.png';
@@ -68,8 +71,9 @@ function Root() {
       <Drawer.Screen name="LastAnnounces" component={LastAnnounces} />
       <Drawer.Screen name="PersonalDetails" component={PersonalDetails} />
       <Drawer.Screen name="Details" component={Details} />
-      <Drawer.Screen name="PostTrip" component={PostTrip} />
+     
       <Drawer.Screen name="Splash" component={Splash} /> */}
+       {/* <Drawer.Screen name="Splash" component={Splash} /> */}
     </Drawer.Navigator>
   );
 }
@@ -132,14 +136,14 @@ function Tabs() {
                   tintColor: focused ? '#009de0' : '#c4c4c4',
                 }}
               />
-              {/* <Text>Home</Text> */}
+               
             </View>
           ),
         }}
       />
       <Tab.Screen
-        name="Favorites"
-        component={Favorites}
+        name="Global"
+        component={Global}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -152,7 +156,7 @@ function Tabs() {
                   tintColor: focused ? '#009de0' : '#c4c4c4',
                 }}
               />
-              {/* <Text>Home</Text> */}
+               
             </View>
           ),
         }}
@@ -178,8 +182,8 @@ function Tabs() {
       />
 
       <Tab.Screen
-        name="PersonalDetails"
-        component={PersonalDetails}
+        name="Apartment"
+        component={Apartment}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -192,14 +196,14 @@ function Tabs() {
                   tintColor: focused ? '#009de0' : '#c4c4c4',
                 }}
               />
-              {/* <Text>Home</Text> */}
+              
             </View>
           ),
         }}
       />
       <Tab.Screen
-        name="Details"
-        component={Details}
+        name="GpDelivery"
+        component={GpDelivery}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -212,19 +216,12 @@ function Tabs() {
                   tintColor: focused ? '#009de0' : '#c4c4c4',
                 }}
               />
-              {/* <Text>Home</Text> */}
             </View>
           ),
         }}
       />
 
-      {/* <Tab.Screen name="Login" component={Login} />
-  <Tab.Screen name="Register" component={Register} /> */}
-
-      {/* <Tab.Screen name="GetInTouch" component={GetInTouch} /> */}
-      {/* <Tab.Screen name="LastAnnounces" component={LastAnnounces} />
-  <Tab.Screen name="Details" component={Details} />
-  <Tab.Screen name="PostTrip" component={PostTrip} /> */}
+    
     </Tab.Navigator>
   );
 }

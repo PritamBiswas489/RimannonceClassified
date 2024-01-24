@@ -1,4 +1,5 @@
 import moment from 'moment-timezone';
+import { env } from '../../environment';
 export const fileToBase64 = (file) => {
 	return new Promise((resolve) => {
 		let fileInfo;
@@ -19,6 +20,15 @@ export const fileToBase64 = (file) => {
 		console.log(fileInfo);
 	});
 };
+export const getAppUrl = () =>{
+	const {type, appUrls} = env;
+	return appUrls[type].apiUrl;
+}
+export const getMediaUrl = () =>{
+	const {type, mediaUrls} = env;
+	return mediaUrls[type].apiUrl;
+
+}
 export const isValidUrl = (str) => {
 	const pattern = new RegExp(
 		'^([a-zA-Z]+:\\/\\/)?' + // protocol
