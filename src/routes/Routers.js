@@ -71,7 +71,6 @@ function Root() {
       <Drawer.Screen name="LastAnnounces" component={LastAnnounces} />
       <Drawer.Screen name="PersonalDetails" component={PersonalDetails} />
       <Drawer.Screen name="Details" component={Details} />
-     
       <Drawer.Screen name="Splash" component={Splash} /> */}
        {/* <Drawer.Screen name="Splash" component={Splash} /> */}
     </Drawer.Navigator>
@@ -195,8 +194,7 @@ function Tabs() {
                   height: 21,
                   tintColor: focused ? '#009de0' : '#c4c4c4',
                 }}
-              />
-              
+              /> 
             </View>
           ),
         }}

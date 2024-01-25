@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,
   },
+  redAsterisk: {
+    color: 'red',
+  },
 
    
   iconBox: {
@@ -19,6 +22,15 @@ const styles = StyleSheet.create({
     top: 15,
     zIndex: 9,
     left: 15,
+  },
+  editor: {
+    flex: 1,
+    padding: 0,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginHorizontal: 30,
+    marginVertical: 5,
+    backgroundColor: 'white',
   },
 
   // input: {

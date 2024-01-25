@@ -8,24 +8,19 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import {subLocations} from '../../../config/subLocations';
 import {locations} from '../../../config/locations';
 import RNPickerSelect from 'react-native-picker-select';
 import {categories} from '../../../config/categories';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { createAnnouncementService } from '../../../services/announcementCreate.service';
+import AnnouncementImages from '../../AnnouncementImages/AnnouncementImages';
+import AnnouncementVideos from '../../AnnouncementVideos/AnnouncementVideos';
 
-export default function ApartmentRoute() {
+export default function GlobalRoute() {
   const [testData, setTestData] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [locationId, setSelectedLocation] = useState(null);
   const [location, setLocation] = useState('');
-
-  const [subLocationsSelected, setSubLocationsSelected] = useState([]);
-
-  const [subLocationId, setSelectedSubLocation] = useState(null);
-  const [subLocation, setSubLocation] = useState('');
-
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
@@ -39,39 +34,10 @@ export default function ApartmentRoute() {
         `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
       );
       setContactNumber('+919830990065');
-      setCategory('apartment');
-      
+      setCategory('car');
     }
   }, []);
 
-  const placeholder = {
-    label: 'Select an location of announcement',
-    value: null,
-    color: '#9EA0A4',
-  };
-  const locationItems = [];
-  locations.forEach((locDSata, locaIndex) => {
-    locationItems.push({label: locDSata.name, value: locDSata.id});
-  });
-
-  useEffect(() => {
-    if (locationId) {
-      const filteredEntry = subLocations.find(
-        entry => parseInt(entry.location_id) === parseInt(locationId),
-      );
-      const filteredLocations = filteredEntry ? filteredEntry.locations : [];
-      const locationItems = [];
-      filteredLocations.forEach((locDSata, locaIndex) => {
-        locationItems.push({label: locDSata.name, value: locDSata.id});
-      });
-      setSubLocationsSelected(locationItems);
-      setSelectedSubLocation(null);
-      setSubLocation('');
-    }
-  }, [locationId]);
-
-
- 
   useEffect(() => {
     if (locationId) {
       const filteredEntry = locations.find(
@@ -83,49 +49,19 @@ export default function ApartmentRoute() {
       }
     }
   }, [locationId]);
-
-
-  useEffect(()=>{
-    if (subLocationId && subLocationsSelected) {
-     // console.log(subLocationsSelected);
-      const filteredEntry = subLocationsSelected.find(
-        entry => parseInt(entry.value) === parseInt(subLocationId),
-      );
-      const filteredLocations = filteredEntry ? filteredEntry : [];
-      if (filteredLocations?.label) {
-        setSubLocation(filteredLocations?.label);
-      }
-    }
-
-  },[subLocationId])
-
-
-
-
-  useEffect(() => {
-   // console.log(subLocationsSelected);
-  }, [subLocationsSelected]);
-
-  const categoryList = [];
-  categories.forEach((catData, catIndex) => {
-    if (catData.id === 'apartment' || catData.id === 'land_sale') {
-      categoryList.push({label: catData.name, value: catData.id});
-    }
-  });
-
+  //publish announcement
   const publishAnnouncement = async () => {
     setIsLoading(true);
-    const data= {
+    const data  = {
       locationId,
       location,
-      subLocationId,
-      subLocation,
       title,
       category,
       description,
       contactNumber,
     };
     const response = await createAnnouncementService(data);
+    console.log(response?.data?.data);
     if (response.data.status === 200) {
       setIsLoading(false);
        Alert.alert('Success', response?.data?.message, [
@@ -137,11 +73,25 @@ export default function ApartmentRoute() {
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     }
-     
   };
 
+  const locationItems = [];
+  locations.forEach((locDSata, locaIndex) => {
+    locationItems.push({label: locDSata.name, value: locDSata.id});
+  });
+
+  const categoryList = [];
+  categories.forEach((catData, catIndex) => {
+    if (
+      catData.id !== 'gp_delivery' &&
+      catData.id !== 'apartment' &&
+      catData.id !== 'land_sale'
+    ) {
+      categoryList.push({label: catData.name, value: catData.id});
+    }
+  });
   return (
-    <> 
+    <>
     <ScrollView>
       <View style={{flex: 1, backgroundColor: '#fff', marginBottom: 100}}>
         <View style={styles.tabInner}>
@@ -207,9 +157,10 @@ export default function ApartmentRoute() {
             </View>
             <View style={styles.formGroup}>
               <View style={styles.inputIconBox}>
-                <Text style={styles.inputLabel}>Location</Text>
+                <Text style={styles.inputLabel}>
+                  Location <Text style={styles.redAsterisk}>*</Text>
+                </Text>
               </View>
-
               <View
                 style={{
                   borderWidth: 1,
@@ -217,7 +168,11 @@ export default function ApartmentRoute() {
                   borderRadius: 8,
                 }}>
                 <RNPickerSelect
-                  placeholder={placeholder}
+                  placeholder={{
+                    label: 'Select an location of announcement',
+                    value: null,
+                    color: '#9EA0A4',
+                  }}
                   items={locationItems}
                   onValueChange={value => setSelectedLocation(value)}
                   style={{
@@ -226,7 +181,7 @@ export default function ApartmentRoute() {
                       paddingHorizontal: 10,
                       paddingVertical: 8,
                       borderWidth: 1,
-                      borderColor: 'gray',
+                      borderColor: 'black',
                       borderRadius: 8,
                       color: 'black',
                     },
@@ -244,48 +199,6 @@ export default function ApartmentRoute() {
                 />
               </View>
             </View>
-
-            {subLocationsSelected.length > 0 && (
-              <View style={styles.formGroup}>
-                <View style={styles.inputIconBox}>
-                  <Text style={styles.inputLabel}>Sub Location</Text>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 1,
-                    borderColor: '#ededed',
-                    borderRadius: 8,
-                  }}>
-                  <RNPickerSelect
-                    placeholder={placeholder}
-                    items={subLocationsSelected}
-                    onValueChange={value => setSelectedSubLocation(value)}
-                    style={{
-                      inputAndroid: {
-                        fontSize: 16,
-                        paddingHorizontal: 10,
-                        paddingVertical: 8,
-                        borderWidth: 1,
-                        borderColor: 'gray',
-                        borderRadius: 8,
-                        color: 'black',
-                      },
-                      inputIOS: {
-                        fontSize: 16,
-                        paddingHorizontal: 10,
-                        paddingVertical: 12,
-                        borderWidth: 1,
-                        borderColor: 'gray',
-                        borderRadius: 8,
-                        color: 'black',
-                      },
-                    }}
-                    value={subLocationId}
-                  />
-                </View>
-              </View>
-            )}
-
             <View style={styles.formGroup}>
               <View style={styles.inputIconBox}>
                 <Text style={styles.inputLabel}>
@@ -319,7 +232,8 @@ export default function ApartmentRoute() {
               />
             </View>
           </View>
-
+          <AnnouncementImages/>
+          <AnnouncementVideos/>
           <View style={[styles.formGroup, styles.dFlexCenter]}>
             <Pressable
               style={styles.addFlyerBtn}

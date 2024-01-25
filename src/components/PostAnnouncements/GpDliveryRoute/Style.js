@@ -12,7 +12,9 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,
   },
-
+  redAsterisk: {
+    color: 'red',
+  },
    
   iconBox: {
     position: 'absolute',
