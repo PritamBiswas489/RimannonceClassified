@@ -193,3 +193,8 @@ export const formatNumberWithAbbreviation = (num) => {
 export const isEmptyObjectOrNull = (obj) => {
 	return obj === null || Object.keys(obj).length === 0;
 };
+
+export function bytesToMb(bytes) {
+	return bytes / (1024 * 1024); // 1 MB = 1024 KB * 1024 bytes
+  }
+  

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet, ScrollView,Text, Alert } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { bytesToMb } from '../../config/utility';
 
-const AnnouncementImages = () => {
-  const [images, setImages] = useState([]);
-
+const AnnouncementImages = ({images,setImages}) => {
   const pickImages = () => {
     const options = {
         mediaType: 'photo',
@@ -16,16 +16,27 @@ const AnnouncementImages = () => {
         if (response.didCancel) {
           //console.log('User cancelled image picker');
         } else if (response.error) {
-         // console.log('Image picker error: ', response.error);
+              Alert.alert('Error', 'Upload failed.', [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ]);  
         } else {
           let imageUri = response.uri || response.assets?.[0]?.uri;
-          //console.log(response.assets?.[0])
-          if(images.length ===6 ) {
-              Alert.alert("Can't upload more than 6 images");
-          }else{  
-            setImages([...images, { uri: imageUri }]); 
+          let fileName = response.fileName || response.assets?.[0]?.fileName;
+          let fileSize = response.fileSize || response.assets?.[0]?.fileSize;
+          let fileType = response.type || response.assets?.[0]?.type;
+
+
+          if(parseFloat(bytesToMb(fileSize)) > 2){
+            Alert.alert('Error', 'Can\'t upload file more than 2 mb.', [
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ]);    
+          }else{
+              if(images.length ===6 ) {
+                Alert.alert("Can't upload more than 6 images");
+              }else{  
+                setImages([...images, { uri: imageUri ,fileName: fileName, fileType: fileType}]); 
+              }
           }
-         
         }
       });
   };
@@ -38,10 +49,11 @@ const AnnouncementImages = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
     <TouchableOpacity style={styles.uploadButton} onPress={pickImages}>
-      <Text style={styles.uploadButtonText}>Upload Images</Text>
+      
+      <Text style={styles.uploadButtonText}><Icon name="cloud-upload" size={25} color="#fff" style={styles.icon} /> Upload Images</Text>
     </TouchableOpacity>
     <View style={styles.imageContainer}>
-      {images.map((image, index) => (
+      {images && images.map((image, index) => (
         <View key={index} style={styles.imageWrapper}>
           <Image source={{ uri: image.uri }} style={styles.image} />
           <TouchableOpacity onPress={() => removeImage(index)} style={styles.removeButton}>
@@ -59,6 +71,9 @@ const styles = StyleSheet.create({
       flexGrow: 1,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    icon: {
+      marginRight: 10,
     },
     uploadButton: {
       backgroundColor: '#3498db',

@@ -1,7 +1,7 @@
-import api from "../config/authApi.config";
+import frontApi from "../config/frontAuthApi.config";
 export const createAnnouncementService = async (data) => {
 	try {
-		const response = await api.post(`/auth/announcement/create`,data);
+		const response = await frontApi.post(`/auth/announcement/create`,data);
 		return response;
 	} catch (error) {
 		return error;

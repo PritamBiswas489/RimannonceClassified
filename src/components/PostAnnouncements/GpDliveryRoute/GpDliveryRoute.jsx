@@ -4,11 +4,14 @@ import {Text, View, TextInput, Pressable, ScrollView, Button, Alert} from 'react
 import CalendarTextField from '../../CalendarTextField/CalendarTextField';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { createAnnouncementService } from '../../../services/announcementCreate.service';
- 
+import AnnouncementImages from '../../AnnouncementImages/AnnouncementImages';
+import AnnouncementVideos from '../../AnnouncementVideos/AnnouncementVideos';
+import {useNavigation} from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 export default function GpDliveryRoute() {
-
-  const [testData, setTestData] = useState(true);
+  const isPromoted = useSelector(state => state['userAccountData'].isPromoted);
+  const [testData, setTestData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [category, setCategory] = useState('gp_delivery');
   const [title, setTitle] = useState('');
@@ -17,6 +20,9 @@ export default function GpDliveryRoute() {
   const [gpDeliveryOrigin, setGpDeliveryOrigin] = useState('');
   const [gpDeliveryDestination, setGpDeliveryDestination] = useState('');
   const [gpDeliveryDate, setGpDeliveryDate] = useState('');
+  const [images, setImages] = useState([]);
+  const [videos, setVideos] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (testData === true) {
@@ -31,26 +37,100 @@ export default function GpDliveryRoute() {
   }, []);
 
   const publishAnnouncement = async () =>{
-    setIsLoading(true);
-    const data= {
-      category,
-      title,
-      description,
-      contactNumber,
-      gpDeliveryOrigin,
-      gpDeliveryDestination,
-      gpDeliveryDate,
-    };
-    const response = await createAnnouncementService(data);
-    console.log(response?.data?.data);
-    if (response.data.status === 200) {
-      setIsLoading(false);
-       Alert.alert('Success', response?.data?.message, [
+    let valid = true;
+     if(title.trim() === ''){
+      valid = false;
+        Alert.alert('Error', 'Enter title' || 'Failed', [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ]);
+        ]);
+     }else if(gpDeliveryDate.trim() === ''){
+       valid = false;
+        Alert.alert('Error', 'Select delivery date' || 'Failed', [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+     }else if(gpDeliveryOrigin.trim() === ''){
+        valid = false;
+        Alert.alert('Error', 'Enter delivery origin' || 'Failed', [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+     }else if(gpDeliveryDestination.trim() === ''){
+        valid = false;
+        Alert.alert('Error', 'Enter delivery destination' || 'Failed', [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+     } else if(contactNumber.trim() === ''){
+        valid = false;
+        Alert.alert('Error', 'Enter contact number' || 'Failed', [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+     }else if(description.trim() === ''){
+        valid = false;
+        Alert.alert('Error', 'Enter description' || 'Failed', [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+     }
+
+    if(valid === false) return;
+
+    setIsLoading(true);
+    const formData = new FormData();
+    let fileCount = 0;
+    if (images && images.length > 0) {
+      images.forEach((image, index) => {
+          formData.append(`images_${fileCount}`, {
+            uri :  image.uri,
+            type: image.fileType,
+            name: image.fileName,
+             
+          });
+          fileCount++;
+      });
+      
+    }
+    if (videos && videos.length > 0) {
+      videos.forEach((video, index) => {
+          formData.append(`videos_${fileCount}`, {
+            uri :  video.uri,
+            type: video.fileType,
+            name: video.fileName,
+            
+          });
+          fileCount++;
+      });
+    }
+     
+    formData.append('title', title);
+    formData.append('category', category);
+    formData.append('description', description);
+    formData.append('contactNumber', contactNumber);
+
+    formData.append('gpDeliveryOrigin', gpDeliveryOrigin);
+    formData.append('gpDeliveryDestination', gpDeliveryDestination);
+    formData.append('gpDeliveryDate', gpDeliveryDate);
+     
+    const response = await createAnnouncementService(formData);
+    
+    if (response?.data?.status === 200) {
+       setIsLoading(false);
+       setTitle('');
+       setDescription('');
+       setContactNumber('');
+       setGpDeliveryOrigin('');
+       setGpDeliveryDestination('');
+       setGpDeliveryDate('');
+       setImages([]);
+       setVideos([]);
+       
+      
+      if(parseInt(isPromoted) === 1){
+        navigation.navigate('GP Delivery Announcement');
+      }else{
+        navigation.navigate('GP Delivery Success');
+      }
+     
     }else{
       setIsLoading(false);
-      Alert.alert('Error', response.data.error?.message, [
+      Alert.alert('Error', response?.data?.error?.message || 'Failed', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     }
@@ -145,7 +225,8 @@ export default function GpDliveryRoute() {
               />
             </View>
           </View>
-
+          <AnnouncementImages images={images} setImages={setImages} />
+          <AnnouncementVideos videos={videos} setVideos={setVideos} />
           <View style={[styles.formGroup, styles.dFlexCenter]}>
             <Pressable
               style={styles.addFlyerBtn}

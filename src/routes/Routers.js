@@ -20,7 +20,13 @@ import Logout from '../pages/Logout/Logout';
 import Global from '../pages/Global/Global';
 import Apartment from '../pages/Apartment/Apartment';
 import GpDelivery from '../pages/GpDelivery/GpDelivery';
+import SuccessGlobal from '../pages/SuccessPages/SuccessGlobal';
+import SuccessApartment from '../pages/SuccessPages/SuccessApartment';
+import SuccessApartmentPre from '../pages/SuccessPages/SuccessApartmentPre';
+import SuccessGpDelivery from '../pages/SuccessPages/SuccessGpDelivery';
+import SuccessGpDeliveryPre from '../pages/SuccessPages/SuccessGpDeliveryPre';
 
+ 
 import home from '../assets/images/tab/home.png';
 import global from '../assets/images/tab/global.png';
 import appartment from '../assets/images/tab/appartment.png';
@@ -235,6 +241,13 @@ const Routers = () => {
           component={Root}
           options={{headerShown: false}}
         />
+          <Stack.Screen name="Global Announcement Success" component={SuccessGlobal} />
+          <Stack.Screen name="Apartment Announcement Success" component={SuccessApartment} />
+          <Stack.Screen name="Apartment Announcement" component={SuccessApartmentPre} />
+          
+          <Stack.Screen name="GP Delivery Success" component={SuccessGpDelivery} />
+          <Stack.Screen name="GP Delivery Announcement" component={SuccessGpDeliveryPre} />
+          
       </Stack.Navigator>
     </NavigationContainer>
   );

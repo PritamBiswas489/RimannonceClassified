@@ -14,9 +14,14 @@ import RNPickerSelect from 'react-native-picker-select';
 import {categories} from '../../../config/categories';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { createAnnouncementService } from '../../../services/announcementCreate.service';
+import AnnouncementImages from '../../AnnouncementImages/AnnouncementImages';
+import AnnouncementVideos from '../../AnnouncementVideos/AnnouncementVideos';
+import {useNavigation} from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 export default function ApartmentRoute() {
-  const [testData, setTestData] = useState(true);
+  const isPromoted = useSelector(state => state['userAccountData'].isPromoted);
+  const [testData, setTestData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [locationId, setSelectedLocation] = useState(null);
   const [location, setLocation] = useState('');
@@ -30,6 +35,9 @@ export default function ApartmentRoute() {
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [contactNumber, setContactNumber] = useState('');
+  const [images, setImages] = useState([]);
+  const [videos, setVideos] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (testData === true) {
@@ -114,28 +122,104 @@ export default function ApartmentRoute() {
   });
 
   const publishAnnouncement = async () => {
-    setIsLoading(true);
-    const data= {
-      locationId,
-      location,
-      subLocationId,
-      subLocation,
-      title,
-      category,
-      description,
-      contactNumber,
-    };
-    const response = await createAnnouncementService(data);
-    if (response.data.status === 200) {
-      setIsLoading(false);
-       Alert.alert('Success', response?.data?.message, [
+
+    let valid = true;
+    if(category.trim() === ''){
+      valid = false;
+        Alert.alert('Error', 'Select category' || 'Failed', [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ]);
+        ]);
+     }else if(title.trim() === ''){
+      valid = false;
+        Alert.alert('Error', 'Enter title' || 'Failed', [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+     }else if(location.trim() === ''){
+      valid = false;
+        Alert.alert('Error', 'Enter location' || 'Failed', [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+     }else if(subLocationsSelected.length > 0 && subLocation=== ''){
+      valid = false;
+          Alert.alert('Error', 'Select sublocation' || 'Failed', [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ]);
+     }else if(contactNumber.trim() === ''){
+      valid = false;
+        Alert.alert('Error', 'Enter contact number' || 'Failed', [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+     }else if(description.trim() === ''){
+      valid = false;
+        Alert.alert('Error', 'Enter description' || 'Failed', [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+     }
+
+    if(valid === false) return;
+
+    setIsLoading(true);
+    const formData = new FormData();
+    let fileCount = 0;
+    if (images && images.length > 0) {
+      images.forEach((image, index) => {
+          formData.append(`images_${fileCount}`, {
+            uri :  image.uri,
+            type: image.fileType,
+            name: image.fileName,
+             
+          });
+          fileCount++;
+      });
+      
+    }
+    if (videos && videos.length > 0) {
+      videos.forEach((video, index) => {
+          formData.append(`videos_${fileCount}`, {
+            uri :  video.uri,
+            type: video.fileType,
+            name: video.fileName,
+            
+          });
+          fileCount++;
+      });
+    }
+    
+    formData.append('locationId', locationId);
+    formData.append('location', location);
+    formData.append('subLocationId', subLocationId);
+    formData.append('subLocation', subLocation);
+    formData.append('title', title);
+    formData.append('category', category);
+    formData.append('description', description);
+    formData.append('contactNumber', contactNumber);
+
+    const response = await createAnnouncementService(formData);
+    if (response?.data?.status === 200) {
+        setIsLoading(false);
+        setSelectedLocation('');
+        setLocation('');
+        setSelectedSubLocation('');
+        setSubLocation('');
+        setTitle('');
+        setDescription('');
+        setContactNumber('');
+        setCategory('');
+        setImages('');
+        setVideos('');
+        if(isPromoted === 1){
+          navigation.navigate('Apartment Announcement');
+        }else{
+          navigation.navigate('Apartment Announcement Success');
+        }
+        
+        
+        
     }else{
-      setIsLoading(false);
-      Alert.alert('Error', response.data.error?.message, [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ]);
+        setIsLoading(false);
+        Alert.alert('Error', response?.data?.error?.message || 'Failed', [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
     }
      
   };
@@ -319,6 +403,8 @@ export default function ApartmentRoute() {
               />
             </View>
           </View>
+          <AnnouncementImages images={images} setImages={setImages} />
+          <AnnouncementVideos videos={videos} setVideos={setVideos} />
 
           <View style={[styles.formGroup, styles.dFlexCenter]}>
             <Pressable

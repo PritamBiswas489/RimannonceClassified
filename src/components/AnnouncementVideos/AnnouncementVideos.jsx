@@ -1,29 +1,39 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { bytesToMb } from '../../config/utility';
 
-const AnnouncementVideos = () => {
-  const [videos, setVideos] = useState([]);
+
+const AnnouncementVideos = ({videos, setVideos}) => {
 
   const pickVideos = () => {
     const options = {
-        mediaType: 'video',
-       
+        mediaType: 'video', 
     };
-
     launchImageLibrary(options, (response) => {
         if (response.didCancel) {
-          //console.log('User cancelled image picker');
         } else if (response.error) {
-         // console.log('Image picker error: ', response.error);
+              Alert.alert('Error', 'Upload failed.', [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ]);  
         } else {
           let videoUrl = response.uri || response.assets?.[0]?.uri;
-          //console.log(response.assets?.[0])
+          let fileName = response.fileName || response.assets?.[0]?.fileName;
+          let fileSize = response.fileSize || response.assets?.[0]?.fileSize;
+          let fileType = response.type || response.assets?.[0]?.type;
+
           
-          if(videos.length ===3 ) {
-                Alert.alert("Can't upload more than 3 videos");
-          }else{  
-                setVideos([...videos, { uri: videoUrl }]);
+          if(parseFloat(bytesToMb(fileSize)) > 5){
+              Alert.alert('Error', 'Can\'t upload file more than 5 mb.', [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ]);    
+          }else{
+            if(videos.length ===3 ) {
+              Alert.alert("Can't upload more than 3 videos");
+            }else{  
+                  setVideos([...videos, { uri: videoUrl,fileName: fileName, fileType: fileType }]);
+            }
           }
         }
       });
@@ -38,11 +48,12 @@ const AnnouncementVideos = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <TouchableOpacity style={styles.uploadButton} onPress={pickVideos}>
-        <Text style={styles.uploadButtonText}>Upload Videos</Text>
+      
+        <Text style={styles.uploadButtonText}><Icon name="cloud-upload" size={25} color="#fff" style={styles.icon} /> Upload Videos</Text>
       </TouchableOpacity>
 
       <View style={styles.videoContainer}>
-        {videos.map((video, index) => (
+        {videos && videos.map((video, index) => (
           <View key={index} style={styles.videoWrapper}>
             {/* <Image source={require('./play_button.png')} style={styles.playButton} /> */}
             <Image source={{ uri: video.uri }} style={styles.video} />
@@ -61,6 +72,9 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  icon: {
+    marginRight: 10,
   },
   uploadButton: {
     backgroundColor: '#3498db',
