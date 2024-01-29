@@ -148,11 +148,15 @@ const styles = StyleSheet.create({
 
   tabView: {
     backgroundColor: '#fff',
+     
   },
   tabBar: {
     backgroundColor: '#f6f6f6',
-    elevation: 0,
-    padding: 0,
+    // elevation: 0,
+    // padding: 0,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+   
   },
   tabLabel: {
     color: '#000000',
@@ -165,6 +169,7 @@ const styles = StyleSheet.create({
   },
   tabIndicator: {
     backgroundColor: '#27A2DA',
+  
   },
 });
 export default styles;

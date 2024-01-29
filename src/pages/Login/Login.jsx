@@ -115,7 +115,7 @@ const Login = props => {
           
           setPhoneNumber('');
           setLoginPassword('');
-          props.navigation.navigate('Account');
+          props.navigation.navigate('Home');
 			} else {
           setIsLoading(false);
           Alert.alert('Error', response.data.error?.message, [

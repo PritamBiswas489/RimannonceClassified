@@ -117,6 +117,7 @@ const CustomTabBarButton = ({children, onPress}) => (
   </TouchableOpacity>
 );
 function Tabs() {
+  const isLoggedIn = useSelector(state => state['userAccountData'].isLoggedIn);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -167,7 +168,8 @@ function Tabs() {
         }}
       />
 
-      <Tab.Screen
+
+      {isLoggedIn ? <Tab.Screen
         name="PostTrip"
         component={PostTrip}
         options={{
@@ -184,7 +186,25 @@ function Tabs() {
           ),
           tabBarButton: props => <CustomTabBarButton {...props} />,
         }}
-      />
+      /> : <Tab.Screen
+      name="PostTrip"
+      component={Login}
+      options={{
+        tabBarIcon: ({focused}) => (
+          <Image
+            source={plus}
+            resizeMode="contain"
+            style={{
+              width: 26,
+              height: 26,
+              tintColor: '#fff',
+            }}
+          />
+        ),
+        tabBarButton: props => <CustomTabBarButton {...props} />,
+      }}
+    /> }
+      
 
       <Tab.Screen
         name="Apartment"
@@ -245,7 +265,7 @@ const Routers = () => {
           <Stack.Screen name="Apartment Announcement Success" component={SuccessApartment} />
           <Stack.Screen name="Apartment Announcement" component={SuccessApartmentPre} />
           
-          <Stack.Screen name="GP Delivery Success" component={SuccessGpDelivery} />
+          <Stack.Screen name="Premium Announcement" component={SuccessGpDelivery} />
           <Stack.Screen name="GP Delivery Announcement" component={SuccessGpDeliveryPre} />
           
       </Stack.Navigator>

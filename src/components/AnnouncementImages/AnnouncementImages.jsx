@@ -4,7 +4,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { bytesToMb } from '../../config/utility';
 
-const AnnouncementImages = ({images,setImages}) => {
+const AnnouncementImages = ({images,setImages, title ='Upload Images'}) => {
   const pickImages = () => {
     const options = {
         mediaType: 'photo',
@@ -50,7 +50,7 @@ const AnnouncementImages = ({images,setImages}) => {
     <ScrollView contentContainerStyle={styles.container}>
     <TouchableOpacity style={styles.uploadButton} onPress={pickImages}>
       
-      <Text style={styles.uploadButtonText}><Icon name="cloud-upload" size={25} color="#fff" style={styles.icon} /> Upload Images</Text>
+      <Text style={styles.uploadButtonText}><Icon name="cloud-upload" size={25} color="#fff" style={styles.icon} />{title}</Text>
     </TouchableOpacity>
     <View style={styles.imageContainer}>
       {images && images.map((image, index) => (

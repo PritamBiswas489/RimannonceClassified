@@ -8,4 +8,13 @@ export const getAuthUserService = async () => {
 		return error;
 	}
 };
+export const getUserWalletAmount = async (data) => {
+	try {
+		const response = await api.get('/auth/profile/get-user-wallet-amount');
+		return response;
+	} catch (error) {
+		return error;
+	}
+
+}
 

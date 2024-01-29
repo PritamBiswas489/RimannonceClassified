@@ -17,10 +17,9 @@ const SuccessGpDelivery = props => {
       <View style={styles.container}>
         <Icon name="check-circle" size={100} color="#4CAF50" />
         <Text style={styles.successText}>
-          GP Delivery Entry Successfully Done.Contact admin to make your announcement
-          active by telehpone or whatsapp!
+          Premium Announcement Successfully Done.
         </Text>
-        <ContactAdminPremium />
+         
       </View>
       
     </>

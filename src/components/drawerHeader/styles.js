@@ -29,6 +29,20 @@ const styles = StyleSheet.create({
     height: 25,
     resizeMode: 'contain',
   },
+  walletContainer: {
+    flexDirection: 'row',
+    // alignItems:,
+    marginLeft: 10,
+  },
+  walletIcon: {
+    color: '#2e64e5', // Placeholder color, customize as needed
+    marginRight: 5,
+  },
+  walletAmount: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#2e64e5', // Placeholder color, customize as needed
+  },
 });
 
 export default styles;

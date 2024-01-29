@@ -1,8 +1,27 @@
 export const categories = [
-    { id: 'car', name : 'Car'},
-    { id: 'cloths', name : 'Cloths'},
-    { id: 'apartment', name : 'Apartment'},
-    { id: 'land_sale', name : 'Land Sale'},
-    { id: 'gp_delivery', name : 'GP Delivery'},
-    { id: 'other', name : 'Other'},
+  {id: 'gp_delivery', name: 'GP Delivery', icon: 'truck'},
+  {
+    id: 'apartment',
+    name: 'Apartment',
+    icon: 'building',
+  },
+
+  {
+    id: 'car',
+    name: 'Car',
+    icon: 'car',
+  },
+  {
+    id: 'cloths',
+    name: 'Cloths',
+    icon: 'shopping-bag',
+  },
+
+  {
+    id: 'land_sale',
+    name: 'Land sale',
+    icon: 'tree',
+  },
+
+  {id: 'other', name: 'Other', icon: 'question'},
 ];

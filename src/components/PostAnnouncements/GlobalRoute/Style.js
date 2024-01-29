@@ -222,5 +222,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     borderRadius: 10,
   },
+  radioButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
 export default styles;

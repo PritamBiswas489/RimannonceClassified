@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import biopacklogo from "../../../assets/images/logo.png";
 import cartIcon from "../../../assets/images/icons/cart_beg.png";
 
+
 import { useSelector, useDispatch } from "react-redux";
 
 import styles from './styles';

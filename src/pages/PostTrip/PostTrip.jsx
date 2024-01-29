@@ -27,22 +27,22 @@ const PostTrip = (props) => {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     {key: 'third', title: 'Global'},
-    {key: 'first', title: 'Apartment / Land sale'},
-    {key: 'second', title: 'GP Delivery'},
+    {key: 'second', title: 'Premium'},
   ]);
 
+  
   return (
      
     <TabView
       navigationState={{index, routes}}
       renderScene={SceneMap({
-        first: ApartmentTab,
         second: GpDliveryTab,
         third: GlobalTab,
       })}
       onIndexChange={setIndex}
       initialLayout={{width: layout.width}}
       style={styles.tabView} // Use the external styles
+      swipeEnabled={false} // Disable screen change on drag
       renderTabBar={props => (
         <TabBar
           {...props}

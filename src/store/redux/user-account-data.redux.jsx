@@ -7,6 +7,7 @@ const initialState = {
     avatar:'',
     role:'',
     isPromoted:0,
+    walletAmount:0.00,
     isLoggedIn:false
  };
  const userAccountDataSlice = createSlice({

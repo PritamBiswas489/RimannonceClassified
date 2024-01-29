@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useSelector } from 'react-redux';
 
 const TelephoneButton = ({ phoneNumber }) => {
+  
   const handlePress = () => {
     Linking.openURL(`tel:${phoneNumber}`);
   };
@@ -52,10 +54,13 @@ const styles = {
 
 // Example usage
 const ContactAdminPremium = () => {
+  const admin_call_number = useSelector(state => state['settingData'].admin_call_number)
+  const admin_whatsapp_number = useSelector(state => state['settingData'].admin_whatsapp_number)
+  console.log({admin_call_number,admin_whatsapp_number})
   return (
     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-      <TelephoneButton phoneNumber="+1234567890" />
-      <WhatsAppButton phoneNumber="+1234567890" />
+      <TelephoneButton phoneNumber={admin_call_number} />
+      <WhatsAppButton phoneNumber={admin_whatsapp_number} />
     </View>
   );
 };
