@@ -12,7 +12,7 @@ import Favorites from '../pages/Favorites/Favorites';
 import ProductDetails from '../pages/ProductDetails/ProductDetails';
 import GetInTouch from '../pages/GetInTouch/GetInTouch';
 import LastAnnounces from '../pages/LastAnnounces/LastAnnounces';
-import PersonalDetails from '../pages/PersonalDetails/PersonalDetails';
+import MyAccount from '../pages/MyAccount/MyAccount';
 import Splash from '../pages/Splash/Splash';
 import Details from '../pages/Details/Details';
 import PostTrip from '../pages/PostTrip/PostTrip';
@@ -26,62 +26,18 @@ import SuccessApartmentPre from '../pages/SuccessPages/SuccessApartmentPre';
 import SuccessGpDelivery from '../pages/SuccessPages/SuccessGpDelivery';
 import SuccessGpDeliveryPre from '../pages/SuccessPages/SuccessGpDeliveryPre';
 
- 
 import home from '../assets/images/tab/home.png';
 import global from '../assets/images/tab/global.png';
 import appartment from '../assets/images/tab/appartment.png';
 import delivery from '../assets/images/tab/delivery.png';
 import plus from '../assets/images/tab/plus.png';
+import user from '../assets/images/user-3.png';
+import car from '../assets/images/tab/car-1.png';
+
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 
 const Drawer = createDrawerNavigator();
-
-function Root() {
-  const isLoggedIn = useSelector(state => state['userAccountData'].isLoggedIn);
-  const handleLogout = ()=>{
-     Alert.alert('logout');
-  }
-
-  return (
-    <Drawer.Navigator
-      screenOptions={{
-        headerShown: false,
-        drawerActiveBackgroundColor: '#aa18ea',
-        drawerActiveTintColor: '#fff',
-        drawerInactiveTintColor: '#333',
-        drawerLabelStyle: {
-          fontFamily: 'Roboto-Medium',
-          fontSize: 15,
-        },
-      }}>
-      <Drawer.Screen name="Home" component={Tabs} />
-      {!isLoggedIn && (
-        <>
-          <Drawer.Screen name="Login" component={Login} />
-          <Drawer.Screen name="Register" component={Register} />
-        </>
-      )}
-
-      {isLoggedIn && (
-        <>
-          <Drawer.Screen name="Account" component={PersonalDetails} />
-          <Drawer.Screen name="My Favorites" component={Favorites} />
-          <Drawer.Screen name="Logout" component={Logout} />
-        </>
-      )}
-
-      {/* <Drawer.Screen name="Favorites" component={Tabs} /> */}
-      {/* <Drawer.Screen name="ProductDetails" component={ProductDetails} />
-      <Drawer.Screen name="GetInTouch" component={GetInTouch} />
-      <Drawer.Screen name="LastAnnounces" component={LastAnnounces} />
-      <Drawer.Screen name="PersonalDetails" component={PersonalDetails} />
-      <Drawer.Screen name="Details" component={Details} />
-      <Drawer.Screen name="Splash" component={Splash} /> */}
-       {/* <Drawer.Screen name="Splash" component={Splash} /> */}
-    </Drawer.Navigator>
-  );
-}
 
 const Tab = createBottomTabNavigator();
 const CustomTabBarButton = ({children, onPress}) => (
@@ -128,7 +84,7 @@ function Tabs() {
         },
       }}>
       <Tab.Screen
-        name="Main"
+        name="Home"
         component={Home}
         options={{
           tabBarIcon: ({focused}) => (
@@ -142,7 +98,6 @@ function Tabs() {
                   tintColor: focused ? '#009de0' : '#c4c4c4',
                 }}
               />
-               
             </View>
           ),
         }}
@@ -162,49 +117,10 @@ function Tabs() {
                   tintColor: focused ? '#009de0' : '#c4c4c4',
                 }}
               />
-               
             </View>
           ),
         }}
       />
-
-
-      {isLoggedIn ? <Tab.Screen
-        name="PostTrip"
-        component={PostTrip}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <Image
-              source={plus}
-              resizeMode="contain"
-              style={{
-                width: 26,
-                height: 26,
-                tintColor: '#fff',
-              }}
-            />
-          ),
-          tabBarButton: props => <CustomTabBarButton {...props} />,
-        }}
-      /> : <Tab.Screen
-      name="PostTrip"
-      component={Login}
-      options={{
-        tabBarIcon: ({focused}) => (
-          <Image
-            source={plus}
-            resizeMode="contain"
-            style={{
-              width: 26,
-              height: 26,
-              tintColor: '#fff',
-            }}
-          />
-        ),
-        tabBarButton: props => <CustomTabBarButton {...props} />,
-      }}
-    /> }
-      
 
       <Tab.Screen
         name="Apartment"
@@ -220,11 +136,52 @@ function Tabs() {
                   height: 21,
                   tintColor: focused ? '#009de0' : '#c4c4c4',
                 }}
-              /> 
+              />
             </View>
           ),
         }}
       />
+
+      {isLoggedIn ? (
+        <Tab.Screen
+          name="PostTrip"
+          component={PostTrip}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <Image
+                source={plus}
+                resizeMode="contain"
+                style={{
+                  width: 26,
+                  height: 26,
+                  tintColor: '#fff',
+                }}
+              />
+            ),
+            tabBarButton: props => <CustomTabBarButton {...props} />,
+          }}
+        />
+      ) : (
+        <Tab.Screen
+          name="PostTrip"
+          component={Login}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <Image
+                source={plus}
+                resizeMode="contain"
+                style={{
+                  width: 26,
+                  height: 26,
+                  tintColor: '#fff',
+                }}
+              />
+            ),
+            tabBarButton: props => <CustomTabBarButton {...props} />,
+          }}
+        />
+      )}
+
       <Tab.Screen
         name="GpDelivery"
         component={GpDelivery}
@@ -245,7 +202,67 @@ function Tabs() {
         }}
       />
 
-    
+      <Tab.Screen
+        name="GpCar"
+        component={GpDelivery}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Image
+                source={car}
+                resizeMode="contain"
+                style={{
+                  width: 21,
+                  height: 21,
+                  tintColor: focused ? '#009de0' : '#c4c4c4',
+                }}
+              />
+            </View>
+          ),
+        }}
+      />
+
+      {isLoggedIn ? (
+        <Tab.Screen
+          name="Account"
+          component={MyAccount}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <Image
+                  source={user}
+                  resizeMode="contain"
+                  style={{
+                    width: 21,
+                    height: 21,
+                    tintColor: focused ? '#009de0' : '#c4c4c4',
+                  }}
+                />
+              </View>
+            ),
+          }}
+        />
+      ) : (
+        <Tab.Screen
+          name="Account"
+          component={Login}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <Image
+                  source={user}
+                  resizeMode="contain"
+                  style={{
+                    width: 21,
+                    height: 21,
+                    tintColor: focused ? '#009de0' : '#c4c4c4',
+                  }}
+                />
+              </View>
+            ),
+          }}
+        />
+      )}
     </Tab.Navigator>
   );
 }
@@ -258,16 +275,34 @@ const Routers = () => {
       <Stack.Navigator>
         <Stack.Screen
           name="Root"
-          component={Root}
+          component={Tabs}
           options={{headerShown: false}}
         />
-          <Stack.Screen name="Global Announcement Success" component={SuccessGlobal} />
-          <Stack.Screen name="Apartment Announcement Success" component={SuccessApartment} />
-          <Stack.Screen name="Apartment Announcement" component={SuccessApartmentPre} />
-          
-          <Stack.Screen name="Premium Announcement" component={SuccessGpDelivery} />
-          <Stack.Screen name="GP Delivery Announcement" component={SuccessGpDeliveryPre} />
-          
+        <Stack.Screen
+          name="Global Announcement Success"
+          component={SuccessGlobal}
+        />
+        <Stack.Screen
+          name="Apartment Announcement Success"
+          component={SuccessApartment}
+        />
+        <Stack.Screen
+          name="Apartment Announcement"
+          component={SuccessApartmentPre}
+        />
+        <Stack.Screen
+          name="Premium Announcement"
+          component={SuccessGpDelivery}
+        />
+        <Stack.Screen
+          name="GP Delivery Announcement"
+          component={SuccessGpDeliveryPre}
+        />
+        <Stack.Screen name="Logout" component={Logout} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Product Details" component={ProductDetails} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

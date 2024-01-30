@@ -1,5 +1,5 @@
 export const categories = [
-  {id: 'gp_delivery', name: 'GP Delivery', icon: 'truck'},
+  {id: 'gp_delivery', name: 'Delivery', icon: 'truck'},
   {
     id: 'apartment',
     name: 'Apartment',

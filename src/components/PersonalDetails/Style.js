@@ -8,7 +8,8 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: 15,
-    marginBottom:50
+    marginBottom:50,
+    marginTop:20
   },
   loginTop: {
     paddingVertical: 20,
@@ -99,5 +100,50 @@ const styles = StyleSheet.create({
     fontFamily: 'Mulish-Black',
     textTransform: 'uppercase',
   },
+  rowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  
+  walletContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  
+  walletInnerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  
+  walletIcon: {
+    fontSize: 30,
+    color: '#009DE0',
+    marginRight: 5,
+  },
+  
+  walletAmount: {
+    fontSize: 30,
+    color: '#030233',
+    fontFamily: 'Mulish-Bold',
+  },
+  
+  logoutContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  
+  logoutIcon: {
+    fontSize: 25,
+    color: '#FF0000',
+  },
+  
+  logoutText: {
+    fontSize: 18,
+    color: '#FF0000',
+    fontFamily: 'Mulish-Bold',
+  },
+  
+  
 });
 export default styles;

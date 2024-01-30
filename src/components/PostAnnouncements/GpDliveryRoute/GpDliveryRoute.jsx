@@ -31,7 +31,7 @@ export default function GpDliveryRoute() {
   const [isModalVisible, setModalVisible] = useState(false);
   const isPromoted = useSelector(state => state['userAccountData'].isPromoted);
   const dispatch = useDispatch();
-  const [testData, setTestData] = useState(true); 
+  const [testData, setTestData] = useState(false); 
   const [isLoading, setIsLoading] = useState(false);
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');

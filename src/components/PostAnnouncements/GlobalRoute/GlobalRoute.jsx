@@ -24,7 +24,7 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 export default function GlobalRoute(props) {
   const isPromoted = useSelector(state => state['userAccountData'].isPromoted);
-  const [testData, setTestData] = useState(true);
+  const [testData, setTestData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [locationId, setSelectedLocation] = useState(null);
   const [location, setLocation] = useState('');

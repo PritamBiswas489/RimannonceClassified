@@ -15,22 +15,22 @@ import calender from '../../assets/images/calender.png';
 import map from '../../assets/images/map.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import NavigationDrawerHeader from '../../components/drawerHeader';
-
-import ApartmentRoute from '../../components/PostAnnouncements/ApartmentRoute/ApartmentRoute';
-import GlobalRoute from '../../components/PostAnnouncements/GlobalRoute/GlobalRoute';
-import GpDliveryRoute from '../../components/PostAnnouncements/GpDliveryRoute/GpDliveryRoute';
-const ApartmentTab = () => <ApartmentRoute />;
-const GpDliveryTab = () => <GpDliveryRoute />;
-const GlobalTab = () => <GlobalRoute />;
+import PersonalDetails from '../../components/PersonalDetails/PersonalDetails';
+const PersonalDetailsTab = () => <PersonalDetails />;
+import FloatingLogoutButton from '../../components/FloatingLogoutButton/FloatingLogoutButton';
+import MyListing from '../../components/MyListing/MyListing';
+import MyFavorites from '../../components/MyFavorites/MyFavorites';
  
-const PostTrip = (props) => {
+ 
+ 
+const MyAccount = (props) => {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    {key: 'third', title: 'Global'},
-    {key: 'second', title: 'Premium'},
+    {key: 'one', title: 'Account'},
+    {key: 'two', title: 'My listing'},
+    {key: 'three', title: 'My Favorites'},
   ]);
-
   
   return (
     <>
@@ -38,8 +38,9 @@ const PostTrip = (props) => {
     <TabView
       navigationState={{index, routes}}
       renderScene={SceneMap({
-        second: GpDliveryTab,
-        third: GlobalTab,
+        one: PersonalDetailsTab,
+        two: MyListing,
+        three: MyFavorites,
       })}
       onIndexChange={setIndex}
       initialLayout={{width: layout.width}}
@@ -52,13 +53,14 @@ const PostTrip = (props) => {
           labelStyle={styles.tabLabel} // Apply text color
           indicatorStyle={styles.tabIndicator} // Apply active tab indicator color
           scrollEnabled // Enable horizontal scrolling
-          tabStyle={{width: 200}} // Set tab width and padding
+          tabStyle={{width: 150}} // Set tab width and padding
         />
       )}
     />
+    {/* <FloatingLogoutButton/> */}
     </>
     
   );
 };
 
-export default PostTrip;
+export default MyAccount;

@@ -108,6 +108,13 @@ const Login = props => {
             })
           );
 
+          dispatch(
+            userAccountDataActions.setData({
+               field: "walletAmount",
+               data:  user.walletAmount,
+            })
+          );
+
           setIsLoading(false);
           Alert.alert('Success', 'Successfully logged in', [
             {text: 'OK', onPress: () => console.log('OK Pressed')},

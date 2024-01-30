@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 22,
     resizeMode: 'contain',
-    marginLeft: 15,
+    // marginLeft: 15,
   },
   user: {
     width: 25,

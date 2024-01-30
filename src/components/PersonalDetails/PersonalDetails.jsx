@@ -7,6 +7,7 @@ import {
   Pressable,
   Image,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import styles from './Style';
 
@@ -16,30 +17,59 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView, GestureHandlerRootView} from 'react-native-gesture-handler';
 import profile from '../../assets/images/profile.png';
 import {useSelector} from 'react-redux';
-import NavigationDrawerHeader from '../../components/drawerHeader';
+ 
 import Spinner from 'react-native-loading-spinner-overlay';
-import {editProfileService, uploadProfilePic} from '../../services/profile.service';
-import { useDispatch } from 'react-redux';
-import { userAccountDataActions } from '../../store/redux/user-account-data.redux';
+import {
+  editProfileService,
+  uploadProfilePic,
+} from '../../services/profile.service';
+import {useDispatch} from 'react-redux';
+import {userAccountDataActions} from '../../store/redux/user-account-data.redux';
 import AvatarChange from '../../components/AvatarChange/AvatarChange';
 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import WalletModal from '../../components/WalletModal/WalletModal';
+import { getUserWalletAmount } from '../../services/auth.service';
+
 const PersonalDetails = props => {
-  const dispatch = useDispatch();  
+  const dispatch = useDispatch();
+  const [isModalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const name = useSelector(state => state['userAccountData'].name);
   const email = useSelector(state => state['userAccountData'].email);
   const phone = useSelector(state => state['userAccountData'].phone);
 
-  
+  const walletAmount = useSelector(
+    state => state['userAccountData'].walletAmount,
+  );
 
   const [updateName, setUpdateName] = useState(name);
   const [updateEmail, setUpdateEmail] = useState(email);
   const [updatePhone, setUpdatePhone] = useState(phone);
   const [updateNewPassword, setUpdateNewPassword] = useState('');
-  
 
+  const processWallet = async () =>{
+    setModalVisible(true)
+    const response = await getUserWalletAmount();
+    if(response?.data?.status === 200){
+      if(response?.data?.data?.walletAmount){
+        // console.log(response?.data?.data?.walletAmount);
+        if(parseFloat(walletAmount) !== parseFloat(response?.data?.data?.walletAmount)){
+          Alert.alert('Your wallet updated');
+        }
+        dispatch(
+          userAccountDataActions.setData({
+             field: "walletAmount",
+             data:  response?.data?.data?.walletAmount,
+          })
+        );
+      }
+    }
+  }
+  const toggleModal = () =>{
+    setModalVisible(false);
+}
 
-  
 
   const updateProfileData = async () => {
     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -80,8 +110,8 @@ const PersonalDetails = props => {
       };
       const response = await editProfileService(data);
       if (response?.data?.status === 200) {
-        const { user} = response.data.data;
-        console.log("===== Profile checking =======");
+        const {user} = response.data.data;
+        console.log('===== Profile checking =======');
         console.log({user});
         dispatch(
           userAccountDataActions.setData({
@@ -115,9 +145,11 @@ const PersonalDetails = props => {
         );
         setIsLoading(false);
         setUpdateNewPassword('');
-        Alert.alert('Success', response?.data?.message || 'Account successfully updated', [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
-        ]);
+        Alert.alert(
+          'Success',
+          response?.data?.message || 'Account successfully updated',
+          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+        );
       } else {
         setIsLoading(false);
         Alert.alert('Error', response?.data?.error?.message, [
@@ -126,7 +158,6 @@ const PersonalDetails = props => {
       }
     }
   };
-
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = React.useCallback(() => {
@@ -137,16 +168,36 @@ const PersonalDetails = props => {
   }, []);
   return (
     <>
-      <SafeAreaView style={styles.body}>
-        <NavigationDrawerHeader navigationProps={props.navigation} />
+      
         <GestureHandlerRootView>
           <ScrollView
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.scrollView}>
             <View style={styles.container}>
+              <View style={styles.rowContainer}>
+                <View style={styles.walletContainer}>
+                  <TouchableOpacity onPress={processWallet}>
+                    <View style={styles.walletInnerContainer}>
+                      <Icon
+                        name="credit-card"
+                        
+                        style={styles.walletIcon}
+                      />
+                      <Text style={styles.walletAmount}>${walletAmount}</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity onPress={() => props.navigation.navigate('Logout')}>
+                  <View style={styles.logoutContainer}>
+                    <MaterialIcons name="logout" style={styles.logoutIcon} />
+                    <Text style={styles.logoutText}>Logout</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+
               <View style={styles.loginTop}>
-                
                 <AvatarChange />
                 <View style={styles.formWrap}>
                   <View style={styles.formGroup}>
@@ -229,7 +280,8 @@ const PersonalDetails = props => {
           textContent={'Loading...'}
           textStyle={{color: '#FFF'}}
         />
-      </SafeAreaView>
+       
+      { isModalVisible && <WalletModal  toggleModal = {toggleModal} /> }
     </>
   );
 };

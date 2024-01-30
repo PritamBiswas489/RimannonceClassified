@@ -59,8 +59,8 @@ const ContactAdminPremium = () => {
   console.log({admin_call_number,admin_whatsapp_number})
   return (
     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-      <TelephoneButton phoneNumber={admin_call_number} />
-      <WhatsAppButton phoneNumber={admin_whatsapp_number} />
+     {admin_call_number && <TelephoneButton phoneNumber={admin_call_number} />} 
+     {admin_whatsapp_number &&  <WhatsAppButton phoneNumber={admin_whatsapp_number} /> } 
     </View>
   );
 };

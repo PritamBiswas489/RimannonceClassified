@@ -152,8 +152,8 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     backgroundColor: '#f6f6f6',
-    // elevation: 0,
-    // padding: 0,
+    elevation: 0,
+    padding: 0,
     flexDirection: 'row',
     justifyContent: 'flex-start',
    
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     borderRadius: 0,
     flex: 1,
-    
+     
   },
   tabIndicator: {
     backgroundColor: '#27A2DA',

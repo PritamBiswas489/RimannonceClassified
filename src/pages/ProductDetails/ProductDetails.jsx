@@ -6,7 +6,9 @@ import {ScrollView} from 'react-native-gesture-handler';
 import MediaSlider from '../../components/MediaSlider/MediaSlider';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
-export default function ProductDetails() {
+export default function ProductDetails(props) {
+  const { id } = props.route.params;
+  console.log("============= details =====================//",id)
   const [refreshing, setRefreshing] = React.useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
