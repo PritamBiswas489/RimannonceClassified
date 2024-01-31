@@ -151,6 +151,13 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 16,
   },
+  noDataText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'gray',
+    marginTop: 20,
+     
+  },
 });
 
 export default styles;

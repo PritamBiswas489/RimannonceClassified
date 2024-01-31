@@ -55,7 +55,7 @@ const MyFavorites = props => {
     }
   };
   const toDetailPage = (id) =>{
-    navigation.navigate('Product Details',{id});
+    navigation.navigate('Announcement Details',{id});
   }
   const renderItem = ({item}) => {
     // console.log(getMediaUrl()+'/'+item?.media);
@@ -63,7 +63,7 @@ const MyFavorites = props => {
       <TouchableOpacity onPress={(toDetailPage.bind(this,item?.favoritesAnnouncement?.id))} style={styles.listBoxInner}>
         <View style={styles.listImageBox}>
 
-          {item?.favoritesAnnouncement?.media  ? <Image src={getMediaUrl()+'/'+item?.favoritesAnnouncement?.media} style={styles.listImage} /> : <Image source={favorite} style={styles.listImage} />}
+          {item?.favoritesAnnouncement?.media  ? <Image source={{ uri: getMediaUrl()+'/'+item?.favoritesAnnouncement?.media }} style={styles.listImage} /> : <Image source={favorite} style={styles.listImage} />}
         </View>
         <View style={styles.listDesc}>
           <Text style={styles.listTitle}>
@@ -141,7 +141,7 @@ const MyFavorites = props => {
       <GestureHandlerRootView>
         <View style={styles.container}>
         {announcements.length === 0 ? (
-        <Text style={{color:'black', fontSize:30,fontWeight:'bold'}}>No Record Found</Text>
+        <Text style={styles.noDataText}>No Record Found</Text>
       ) : (
           <FlatList
             data={announcements}

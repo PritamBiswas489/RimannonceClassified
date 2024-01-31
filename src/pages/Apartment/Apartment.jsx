@@ -10,85 +10,58 @@ import {
   Alert,
 } from 'react-native';
 import React, {useState, useEffect, useLayoutEffect, useCallback} from 'react';
-import SearchBar from '../../components/SearchBar/Search';
 import styles from './Style';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {ScrollView} from 'react-native-gesture-handler';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {Dropdown} from 'react-native-element-dropdown';
-import icon1 from '../../assets/images/home/sorting.png';
-import favorite from '../../assets/images/home/favorite/1.jpg';
+import { categories } from '../../config/categories';
+import { getListGetGpApartment } from '../../services/announcements.service';
+
+import favorite from '../../assets/images/home/favorite/background.png';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {listAnnouncementService} from '../../services/announcements.service';
+ 
+import {getCategory} from '../../config/utility';
+import {ScrollView, GestureHandlerRootView} from 'react-native-gesture-handler';
+import {getMediaUrl} from '../../config/utility';
+import {useNavigation} from '@react-navigation/native';
 import NavigationDrawerHeader from '../../components/drawerHeader';
-
-const handlePress = () => {
-  console.log('Button Pressed!');
-};
-const Item = ({title, isActive, onPress}) => (
-  <TouchableOpacity
-    style={[styles.item, isActive && styles.activeItem]}
-    onPress={onPress}>
-    <Text style={[styles.title, isActive && styles.activeTitle]}>{title}</Text>
-  </TouchableOpacity>
-);
-
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'All',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Car',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d73',
-    title: 'Real-estate',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d74',
-    title: 'Parcel Delivery',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d75',
-    title: 'Parcel Delivery',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d76',
-    title: 'Parcel Delivery',
-  },
-];
-
-const dataSort = [
-  {label: 'Sorted by ', value: '1'},
-  {label: 'Item 2', value: '2'},
-  {label: 'Item 3', value: '3'},  
-];
+import SearchBar from '../../components/SearchBar/SearchBar';
+import SkeletonLoader from '../../components/SkeletonLoader/SkeletonLoader';
 
 const Apartment = (props) => {
+  const [refreshing, setRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [activeCategoryIndex, setCategoryActiveIndex] = useState(0);
   const [page, setPage] = useState(1);
   const [announcements, setAnnouncements] = useState([]);
-  const [selectCatagory, setSelectCatagory] = useState(null);
-  const [isFocus, setIsFocus] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
   const [triggerPages, setTriggerPages] = useState([]); //list of pages triggered
- 
+  const [stopSendRequest, setStopSendRequest] = useState(false);
+  const [showSkeletonLoader,setShowSkeletonLoader] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+  const [searchText,setSearchText] = useState('');
+  
+  
+  const navigation = useNavigation();
+
   const announcementList = async () => {
+    if(page === 1){
+      setShowSkeletonLoader(true);
+    }
     setIsLoading(true);
     console.log({triggerPages});
-    setTriggerPages(prev=>[...prev,page]);
-    const response = await listAnnouncementService(page);
+    setTriggerPages(prev => [...prev, page]);
+    const response = await getListGetGpApartment(page,searchText);
     if (response.data.status === 200) {
       setIsLoading(false);
-      setAnnouncements(prevData => [
-        ...prevData,
-        ...response?.data?.data?.records,
-      ]);
+      setShowSkeletonLoader(false);
+      const records = response?.data?.data?.records;
+      if (records.length === 0) {
+        setStopSendRequest(true);
+      }
+      setAnnouncements(prevData => [...prevData, ...records]);
     } else {
       setIsLoading(false);
+      setShowSkeletonLoader(false);
       Alert.alert(
         'Error',
         "Something went wrong. Can't able to fetch records.",
@@ -96,30 +69,65 @@ const Apartment = (props) => {
       );
     }
   };
-  const renderItem = ({item}) => (
-    <View style={styles.listBox}>
-      <TouchableOpacity style={styles.listBoxInner}>
-        <View style={styles.listImageBox}>
-          <Image source={favorite} style={styles.listImage} />
-        </View>
-        <View style={styles.listDesc}>
-          <Text style={styles.listTitle}>{item.id}</Text>
-          <Text style={styles.listSubTitle}>vendue loue</Text>
-          <Text style={styles.listPrice}>395,000 MRU</Text>
-          <View style={styles.dateTime}>
-            <Text>
-              <Icon name="calendar" style={styles.icon} />
-              08-12-2023
-            </Text>
-            <Text>
-              <Icons name="clock-time-four" style={styles.icon} />
-              11.25
-            </Text>
+  const toDetailPage = id => {
+    navigation.navigate('Announcement Details', {id});
+  };
+  const renderItem = ({item}) => {
+    return (
+      <View style={styles.listBox}>
+        <TouchableOpacity
+          onPress={toDetailPage.bind(this, item.id)}
+          style={styles.listBoxInner}>
+          <View style={styles.listImageBox}>
+            {item?.media ? (
+              <Image
+                source={{uri: getMediaUrl() + '/' + item?.media}}
+                style={styles.listImage}
+              />
+            ) : (
+              <Image source={favorite} style={styles.listImage} />
+            )}
           </View>
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
+          <View style={styles.listDesc}>
+            <Text style={styles.listTitle}>
+              {item.title}  {item.id}
+            </Text>
+            {/* <Text style={styles.listSubTitle}>
+              {getCategory(item.category)?.name}
+            </Text> */}
+            <Text style={styles.listPrice}>
+              {item.location &&
+                item.category !== 'gp_delivery' &&
+                item.location}
+
+              {item.gpDeliveryOrigin &&
+                item.category === 'gp_delivery' &&
+                item.gpDeliveryOrigin}
+            </Text>
+
+            {item.subLocation && item.category !== 'gp_delivery' && (
+              <Text style={styles.listPrice}>{item.subLocation}</Text>
+            )}
+
+            {item.gpDeliveryDestination && item.category === 'gp_delivery' && (
+              <Text style={styles.listPrice}>
+                {'-> ' + item.gpDeliveryDestination}
+              </Text>
+            )}
+
+            {item.gpDeliveryDate && (
+              <View style={styles.dateTime}>
+                <Text style={{color: 'black'}}>
+                  <Icon name="calendar" style={styles.icon} />
+                  {item.gpDeliveryDate}
+                </Text>
+              </View>
+            )}
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
   const renderFooter = () => {
     return isLoading ? (
       <ActivityIndicator size="large" color="#0000ff" />
@@ -131,73 +139,106 @@ const Apartment = (props) => {
 
   useEffect(() => {
     //console.log(announcements);
-
   }, [announcements]);
   useEffect(() => {
-     if(!triggerPages.includes(page)){
+    if (!triggerPages.includes(page) && !stopSendRequest) {
       announcementList();
-     }
+    }
   }, [page]);
+
+  const refreshData = () => {
+    clearAnnouncements();
+    resetPagination();
+    fetchAnnouncements();
+  };
+  
+  const clearAnnouncements = () => {
+    setAnnouncements([]);
+  };
+  
+  const resetPagination = () => {
+    setTriggerPages([]);
+    setStopSendRequest(false);
+    setPage(1);
+  };
+  
+  const fetchAnnouncements = () => {
+    announcementList();
+  };
+
+  const onRefresh = React.useCallback(() => {
+       setRefreshing(true);
+       setTimeout(() => {
+       refreshData();
+       setRefreshing(false);
+    }, 2000);
+  }, []);
+
+  const CAT_DATA = [
+    {
+      id: 'all',
+      title: 'All',
+    },
+  ];
+  categories.forEach((catData,catIndex)=>{
+    if(catData.id!== 'gp_delivery'){
+        CAT_DATA.push({
+          id: catData.id,
+          title: catData.name,
+        })
+    }
+  })
+
+
+ 
+
+  useEffect(()=>{
+    //console.log({searchText})
+  },[searchText])
+
+  const searchDataRefresh = () =>{
+    refreshData();
+  }
+
+  const Item = ({title, isActive, onPress}) => (
+    <TouchableOpacity
+      style={[styles.item, isActive && styles.activeItem]}
+      onPress={onPress}>
+      <Text style={[styles.title, isActive && styles.activeTitle]}>
+        {title}
+      </Text>
+    </TouchableOpacity>
+  );
 
   return (
     <SafeAreaView style={styles.body}>
-       <NavigationDrawerHeader navigationProps={props.navigation} />
+      <NavigationDrawerHeader navigationProps={props.navigation} />
       <View style={styles.listTop}>
-        <SearchBar />
-        <FlatList
-          horizontal
-          data={DATA}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item, index}) => (
-            <Item
-              title={item.title}
-              isActive={index === activeIndex}
-              onPress={() => setActiveIndex(index)}
+        <SearchBar searchText={searchText} setSearchText={setSearchText}  searchDataRefresh={searchDataRefresh}></SearchBar>
+        
+      </View>
+      <GestureHandlerRootView>
+        <View style={styles.container}>
+          {showSkeletonLoader === true && <SkeletonLoader/>}
+          {announcements.length === 0 && showSkeletonLoader === false ? (
+            <Text style={styles.noDataText}>No Record Found</Text>
+          ) : (
+            <FlatList
+              data={announcements}
+               
+              keyExtractor={(item, index) => `${index + item.uuid}`.toString()}
+              renderItem={renderItem}
+              ListFooterComponent={renderFooter}
+              onEndReached={handleEndReached}
+              onEndReachedThreshold={0.1}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
             />
           )}
-          keyExtractor={item => item.id}
-        />
-      </View>
-
-      <View style={styles.container}>
-        <View style={styles.sortedByPopular}>
-          <View style={styles.sortedBy}>
-            <Dropdown
-              style={[styles.dropdown, isFocus && {borderColor: 'gray'}]}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              data={dataSort}
-              maxHeight={300}
-              labelField="label"
-              valueField="selectCatagory"
-              placeholder={!isFocus ? 'Sorted by' : '...'}
-              value={selectCatagory}
-              onFocus={() => setIsFocus(true)}
-              onBlur={() => setIsFocus(false)}
-              onChange={item => {
-                setSelectCatagory(item.value);
-                setIsFocus(false);
-              }}
-            />
-          </View>
-          <View style={styles.mostPopular}>
-            <Pressable style={styles.mostPopularPress}>
-              <Image source={icon1} style={styles.buttonIcon} />
-              <Text style={styles.mostPopularTitle}>Most Popular</Text>
-            </Pressable>
-          </View>
         </View>
-
-        <FlatList
-          data={announcements}
-          keyExtractor={item => item.uuid}
-          renderItem={renderItem}
-          ListFooterComponent={renderFooter}
-          onEndReached={handleEndReached}
-          onEndReachedThreshold={0.1}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
+      </GestureHandlerRootView>
     </SafeAreaView>
   );
 };

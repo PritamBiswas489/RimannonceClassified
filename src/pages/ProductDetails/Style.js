@@ -3,6 +3,7 @@ const styles = StyleSheet.create({
   body: {
     display: 'flex',
     flexDirection: 'column',
+    flex:1,
     height: '100%',
     backgroundColor: '#fff',
   },
@@ -52,14 +53,16 @@ const styles = StyleSheet.create({
   },
   descPrice: {
     color: '#08a7eb',
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: 'Mulish-Black',
   },
   descriptionArea: {
     // Your styles for descriptionArea
-    borderRadius: 10,
-    overflow: 'hidden',
     marginBottom: 30,
+    fontSize: 16,
+    color: '#333',
+    lineHeight: 20,
+    marginBottom: 12,
   },
   descriptionTitle: {
     fontFamily: 'Mulish-Black',
@@ -106,6 +109,13 @@ const styles = StyleSheet.create({
   },
   submitArea: {
     marginBottom: 30,
+  },
+  noDataText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'gray',
+    marginTop: 20,
+     
   },
 });
 export default styles;

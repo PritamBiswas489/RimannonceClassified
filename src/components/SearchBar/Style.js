@@ -6,6 +6,8 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     paddingLeft: 40,
     borderRadius: 8,
+    color:'black',
+    fontSize:18
   },
   searchArea: {
     position: 'relative',

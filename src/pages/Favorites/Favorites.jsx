@@ -10,7 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import React, {useState, useEffect, useLayoutEffect, useCallback} from 'react';
-import SearchBar from '../../components/SearchBar/Search';
+import SearchBar from '../../components/SearchBar/SearchBar';
 import styles from './Style';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';

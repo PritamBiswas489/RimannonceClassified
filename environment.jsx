@@ -10,7 +10,9 @@ export const env = {
     prod: {
       apiUrl: 'https://classified-backend.pritamaqua.aqualeafitsol.com',
     },
+   
   },
+  
   mediaUrls: {
     dev: {
       apiUrl: 'http://192.168.29.117:4000',

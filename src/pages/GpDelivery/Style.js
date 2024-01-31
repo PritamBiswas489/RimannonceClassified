@@ -16,6 +16,9 @@ const styles = StyleSheet.create({
     // backgroundColor: '#fff',
     // flexDirection: 'row',
     paddingHorizontal: 15,
+    marginVertical:150,
+    marginTop:20,
+    
   },
   item: {
     marginRight: 10,
@@ -147,6 +150,13 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: 16,
+  },
+  noDataText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'gray',
+    marginTop: 20,
+     
   },
 });
 

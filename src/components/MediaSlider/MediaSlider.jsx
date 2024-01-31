@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import { View, StyleSheet, Dimensions, Image, TouchableOpacity, Text } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import Video from 'react-native-video';
+import { getMediaUrl } from '../../config/utility';
+ 
 
 const { width } = Dimensions.get('window');
 
@@ -12,14 +14,17 @@ const MediaSlider = ({ mediaItems }) => {
   const renderItem = ({ item, index }) => {
     return (
       <TouchableOpacity activeOpacity={1} onPress={() => handleItemClick(item)}>
-        {item.type === 'image' ? (
+        {item.type === 'images' ? (
           <Image source={{ uri: item.uri }} style={styles.image} />
         ) : (
+          // <Image source={{ uri: item.uri }} style={styles.image} />
           <Video
             source={{ uri: item.uri }}
             style={styles.video}
             paused={index !== activeIndex}
-            resizeMode="contain"
+            controls={false}
+            poster={getMediaUrl()+'/images/play.png'} // Set the poster image URL
+            resizeMode="cover"
           />
         )}
       </TouchableOpacity>

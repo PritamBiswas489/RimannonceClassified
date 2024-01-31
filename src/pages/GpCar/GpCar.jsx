@@ -9,11 +9,11 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import React, {useState, useEffect, useLayoutEffect, useCallback, useRef} from 'react';
+import React, {useState, useEffect, useLayoutEffect, useCallback} from 'react';
 import styles from './Style';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import { categories } from '../../config/categories';
-import { getListGlobal } from '../../services/announcements.service';
+import { getListGetGpCar } from '../../services/announcements.service';
 
 import favorite from '../../assets/images/home/favorite/background.png';
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -27,19 +27,7 @@ import NavigationDrawerHeader from '../../components/drawerHeader';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import SkeletonLoader from '../../components/SkeletonLoader/SkeletonLoader';
 
-const Global = (props) => {
-   
-  let searchCat = '';
-  if(typeof(props?.route?.params?.param_cat)!=='undefined'){
-    searchCat = props?.route?.params?.param_cat;
-  }
-  let searchValue = '';
-  if(typeof(props?.route?.params?.param_search)!=='undefined'){
-    searchValue = props?.route?.params?.param_search;
-  }
-    
-  
-  
+const GpCar = (props) => {
   const [refreshing, setRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [activeCategoryIndex, setCategoryActiveIndex] = useState(0);
@@ -51,26 +39,18 @@ const Global = (props) => {
   const [selectedCategory, setSelectedCategory] = useState('');
 
   const [searchText,setSearchText] = useState('');
-  const initialRender = useRef(true);
-
-  useEffect(() => {
-    // Update searchText when searchValue changes
-    setSearchText(searchValue || '');
-  }, [searchValue]);
-  
   
   
   const navigation = useNavigation();
-   
+
   const announcementList = async () => {
-    
     if(page === 1){
       setShowSkeletonLoader(true);
     }
     setIsLoading(true);
     console.log({triggerPages});
     setTriggerPages(prev => [...prev, page]);
-    const response = await getListGlobal(page,selectedCategory,searchText);
+    const response = await getListGetGpCar(page,searchText);
     if (response.data.status === 200) {
       setIsLoading(false);
       setShowSkeletonLoader(false);
@@ -112,9 +92,9 @@ const Global = (props) => {
             <Text style={styles.listTitle}>
               {item.title}  {item.id}
             </Text>
-            <Text style={styles.listSubTitle}>
+            {/* <Text style={styles.listSubTitle}>
               {getCategory(item.category)?.name}
-            </Text>
+            </Text> */}
             <Text style={styles.listPrice}>
               {item.location &&
                 item.category !== 'gp_delivery' &&
@@ -153,7 +133,6 @@ const Global = (props) => {
       <ActivityIndicator size="large" color="#0000ff" />
     ) : null;
   };
-   
   const handleEndReached = () => {
     setPage(prevPage => prevPage + 1);
   };
@@ -211,41 +190,17 @@ const Global = (props) => {
   })
 
 
-
-
-  useEffect(()=>{
-    if(CAT_DATA[activeCategoryIndex]?.id === 'all'){
-      setSelectedCategory('');
-    }else{
-      setSelectedCategory(CAT_DATA[activeCategoryIndex]?.id) ;
-    }
-    
-  },[activeCategoryIndex])
-
-   
-
-  useEffect(()=>{
-    if (!initialRender.current) {
-      refreshData();
-    } else {
-      initialRender.current = false;
-    }
-    
-  },[selectedCategory,searchText])
-
-  useEffect(()=>{
-    if(searchCat!==''){
-      const index = CAT_DATA.findIndex((item) => item.id === searchCat);
-      setCategoryActiveIndex(index);
-    }
-  },[searchCat])
+ 
 
  
+
+  useEffect(()=>{
+    //console.log({searchText})
+  },[searchText])
 
   const searchDataRefresh = () =>{
     refreshData();
   }
- 
 
   const Item = ({title, isActive, onPress}) => (
     <TouchableOpacity
@@ -262,21 +217,7 @@ const Global = (props) => {
       <NavigationDrawerHeader navigationProps={props.navigation} />
       <View style={styles.listTop}>
         <SearchBar searchText={searchText} setSearchText={setSearchText}  searchDataRefresh={searchDataRefresh}></SearchBar>
-        <FlatList
-          horizontal
-          data={CAT_DATA}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item, index}) => (
-            <Item
-              title={item.title}
-              isActive={index === activeCategoryIndex}
-              onPress={() => setCategoryActiveIndex(index)}
-            />
-          )}
-          keyExtractor={item => item.id}
-
-          
-        />
+        
       </View>
       <GestureHandlerRootView>
         <View style={styles.container}>
@@ -304,4 +245,4 @@ const Global = (props) => {
   );
 };
 
-export default Global;
+export default GpCar;

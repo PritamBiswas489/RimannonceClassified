@@ -516,8 +516,8 @@ export default function GpDliveryRoute() {
                 />
               </View>
             </View>
-            {category === 'gp_delivery' && <AnnouncementImages title="Upload flyer" images={flyers} setImages={setFlyers} /> }
-            <AnnouncementImages images={images} setImages={setImages} />
+            {category === 'gp_delivery' && <AnnouncementImages title="Upload flyer" images={images} setImages={setImages} /> }
+            {category !== 'gp_delivery' && <AnnouncementImages images={images} setImages={setImages} /> }
             <AnnouncementVideos videos={videos} setVideos={setVideos} />
             <View style={[styles.formGroup, styles.dFlexCenter]}>
             <Text style={{color:'black',fontSize:18,fontWeight:'bold'}}>${publishAmount} will deduct from your wallet after publish</Text>

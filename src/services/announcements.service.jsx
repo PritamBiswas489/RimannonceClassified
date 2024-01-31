@@ -8,3 +8,67 @@ export const listAnnouncementService = async (page = 1) => {
 		return error;
 	}
 };
+export const getListGlobal = async (page = 1,category = '',search = '') => {
+	console.log(`/front/announcement/list-get-global?page=${page}&cat=${category}&search=${search}`);
+	try {
+		const response = await  api.get(`/front/announcement/list-get-global?page=${page}&cat=${category}&search=${search}`);
+		return response;
+	} catch (error) {
+		return error;
+	}
+
+}
+export const getListGlobalRand = async (page = 1,category = '',search = '') => {
+	 
+	try {
+		const response = await  api.get(`/front/announcement/list-get-global-rand?page=${page}&cat=${category}&search=${search}`);
+		return response;
+	} catch (error) {
+		return error;
+	}
+
+}
+
+export const getListGetGpApartment = async (page = 1 ,search = '') => {
+	try {
+		const response = await  api.get(`/front/announcement/list-get-gp-apartment?page=${page}&search=${search}`);
+		return response;
+	} catch (error) {
+		return error;
+	}
+
+}
+
+export const getListGetGpDelivery = async (page = 1 ,search = '') => {
+	//console.log(`/front/announcement/list-get-gp-delivery?page=${page}&search=${search}`)
+	try {
+		const response = await  api.get(`/front/announcement/list-get-gp-delivery?page=${page}&search=${search}`);
+		return response;
+	} catch (error) {
+		return error;
+	}
+
+}
+
+export const getListGetGpCar = async (page = 1 ,search = '') => {
+	try {
+		const response = await  api.get(`/front/announcement/list-get-gp-car?page=${page}&search=${search}`);
+		return response;
+	} catch (error) {
+		return error;
+	}
+
+}
+
+
+
+
+export const getAnnouncementService = async (id) => {
+	try {
+		const response = await  api.get(`/front/announcement/get-announcement?id=${id}`);
+		return response;
+	} catch (error) {
+		return error;
+	}
+};
+

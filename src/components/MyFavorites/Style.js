@@ -10,15 +10,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   container: {
-    // display: 'flex',
-    // height: '100%',
-    // paddingHorizontal: 15,
-    // backgroundColor: '#fff',
-    // flexDirection: 'row',
+    // flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
     paddingHorizontal: 15,
     marginVertical:70,
     marginTop:20,
     
+  },
+  noDataText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'gray',
+    marginTop: 20,
+     
   },
   item: {
     marginRight: 10,

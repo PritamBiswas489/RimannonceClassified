@@ -20,6 +20,7 @@ import Logout from '../pages/Logout/Logout';
 import Global from '../pages/Global/Global';
 import Apartment from '../pages/Apartment/Apartment';
 import GpDelivery from '../pages/GpDelivery/GpDelivery';
+ 
 import SuccessGlobal from '../pages/SuccessPages/SuccessGlobal';
 import SuccessApartment from '../pages/SuccessPages/SuccessApartment';
 import SuccessApartmentPre from '../pages/SuccessPages/SuccessApartmentPre';
@@ -36,6 +37,7 @@ import car from '../assets/images/tab/car-1.png';
 
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
+import GpCar from '../pages/GpCar/GpCar';
 
 const Drawer = createDrawerNavigator();
 
@@ -204,7 +206,7 @@ function Tabs() {
 
       <Tab.Screen
         name="GpCar"
-        component={GpDelivery}
+        component={GpCar}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -301,7 +303,7 @@ const Routers = () => {
         <Stack.Screen name="Logout" component={Logout} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Product Details" component={ProductDetails} />
+        <Stack.Screen name="Announcement Details" component={ProductDetails} />
         
       </Stack.Navigator>
     </NavigationContainer>
