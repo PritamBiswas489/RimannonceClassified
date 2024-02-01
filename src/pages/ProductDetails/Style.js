@@ -117,5 +117,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
      
   },
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom:10
+  },
+  icon: {
+    marginRight: 10,
+  },
 });
 export default styles;

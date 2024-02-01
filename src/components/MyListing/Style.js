@@ -9,6 +9,12 @@ const styles = StyleSheet.create({
   listTop: {
     paddingHorizontal: 15,
   },
+  actionButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+   
   container: {
     // display: 'flex',
     // height: '100%',

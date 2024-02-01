@@ -1,60 +1,72 @@
-import React, { useRef } from 'react';
-import { View, StyleSheet, Dimensions, Image, TouchableOpacity, Text } from 'react-native';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
-import Video from 'react-native-video';
-import { getMediaUrl } from '../../config/utility';
- 
+import React, {useRef, useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
+import Carousel, {Pagination} from 'react-native-snap-carousel';
 
-const { width } = Dimensions.get('window');
+import {getMediaUrl} from '../../config/utility';
+import ImagePopup from '../ImagePopup/ImagePopup';
 
-const MediaSlider = ({ mediaItems }) => {
+const {width} = Dimensions.get('window');
+
+const MediaSlider = ({mediaItems}) => {
   const carouselRef = useRef(null);
   const [activeIndex, setActiveIndex] = React.useState(0);
+  const [isImagePopupVisible, setImagePopupVisible] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+  const [fileType, setFileType] = useState('');
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({item, index}) => {
     return (
       <TouchableOpacity activeOpacity={1} onPress={() => handleItemClick(item)}>
         {item.type === 'images' ? (
-          <Image source={{ uri: item.uri }} style={styles.image} />
+          <Image source={{uri: item.uri}} style={styles.image} />
         ) : (
-          // <Image source={{ uri: item.uri }} style={styles.image} />
-          <Video
-            source={{ uri: item.uri }}
-            style={styles.video}
-            paused={index !== activeIndex}
-            controls={false}
-            poster={getMediaUrl()+'/images/play.png'} // Set the poster image URL
-            resizeMode="cover"
-          />
+          <Image width={100} source={{ uri: getMediaUrl() + '/images/play.png' }} style={styles.imageVideo} />
         )}
       </TouchableOpacity>
     );
   };
 
-  const handleItemClick = (item) => {
-    // Handle item click if needed
+  const handleItemClick = item => {
+    setImagePopupVisible(true)
+    setImageUrl(item.uri)
+    setFileType(item.type)
   };
 
   return (
-    <View style={styles.container}>
-      <Carousel
-        ref={carouselRef}
-        data={mediaItems}
-        renderItem={renderItem}
-        sliderWidth={width}
-        itemWidth={width}
-        onSnapToItem={(index) => setActiveIndex(index)}
+    <>
+      <View style={styles.container}>
+        <Carousel
+          ref={carouselRef}
+          data={mediaItems}
+          renderItem={renderItem}
+          sliderWidth={width}
+          itemWidth={width}
+          onSnapToItem={index => setActiveIndex(index)}
+        />
+        <Pagination
+          dotsLength={mediaItems.length}
+          activeDotIndex={activeIndex}
+          containerStyle={styles.paginationContainer}
+          dotStyle={styles.paginationDot}
+          inactiveDotStyle={styles.paginationInactiveDot}
+          inactiveDotOpacity={0.6}
+          inactiveDotScale={0.8}
+        />
+      </View>
+      <ImagePopup
+        visible={isImagePopupVisible}
+        imageUrl={imageUrl}
+        fileType={fileType}
+        onClose={() => setImagePopupVisible(false)}
       />
-      <Pagination
-        dotsLength={mediaItems.length}
-        activeDotIndex={activeIndex}
-        containerStyle={styles.paginationContainer}
-        dotStyle={styles.paginationDot}
-        inactiveDotStyle={styles.paginationInactiveDot}
-        inactiveDotOpacity={0.6}
-        inactiveDotScale={0.8}
-      />
-    </View>
+    </>
   );
 };
 
@@ -68,6 +80,11 @@ const styles = StyleSheet.create({
     width,
     height: 200,
     resizeMode: 'cover',
+  },
+  imageVideo: {
+    width,
+    height: 200,
+    resizeMode: 'contain',
   },
   video: {
     width,

@@ -16,3 +16,22 @@ export const myFavoriteAnnouncementListing = async (page = 1) => {
 		return error;
 	}
 }; 
+export const deleteAnnouncement = async (id) =>{
+	try {
+		const response = await  api.get(`/auth/announcement/delete-listing?id=${id}`);
+		return response;
+	} catch (error) {
+		return error;
+	}
+
+}
+export const closeAnnouncement =  async (id) =>{
+	try {
+		const response = await  api.get(`/auth/announcement/close-listing?id=${id}`);
+		return response;
+	} catch (error) {
+		return error;
+	}
+
+
+}

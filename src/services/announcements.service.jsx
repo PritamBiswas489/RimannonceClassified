@@ -72,3 +72,23 @@ export const getAnnouncementService = async (id) => {
 	}
 };
 
+export const getIsFavourite = async (id,user_id) => {
+	try {
+		const response = await  api.get(`/front/announcement/check-announcement-favourite?id=${id}&user_id=${user_id}`);
+		return response;
+	} catch (error) {
+		return error;
+	}
+
+}
+
+export const addAnnouncementUnderFav = async (id,user_id)=>{
+	try {
+		const response = await  api.get(`/front/announcement/add-announcement-favourite?id=${id}&user_id=${user_id}`);
+		return response;
+	} catch (error) {
+		return error;
+	}
+
+}
+

@@ -6,6 +6,8 @@ import {
   Pressable,
   Image,
   Animated,
+  Share,
+  Alert
 } from 'react-native';
 import styles from './Style';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -13,9 +15,14 @@ import {ScrollView} from 'react-native-gesture-handler';
 import MediaSlider from '../../components/MediaSlider/MediaSlider';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import SkeletonLoader from '../../components/SkeletonLoader/SkeletonLoader';
-import { getAnnouncementService } from '../../services/announcements.service';
+import { getAnnouncementService, getIsFavourite, addAnnouncementUnderFav } from '../../services/announcements.service';
 import { getCategory, getMediaUrl } from '../../config/utility';
 import ContactUserModal from '../../components/ContactUserModal/ContactUserModal';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import { useSelector } from 'react-redux';
+import Spinner from 'react-native-loading-spinner-overlay';
+import OwnerContact from '../../components/ContactUserModal/OwnerContact';
+
 
 
 //get announcement details
@@ -23,10 +30,15 @@ export default function ProductDetails(props) {
   const {id} = props.route.params;
   //console.log('============= details =====================//', id);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [loader, setLoader] = React.useState(true);
+  const [loader, setLoader] =  useState(true);
+  const [loaderCheckFav, setloaderCheckFav] = useState(false);
   const [announcement,setAnnouncement] = useState({});
   const [announcementMedia,setAnnouncementMedia] = useState([]);
+  const currentUserid = useSelector(state => state['userAccountData'].id);
+  const [addedUnderFav,setAddedUnderFav] = useState(false);
+  const [spinnberIsLoading,setSpinnberIsLoading] = useState(false);
 
+   
   const getDetails = async () =>{
     const response  = await getAnnouncementService(id);
     if(response?.data?.status === 200){
@@ -50,17 +62,72 @@ export default function ProductDetails(props) {
       setLoader(false);
     }
   }
+  const getFavourite = async() =>{
+    setloaderCheckFav(true)
+    const response  = await getIsFavourite(id,currentUserid);
+    if(response?.data?.status === 200){
+          setloaderCheckFav(false)
+           
+          if(parseInt(response?.data?.data?.isLike) === 1){
+              setAddedUnderFav(true)
+          }
+    }else{
+      setloaderCheckFav(false)
+    }
+  }
+  useEffect(()=>{
+    if(parseInt(currentUserid)){
+       getFavourite();
+    }
+  },[currentUserid])
 
   useEffect(()=>{
     getDetails();
   },[id])
 
 
-
-  const handlePress = () => {
-    // Handle press event
-    console.log('Pressed!');
+  useEffect(()=>{
+    console.log({addedUnderFav});
+  },[addedUnderFav])
+ 
+  const onHandleShare = async () => {
+    try {
+      const result = await Share.share({
+          message:
+          announcement?.description,
+          title: announcement?.title
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+        } else {
+        }
+      } else if (result.action === Share.dismissedAction) {
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
+
+  const processAddFav = async () =>{
+    if(parseInt(currentUserid) ===  0){
+        Alert.alert('You have to log in to add announcement in your favorite list')
+        return;
+    }
+    setSpinnberIsLoading(true)
+    const response  = await addAnnouncementUnderFav(id,currentUserid);
+    if(response?.data?.status === 200){
+      setSpinnberIsLoading(false)
+      if(parseInt(response?.data?.data?.isLike) === 1){
+        setAddedUnderFav(true)
+      }else{
+        setAddedUnderFav(false)
+      }
+    }else{
+      setSpinnberIsLoading(false)
+      Alert.alert('Process failed')
+    }
+    
+  }
   
 
   const mediaItems = [
@@ -86,19 +153,7 @@ export default function ProductDetails(props) {
     //   uri: 'https://pritamaqua.aqualeafitsol.com/videos/BigBuckBunny.mp4',
     // },
   ];
-  const sliderWidth = 400;
-  const itemWidth = 300;
-
-  const renderItem = ({item, index}) => (
-    <View style={styles.slide}>
-      <Image
-        style={styles.image}
-        source={{uri: item.illustration}}
-        resizeMode="cover"
-      />
-      {/* <Text style={styles.title}>{item.title}</Text> */}
-    </View>
-  );
+   
 
   return (
     <>
@@ -116,6 +171,11 @@ export default function ProductDetails(props) {
                   <MediaSlider mediaItems={announcementMedia} />
                 </View>}
                 <View style={styles.descriptionDetails}>
+                <View style={styles.iconContainer}>
+                  {addedUnderFav && !loaderCheckFav && <Icon onPress={processAddFav} name="heart" size={20} color="red" style={styles.icon} solid />}
+                  {!addedUnderFav && !loaderCheckFav && <Icon onPress={processAddFav} name="heart" size={20} color="red" style={styles.icon}   />}
+                  <Icon name="share" onPress={onHandleShare} size={20} color="green" style={styles.icon} />
+                </View>
                   <Text style={styles.descTitle}>{announcement?.title}</Text>
                   <Text style={styles.descSubTitle}>{getCategory(announcement.category)?.name}</Text>
                  {announcement.category === 'gp_delivery' && <Text style={styles.descPrice}>From: {announcement.gpDeliveryOrigin} </Text>}
@@ -131,7 +191,7 @@ export default function ProductDetails(props) {
                   </Text>
                 </View>
                 <View style={styles.submitArea}>
-                  <Pressable onPress={()=>setModalVisible(true)}
+                  {/* <Pressable onPress={()=>setModalVisible(true)}
                     style={({pressed}) => [
                       {
                         backgroundColor: pressed
@@ -145,17 +205,24 @@ export default function ProductDetails(props) {
                     <View style={styles.nextBtnArea}>
                       <Text style={styles.nextBtn}>Submit your Request</Text>
                     </View>
-                  </Pressable>
+                  </Pressable> */}
+                  <OwnerContact contactnumber={announcement?.contactNumber} />
                 </View>
               </View>
             </ScrollView>
           </GestureHandlerRootView>
         )}
+
+      <Spinner
+        visible={spinnberIsLoading}
+        textContent={'Processing...'}
+        textStyle={{ color: '#FFF' }}
+      />
       </SafeAreaView>
       
-      { isModalVisible && <ContactUserModal contactnumber={announcement?.contactNumber} toggleModal = { () =>{
+      {/* { isModalVisible && <ContactUserModal contactnumber={announcement?.contactNumber} toggleModal = { () =>{
     setModalVisible(false);
-   }} /> }
+   }} /> } */}
     </>
   );
 }

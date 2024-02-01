@@ -8,6 +8,7 @@ import {
   Image,
   Alert,
   TouchableOpacity,
+  Button
 } from 'react-native';
 import styles from './Style';
 
@@ -30,10 +31,12 @@ import AvatarChange from '../../components/AvatarChange/AvatarChange';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import WalletModal from '../../components/WalletModal/WalletModal';
 import { getUserWalletAmount } from '../../services/auth.service';
+import TermsAndCondition from '../TermsAndCondition/TermsAndCondition';
 
 const PersonalDetails = props => {
   const dispatch = useDispatch();
   const [isModalVisible, setModalVisible] = useState(false);
+  const [tcModalVisible, setTcModalVisible] =  useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const name = useSelector(state => state['userAccountData'].name);
   const email = useSelector(state => state['userAccountData'].email);
@@ -68,8 +71,13 @@ const PersonalDetails = props => {
   }
   const toggleModal = () =>{
     setModalVisible(false);
-}
-
+  } 
+  const toggleTcModal = () =>{
+     setTcModalVisible(false);
+  }
+  const deleteAccount = () =>{
+     Alert.alert('Delete Account')
+  }
 
   const updateProfileData = async () => {
     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -262,12 +270,26 @@ const PersonalDetails = props => {
                       placeholderTextColor="#9c9c9c"
                     />
                   </View>
-
+                  <View style={[styles.formGroup, styles.submit]}>
+                    <Pressable
+                      style={styles.tcInBtn}
+                      onPress={()=>setTcModalVisible(true)}>
+                      <Text style={styles.text}>Terms and conditions</Text>
+                    </Pressable>
+                  </View>
                   <View style={[styles.formGroup, styles.submit]}>
                     <Pressable
                       style={styles.signInBtn}
                       onPress={() => updateProfileData()}>
-                      <Text style={styles.text}>Submit</Text>
+                      <Text style={styles.text}>Update Details</Text>
+                    </Pressable>
+                  </View>
+
+                  <View style={[styles.formGroup, styles.submit]}>
+                    <Pressable
+                      style={styles.deleteInBtn}
+                      onPress={() => deleteAccount()}>
+                      <Text style={styles.text}>Delete Account</Text>
                     </Pressable>
                   </View>
                 </View>
@@ -282,6 +304,8 @@ const PersonalDetails = props => {
         />
        
       { isModalVisible && <WalletModal  toggleModal = {toggleModal} /> }
+
+      { tcModalVisible && <TermsAndCondition  toggleTcModal = {toggleTcModal} /> }
     </>
   );
 };
