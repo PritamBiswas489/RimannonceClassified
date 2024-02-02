@@ -17,7 +17,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import NavigationDrawerHeader from '../../components/drawerHeader';
 import PersonalDetails from '../../components/PersonalDetails/PersonalDetails';
 const PersonalDetailsTab = () => <PersonalDetails />;
-import FloatingLogoutButton from '../../components/FloatingLogoutButton/FloatingLogoutButton';
+import FloatingContactUsButton from '../../components/FloatingContactUsButton/FloatingContactUsButton';
 import MyListing from '../../components/MyListing/MyListing';
 import MyFavorites from '../../components/MyFavorites/MyFavorites';
  
@@ -57,7 +57,7 @@ const MyAccount = (props) => {
         />
       )}
     />
-    {/* <FloatingLogoutButton/> */}
+    <FloatingContactUsButton/>
     </>
     
   );

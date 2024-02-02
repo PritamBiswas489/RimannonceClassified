@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import CalendarTextField from '../../CalendarTextField/CalendarTextField';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {createAnnouncementService} from '../../../services/announcementCreate.service';
+import {updateAnnouncementService} from '../../../services/announcementCreate.service';
 import AnnouncementImages from '../../AnnouncementImages/AnnouncementImages';
 import AnnouncementVideos from '../../AnnouncementVideos/AnnouncementVideos';
 import {useNavigation} from '@react-navigation/native';
@@ -23,73 +23,75 @@ import {locations} from '../../../config/locations';
 import CategoryButton from '../../CategoryButton/CategoryButton';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import RNPickerSelect from 'react-native-picker-select';
-import { useDispatch } from 'react-redux';
-import { userAccountDataActions } from '../../../store/redux/user-account-data.redux';
+import {useDispatch} from 'react-redux';
+import {userAccountDataActions} from '../../../store/redux/user-account-data.redux';
 import WalletModal from '../../WalletModal/WalletModal';
 
-export default function GpDliveryRoute() {
+export default function Edit({item, onClose, updateStateItemValue}) {
+  
+
   const [isModalVisible, setModalVisible] = useState(false);
-  const isPromoted = useSelector(state => state['userAccountData'].isPromoted);
   const dispatch = useDispatch();
-  const [testData, setTestData] = useState(false); 
   const [isLoading, setIsLoading] = useState(false);
-  const [category, setCategory] = useState('');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [contactNumber, setContactNumber] = useState('');
+  const [announcementId, setAnnouncementId] = useState(item.id);
+  const [category, setCategory] = useState(item.category);
+  const [title, setTitle] = useState(item.title);
+  const [description, setDescription] = useState(item.description);
+  const [contactNumber, setContactNumber] = useState(item.contactNumber);
 
-  const [locationId, setSelectedLocation] = useState(null);
-  const [location, setLocation] = useState('');
+  const [locationId, setSelectedLocation] = useState(item.locationId);
+  const [location, setLocation] = useState(item.location);
   const [subLocationsSelected, setSubLocationsSelected] = useState([]);
-  const [subLocationId, setSelectedSubLocation] = useState(null);
-  const [subLocation, setSubLocation] = useState('');
+  const [subLocationId, setSelectedSubLocation] = useState(item.subLocationId);
+  const [subLocation, setSubLocation] = useState(item.subLocation);
 
-  const [gpDeliveryOrigin, setGpDeliveryOrigin] = useState('');
-  const [gpDeliveryDestination, setGpDeliveryDestination] = useState('');
-  const [gpDeliveryDate, setGpDeliveryDate] = useState('');
-  const [publishAmount,setPublishAmount] = useState(0);
+  const [gpDeliveryOrigin, setGpDeliveryOrigin] = useState(
+    item.gpDeliveryOrigin,
+  );
+  const [gpDeliveryDestination, setGpDeliveryDestination] = useState(
+    item.gpDeliveryDestination,
+  );
+  const [gpDeliveryDate, setGpDeliveryDate] = useState(item.gpDeliveryDate);
 
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
+
+  const [existingImages, setExistingImages] = useState([]);
+  const [existingVideos, setExistingVideos] = useState([]);
+
+  const [deletedImagesId,setDeleteImagesId] = useState([])
+  const [deletedVideosId,setDeleteVideosId] = useState([])
+
   const [flyers, setFlyers] = useState([]);
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
 
-  const toggleModal = () =>{
+  const toggleModal = () => {
     setModalVisible(false);
-   }
+  };
 
-  useEffect(() => {
-    if (testData === true) {
-      setTitle('Demo location');
-      setDescription(
-        `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
-      );
-      setContactNumber('+919830990065');
-      setGpDeliveryOrigin('B.P. 196. Nouakchott');
-      setGpDeliveryDestination('B.P. 250. Nouakchott');
-      setSelectedLocation(8); 
-    }
-    setCategory('gp_delivery');
-  }, []);
+   
 
-
-  const amtData = useSelector(state => state['settingData']);
   useEffect(()=>{
-    if(category === 'gp_delivery'){
-      setPublishAmount(amtData.gb_delivery_premium_price);
+    if(item.announcementMedias.length > 0){
+      const img = [];
+      const vid = [];
+      item.announcementMedias.forEach((mediaData,mediaIndex)=>{
+        if(mediaData.fileType=== 'images'){
+            img.push(mediaData)
+        }
+        if(mediaData.fileType=== 'videos'){
+           vid.push(mediaData)
+        }
+      })
+      setExistingImages(img)
+      setExistingVideos(vid)
     }
-    if(category === 'apartment'){
-      setPublishAmount(amtData.apartment_premium_price);
-    }
-    if(category === 'car'){
-      setPublishAmount(amtData.car_premium_price);
-    }
-    if(category === 'land_sale'){
-      setPublishAmount(amtData.land_sale_premium_price);
-    }
+  },[item])
 
-
-  },[category]);
+  useEffect(()=>{
+    // console.log(existingImages);
+    // console.log(existingVideos);
+  },[existingImages,existingVideos])
 
   useEffect(() => {
     if (locationId) {
@@ -102,8 +104,8 @@ export default function GpDliveryRoute() {
         locationItems.push({label: locDSata.name, value: locDSata.id});
       });
       setSubLocationsSelected(locationItems);
-      setSelectedSubLocation(null);
-      setSubLocation('');
+      setSelectedSubLocation(item.subLocationId);
+      setSubLocation(item.subLocation);
     }
   }, [locationId]);
 
@@ -121,7 +123,6 @@ export default function GpDliveryRoute() {
 
   useEffect(() => {
     if (subLocationId && subLocationsSelected) {
-      // console.log(subLocationsSelected);
       const filteredEntry = subLocationsSelected.find(
         entry => parseInt(entry.value) === parseInt(subLocationId),
       );
@@ -137,11 +138,8 @@ export default function GpDliveryRoute() {
     locationItems.push({label: locDSata.name, value: locDSata.id});
   });
 
-  const handleRadioButtonPress = option => {
-    setCategory(option);
-  };
-
   const publishAnnouncement = async () => {
+     
     let valid = true;
     if (title.trim() === '') {
       valid = false;
@@ -191,14 +189,7 @@ export default function GpDliveryRoute() {
       Alert.alert('Error', 'Enter description', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
-    }else if(images.length === 0 &&   category === 'gp_delivery'){
-      valid = false;
-      Alert.alert('Error', 'Upload Flyer'  , [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ]);
-
     }
-
     if (valid === false) return;
 
     setIsLoading(true);
@@ -235,6 +226,7 @@ export default function GpDliveryRoute() {
       });
     }
 
+    formData.append('id', announcementId);
     formData.append('title', title);
     formData.append('category', category);
     formData.append('description', description);
@@ -251,84 +243,36 @@ export default function GpDliveryRoute() {
       formData.append('subLocationId', subLocationId);
       formData.append('subLocation', subLocation);
     }
-    formData.append('isPremium',1); //set premium announcement
 
-    const response = await createAnnouncementService(formData);
-
+    if(deletedImagesId.length > 0){
+      formData.append('deleteImages', JSON.stringify(deletedImagesId));
+    }
+    
+    
+    const response = await updateAnnouncementService(formData);
+   
     if (response?.data?.status === 200) {
       setIsLoading(false);
-      dispatch(
-        userAccountDataActions.setData({
-           field: "walletAmount",
-           data:  parseFloat(response?.data?.data?.walletAmount),
-        })
-      );
-      setTitle('');
-      setDescription('');
-      setContactNumber('');
-      setGpDeliveryOrigin('');
-      setGpDeliveryDestination('');
-      setGpDeliveryDate('');
-      setImages([]);
-      setVideos([]);
-      setSelectedLocation('');
-      setLocation('');
-      setCategory('');
-
-      navigation.navigate('Premium Announcement'); 
+      Alert.alert('Success', response?.data?.message || 'Success');
+      onClose();
+      updateStateItemValue(response?.data?.data?.item)
     } else {
       setIsLoading(false);
-      Alert.alert('Error', response?.data?.error?.message || 'Failed', [
-        {text: 'OK', onPress: () => {
-          if(response?.data?.data?.requestWallet){
-             setModalVisible(true);
-          }
-        }},
-      ]);
+      Alert.alert('Error', response?.data?.error?.message || 'Failed');
     }
   };
-
+  const setDeleteImagesIdProcess = (id)=>{
+    setDeleteImagesId((prevArray) => [...prevArray, id]);
+  }
+  // useEffect(()=>{
+  //    console.log(deletedImagesId)
+  // },[deletedImagesId])
   return (
     <>
       <ScrollView>
         <View style={{flex: 1, backgroundColor: '#fff', marginBottom: 100}}>
           <View style={styles.tabInner}>
             <View style={styles.formWrap}>
-              <View style={styles.formGroup}>
-                <View>
-                  <Text style={styles.inputLabel}>
-                    Select Catgeory <Text style={styles.redAsterisk}>*</Text>
-                  </Text>
-                  <View style={styles.radioButtonContainer}>
-                    <FlatList
-                      horizontal
-                      data={categories}
-                      showsHorizontalScrollIndicator={false}
-                      renderItem={({item, index}) =>
-                        item.id !== 'cloths' &&
-                        item.id !== 'other' && (
-                          <CategoryButton
-                            selected={category === item.id}
-                            onPress={() => handleRadioButtonPress(item.id)}
-                            icon={
-                              <FontAwesomeIcon
-                                name={item.icon}
-                                size={28}
-                                color="#555"
-                              />
-                            }
-                            label={item.name}
-                          />
-                        )
-                      }
-                      keyExtractor={item => item.id}
-                    />
-
-                    {/* Add more radio buttons as needed */}
-                  </View>
-                </View>
-              </View>
-
               <View style={styles.formGroup}>
                 <View style={styles.inputIconBox}>
                   <Text style={styles.inputLabel}>
@@ -517,17 +461,26 @@ export default function GpDliveryRoute() {
                 />
               </View>
             </View>
-            {category === 'gp_delivery' && <AnnouncementImages title="Upload flyer" images={images} setImages={setImages} /> }
-            {category !== 'gp_delivery' && <AnnouncementImages images={images} setImages={setImages} /> }
+            {category === 'gp_delivery' && (
+              <AnnouncementImages
+                title="Upload flyer"
+                images={images}
+                setImages={setImages}
+                existingImages={existingImages}
+                setExistingImages={setExistingImages}
+                setDeleteImagesIdProcess={setDeleteImagesIdProcess}
+              />
+            )}
+            {category !== 'gp_delivery' && (
+              <AnnouncementImages images={images} setImages={setImages} existingImages={existingImages} setExistingImages={setExistingImages} setDeleteImagesIdProcess={setDeleteImagesIdProcess} />
+            )}
             <AnnouncementVideos videos={videos} setVideos={setVideos} />
-            <View style={[styles.formGroup, styles.dFlexCenter]}>
-            <Text style={{color:'black',fontSize:18,fontWeight:'bold'}}>${publishAmount} will deduct from your wallet after publish</Text>
-            </View>
+
             <View style={[styles.formGroup, styles.dFlexCenter]}>
               <Pressable
                 style={styles.addFlyerBtn}
                 onPress={() => publishAnnouncement()}>
-                <Text style={styles.publish}>Publish</Text>
+                <Text style={styles.publish}>Update</Text>
               </Pressable>
             </View>
           </View>
@@ -538,7 +491,7 @@ export default function GpDliveryRoute() {
         textContent={'Processing...'}
         textStyle={{color: '#FFF'}}
       />
-      { isModalVisible && <WalletModal  toggleModal = {toggleModal} /> }
+      {isModalVisible && <WalletModal toggleModal={toggleModal} />}
     </>
   );
 }

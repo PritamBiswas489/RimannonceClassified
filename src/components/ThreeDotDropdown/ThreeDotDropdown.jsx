@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, FlatList, StyleSheet,Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; // You can choose any other icon set
 
-const ThreeDotDropdown = ({item,toDetailPage,changeStatusAnnouncement,deleteAnnouncvement}) => {
+const ThreeDotDropdown = ({item,toDetailPage,changeStatusAnnouncement,deleteAnnouncvement,editAnnouncementPageRedirect}) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [itemStatus,setItemStatus] = useState(item.status)
 
@@ -36,6 +36,7 @@ const ThreeDotDropdown = ({item,toDetailPage,changeStatusAnnouncement,deleteAnno
     console.log(`Selected option: ${option}`);
     setDropdownVisible(false);
     if(option === 'EDIT'){
+      editAnnouncementPageRedirect(item)
     }
     if(option === 'DELETE'){
        

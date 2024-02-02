@@ -23,6 +23,7 @@ import {getMediaUrl} from '../../config/utility';
 import {useNavigation} from '@react-navigation/native';
 import ThreeDotDropdown from '../ThreeDotDropdown/ThreeDotDropdown';
 import Spinner from 'react-native-loading-spinner-overlay';
+import MyListingItem from '../MyListingItem/MyListingItem';
 
 const MyListing = props => {
   const [refreshing, setRefreshing] = useState(false);
@@ -32,7 +33,7 @@ const MyListing = props => {
   const [triggerPages, setTriggerPages] = useState([]); //list of pages triggered
   const [stopSendRequest, setStopSendRequest] = useState(false);
   const navigation = useNavigation();
-  const [spinnberIsLoading,setSpinnberIsLoading] = useState(false)
+  
 
   const announcementList = async () => {
     setIsLoading(true);
@@ -55,93 +56,13 @@ const MyListing = props => {
       );
     }
   };
-  const toDetailPage = id => {
-    navigation.navigate('Announcement Details', {id});
-  };
-  const deleteAnnouncvement = async (detail) => {
-    //http delete process
-    setSpinnberIsLoading(true);
-    const response = await deleteAnnouncement(detail.id);
-    if (response?.data?.status === 200) {
-      setAnnouncements((prevItems) => prevItems.filter((item) => item.id !== detail.id));
-      setSpinnberIsLoading(false);
-    }else{
-      setSpinnberIsLoading(false);
-      Alert.alert('ERROR',
-      'Failed to delete announcement');
-    }
-  }
-  const changeStatusAnnouncement = async (detail) =>{
-      //http delete process
-    setSpinnberIsLoading(true);
-    const response = await closeAnnouncement(detail.id);
-    // console.log(response)
-    if (response?.data?.status === 200) {
-      setSpinnberIsLoading(false);
-      Alert.alert('SUCCESS',
-      'Announcement successfully closed');
-    }else{
-      setSpinnberIsLoading(false);
-      Alert.alert('ERROR',
-      'Failed to delete announcement');
-    }
-  }
+ 
+  
+  
   const renderItem = ({item}) => {
     // console.log(getMediaUrl()+'/'+item?.media);
     return (
-      <View style={styles.listBox}>
-        <View
-          
-          style={styles.listBoxInner}>
-          <View style={styles.listImageBox}>
-            {item?.media ? (
-              <Image
-                source={{uri: getMediaUrl() + '/' + item?.media}}
-                style={styles.listImage}
-              />
-            ) : (
-              <Image source={favorite} style={styles.listImage} />
-            )}
-          </View>
-          <View style={styles.listDesc}>
-            <Text style={styles.listTitle}>
-              {item.title} {item.id}
-            </Text>
-            <Text style={styles.listSubTitle}>
-              {getCategory(item.category)?.name}
-            </Text>
-            <Text style={styles.listPrice}>
-              {item.location &&
-                item.category !== 'gp_delivery' &&
-                item.location}
-
-              {item.gpDeliveryOrigin &&
-                item.category === 'gp_delivery' &&
-                item.gpDeliveryOrigin}
-            </Text>
-
-            {item.subLocation && item.category !== 'gp_delivery' && (
-              <Text style={styles.listPrice}>{item.subLocation}</Text>
-            )}
-
-            {item.gpDeliveryDestination && item.category === 'gp_delivery' && (
-              <Text style={styles.listPrice}>
-                {'-> ' + item.gpDeliveryDestination}
-              </Text>
-            )}
-
-            {item.gpDeliveryDate && (
-              <View style={styles.dateTime}>
-                <Text style={{color: 'black'}}>
-                  <Icon name="calendar" style={styles.icon} />
-                  {item.gpDeliveryDate}
-                </Text>
-              </View>
-            )}
-            <ThreeDotDropdown item={item} toDetailPage={toDetailPage} changeStatusAnnouncement={changeStatusAnnouncement} deleteAnnouncvement={deleteAnnouncvement}/>
-          </View>
-        </View>
-      </View>
+      <MyListingItem  item={item}/>
     );
   };
   const renderFooter = () => {
@@ -200,11 +121,7 @@ const MyListing = props => {
           )}
         </View>
       </GestureHandlerRootView>
-      <Spinner
-        visible={spinnberIsLoading}
-        textContent={'Processing...'}
-        textStyle={{ color: '#FFF' }}
-      />
+    
     </SafeAreaView>
   );
 };

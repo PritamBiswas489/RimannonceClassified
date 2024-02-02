@@ -20,6 +20,7 @@ import Logout from '../pages/Logout/Logout';
 import Global from '../pages/Global/Global';
 import Apartment from '../pages/Apartment/Apartment';
 import GpDelivery from '../pages/GpDelivery/GpDelivery';
+import EditAnnouncement from '../pages/EditAnnouncement/EditAnnouncement';
  
 import SuccessGlobal from '../pages/SuccessPages/SuccessGlobal';
 import SuccessApartment from '../pages/SuccessPages/SuccessApartment';

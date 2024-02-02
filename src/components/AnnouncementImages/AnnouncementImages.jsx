@@ -3,8 +3,10 @@ import { View, Image, TouchableOpacity, StyleSheet, ScrollView,Text, Alert } fro
 import {launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { bytesToMb } from '../../config/utility';
+import { getMediaUrl } from '../../config/utility';
 
-const AnnouncementImages = ({images,setImages, title ='Upload Images'}) => {
+const AnnouncementImages = ({images,setImages, title ='Upload Images',existingImages=[], setExistingImages, setDeleteImagesIdProcess}) => {
+  // console.log({existingImages})
   const pickImages = () => {
     const options = {
         mediaType: 'photo',
@@ -46,6 +48,13 @@ const AnnouncementImages = ({images,setImages, title ='Upload Images'}) => {
     setImages(newImages);
   };
 
+  const removeExistingImage = (index) => {
+    const newImages = [...existingImages];
+    setDeleteImagesIdProcess(newImages[index]?.id)
+    newImages.splice(index, 1);
+    setExistingImages(newImages);
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
     <TouchableOpacity style={styles.uploadButton} onPress={pickImages}>
@@ -54,9 +63,17 @@ const AnnouncementImages = ({images,setImages, title ='Upload Images'}) => {
     </TouchableOpacity>
     <View style={styles.imageContainer}>
       {images && images.map((image, index) => (
-        <View key={index} style={styles.imageWrapper}>
+        <View key={`new${index}`} style={styles.imageWrapper}>
           <Image source={{ uri: image.uri }} style={styles.image} />
           <TouchableOpacity onPress={() => removeImage(index)} style={styles.removeButton}>
+            <Text style={styles.removeButtonText}>Remove</Text>
+          </TouchableOpacity>
+        </View>
+      ))}
+      {existingImages && existingImages.map((image, index) => (
+        <View key={`existing${index}`} style={styles.imageWrapper}>
+          <Image source={{ uri: getMediaUrl()+'/'+image.filePath }} style={styles.image} />
+          <TouchableOpacity onPress={() => removeExistingImage(index)} style={styles.removeButton}>
             <Text style={styles.removeButtonText}>Remove</Text>
           </TouchableOpacity>
         </View>

@@ -18,6 +18,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView, GestureHandlerRootView} from 'react-native-gesture-handler';
 import profile from '../../assets/images/profile.png';
 import {useSelector} from 'react-redux';
+
  
 import Spinner from 'react-native-loading-spinner-overlay';
 import {
@@ -32,8 +33,12 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import WalletModal from '../../components/WalletModal/WalletModal';
 import { getUserWalletAmount } from '../../services/auth.service';
 import TermsAndCondition from '../TermsAndCondition/TermsAndCondition';
+import { deleteAuthTokens } from '../../config/auth';
+import { useNavigation } from '@react-navigation/native';
+import { deleteProfile } from '../../services/profile.service';
 
 const PersonalDetails = props => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const [isModalVisible, setModalVisible] = useState(false);
   const [tcModalVisible, setTcModalVisible] =  useState(false);
@@ -75,8 +80,40 @@ const PersonalDetails = props => {
   const toggleTcModal = () =>{
      setTcModalVisible(false);
   }
+  const logoutAfterDeleteAccount = async ()=>{
+    setIsLoading(true);
+    const response = await deleteProfile();
+    //console.log(response?.data?.data)
+    if(response?.data?.status === 200){
+        await deleteAuthTokens(); 
+        dispatch(userAccountDataActions.resetState());
+        navigation.navigate('Login');
+    }else{
+      setIsLoading(false);
+      Alert.alert('ERROR','Unable to delete profile.Try again later')
+    }
+
+  }
   const deleteAccount = () =>{
-     Alert.alert('Delete Account')
+    //  Alert.alert('Delete Account')
+     
+     Alert.alert(
+      'Confirmation',
+      'Are you sure you want to delete your profile permanently?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            logoutAfterDeleteAccount();
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   }
 
   const updateProfileData = async () => {
@@ -197,7 +234,7 @@ const PersonalDetails = props => {
                   </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity onPress={() => props.navigation.navigate('Logout')}>
+                <TouchableOpacity onPress={() =>  navigation.navigate('Logout')}>
                   <View style={styles.logoutContainer}>
                     <MaterialIcons name="logout" style={styles.logoutIcon} />
                     <Text style={styles.logoutText}>Logout</Text>

@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: 15,
-    marginBottom:50,
+    marginBottom:100,
     marginTop:20
   },
   loginTop: {

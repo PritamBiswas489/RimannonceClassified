@@ -25,6 +25,23 @@ export const uploadProfilePic = async (data) => {
 		return error;
 	}
 };
+export const deleteProfile = async () => {
+	try {
+		const response = await api.get('/auth/profile/delete-account');
+		return response;
+	} catch (error) {
+		return error;
+	}
+
+}
+export const contactUsProcess = async (data) => {
+	try {
+		const response = await api.post('/auth/profile/contact-us',data);
+		return response;
+	} catch (error) {
+		return error;
+	}
+}
 
 
 

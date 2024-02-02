@@ -6,6 +6,7 @@ const initialState = {
     apartment_premium_price : 0,
     land_sale_premium_price : 0,
     gb_delivery_premium_price : 0,
+    terms_conditions:''
  };
  const settingsDataSlice = createSlice({
     name: "settings",

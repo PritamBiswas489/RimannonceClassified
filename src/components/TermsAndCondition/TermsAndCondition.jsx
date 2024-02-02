@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, ScrollView, Modal, Button, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 
 const TermsAndCondition = ({toggleTcModal,setTcModalVisible}) => {
-  
+  const terms_conditions = useSelector(state => state['settingData'].terms_conditions);
   return (
     <View style={styles.container}>
 
@@ -17,44 +18,10 @@ const TermsAndCondition = ({toggleTcModal,setTcModalVisible}) => {
           <ScrollView style={styles.scrollContainer}>
             {/* Your large content goes here */}
             <Text style={styles.largeContent}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor justo eu dui
-              venenatis, eu facilisis leo sagittis. Sed sit amet sapien eu elit mollis euismod
-              vitae vel nisi. Sed eu eros quis purus fermentum tristique. Nulla facilisi.
-              Suspendisse auctor ante vel tincidunt fermentum.
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor justo eu dui
-              venenatis, eu facilisis leo sagittis. Sed sit amet sapien eu elit mollis euismod
-              vitae vel nisi. Sed eu eros quis purus fermentum tristique. Nulla facilisi.
-              Suspendisse auctor ante vel tincidunt fermentum.
-              Suspendisse auctor ante vel tincidunt fermentum.
-
-              Suspendisse auctor ante vel tincidunt fermentum.
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor justo eu dui
-              venenatis, eu facilisis leo sagittis. Sed sit amet sapien eu elit mollis euismod
-              vitae vel nisi. Sed eu eros quis purus fermentum tristique. Nulla facilisi.
-              Suspendisse auctor ante vel tincidunt fermentum.
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor justo eu dui
-              venenatis, eu facilisis leo sagittis. Sed sit amet sapien eu elit mollis euismod
-              vitae vel nisi. Sed eu eros quis purus fermentum tristique. Nulla facilisi.
-              Suspendisse auctor ante vel tincidunt fermentum.
-              Suspendisse auctor ante vel tincidunt fermentum.
-
-              Suspendisse auctor ante vel tincidunt fermentum.
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor justo eu dui
-              venenatis, eu facilisis leo sagittis. Sed sit amet sapien eu elit mollis euismod
-              vitae vel nisi. Sed eu eros quis purus fermentum tristique. Nulla facilisi.
-              Suspendisse auctor ante vel tincidunt fermentum.
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor justo eu dui
-              venenatis, eu facilisis leo sagittis. Sed sit amet sapien eu elit mollis euismod
-              vitae vel nisi. Sed eu eros quis purus fermentum tristique. Nulla facilisi.
-              Suspendisse auctor ante vel tincidunt fermentum.
-              Suspendisse auctor ante vel tincidunt fermentum.
-
-              Suspendisse auctor ante vel tincidunt fermentum.
-
+              {terms_conditions}
             </Text>
           </ScrollView>
-
-          <Button title="Close Modal" onPress={toggleTcModal} />
+          <Button title="Close" onPress={toggleTcModal} />
         </View>
       </Modal>
     </View>
