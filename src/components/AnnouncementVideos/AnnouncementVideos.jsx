@@ -3,9 +3,14 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, Alert } fr
 import {launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { bytesToMb } from '../../config/utility';
+import ImagePopup from '../ImagePopup/ImagePopup';
+import { getMediaUrl } from '../../config/utility';
 
+const AnnouncementVideos = ({videos, setVideos,existingVideos=[], setExistingVideos, setDeleteVideosIdProcess}) => {
+  const [isImagePopupVisible, setImagePopupVisible] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+  const [fileType, setFileType] = useState('videos'); 
 
-const AnnouncementVideos = ({videos, setVideos}) => {
 
   const pickVideos = () => {
     const options = {
@@ -44,8 +49,19 @@ const AnnouncementVideos = ({videos, setVideos}) => {
     newVideos.splice(index, 1);
     setVideos(newVideos);
   };
+  const removeExistingVideo = (index) => {
+    const newVideos = [...existingVideos];
+    setDeleteVideosIdProcess(newVideos[index]?.id)
+    newVideos.splice(index, 1);
+    setExistingVideos(newVideos);
+  };
+  const openImagePopup = (imageUri) =>{
+    setImagePopupVisible(true)
+    setImageUrl(imageUri)
+ }
 
   return (
+    <>
     <ScrollView contentContainerStyle={styles.container}>
       <TouchableOpacity style={styles.uploadButton} onPress={pickVideos}>
       
@@ -56,14 +72,27 @@ const AnnouncementVideos = ({videos, setVideos}) => {
         {videos && videos.map((video, index) => (
           <View key={index} style={styles.videoWrapper}>
             {/* <Image source={require('./play_button.png')} style={styles.playButton} /> */}
-            <Image source={{ uri: video.uri }} style={styles.video} />
+             <TouchableOpacity onPress={openImagePopup.bind(this,video.uri)}><Image  source={{ uri: getMediaUrl() + '/images/play-1.png' }} style={styles.video} /></TouchableOpacity>  
             <TouchableOpacity onPress={() => removeVideo(index)} style={styles.removeButton}>
               <Text style={styles.removeButtonText}>Remove</Text>
             </TouchableOpacity>
           </View>
         ))}
+        {existingVideos && existingVideos.map((video, index) => (
+        <View key={`existing${index}`} style={styles.videoWrapper}>
+           <TouchableOpacity onPress={openImagePopup.bind(this,getMediaUrl()+'/'+video.filePath     )}><Image   source={{ uri: getMediaUrl() + '/images/play-1.png' }} style={styles.video} /></TouchableOpacity>
+          <TouchableOpacity onPress={() => removeExistingVideo(index)} style={styles.removeButton}>
+            <Text style={styles.removeButtonText}>Remove</Text>
+          </TouchableOpacity>
+        </View>
+      ))}
       </View>
-    </ScrollView>
+    </ScrollView><ImagePopup
+    visible={isImagePopupVisible}
+    imageUrl={imageUrl}
+    fileType={fileType}
+    onClose={() => setImagePopupVisible(false)}
+  /></>
   );
 };
 

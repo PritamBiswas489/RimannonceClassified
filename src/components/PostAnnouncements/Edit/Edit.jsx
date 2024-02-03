@@ -264,6 +264,9 @@ export default function Edit({item, onClose, updateStateItemValue}) {
   const setDeleteImagesIdProcess = (id)=>{
     setDeleteImagesId((prevArray) => [...prevArray, id]);
   }
+  const setDeleteVideosIdProcess = (id)=>{
+    setDeleteVideosId((prevArray) => [...prevArray, id]);
+  }
   // useEffect(()=>{
   //    console.log(deletedImagesId)
   // },[deletedImagesId])
@@ -474,7 +477,7 @@ export default function Edit({item, onClose, updateStateItemValue}) {
             {category !== 'gp_delivery' && (
               <AnnouncementImages images={images} setImages={setImages} existingImages={existingImages} setExistingImages={setExistingImages} setDeleteImagesIdProcess={setDeleteImagesIdProcess} />
             )}
-            <AnnouncementVideos videos={videos} setVideos={setVideos} />
+            <AnnouncementVideos videos={videos} setVideos={setVideos} existingVideos={existingVideos} setExistingVideos={setExistingVideos} setDeleteVideosIdProcess={setDeleteVideosIdProcess} />
 
             <View style={[styles.formGroup, styles.dFlexCenter]}>
               <Pressable

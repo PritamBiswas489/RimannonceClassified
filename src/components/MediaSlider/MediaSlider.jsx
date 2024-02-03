@@ -27,7 +27,7 @@ const MediaSlider = ({mediaItems}) => {
         {item.type === 'images' ? (
           <Image source={{uri: item.uri}} style={styles.image} />
         ) : (
-          <Image width={100} source={{ uri: getMediaUrl() + '/images/play.png' }} style={styles.imageVideo} />
+          <Image width={100} source={{ uri: getMediaUrl() + '/images/play-1.png' }} style={styles.imageVideo} />
         )}
       </TouchableOpacity>
     );

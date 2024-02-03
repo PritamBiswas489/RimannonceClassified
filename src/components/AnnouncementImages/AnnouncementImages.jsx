@@ -4,9 +4,15 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { bytesToMb } from '../../config/utility';
 import { getMediaUrl } from '../../config/utility';
+import ImagePopup from '../ImagePopup/ImagePopup';
 
 const AnnouncementImages = ({images,setImages, title ='Upload Images',existingImages=[], setExistingImages, setDeleteImagesIdProcess}) => {
   // console.log({existingImages})
+
+  const [isImagePopupVisible, setImagePopupVisible] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+  const [fileType, setFileType] = useState('images'); 
+
   const pickImages = () => {
     const options = {
         mediaType: 'photo',
@@ -54,8 +60,13 @@ const AnnouncementImages = ({images,setImages, title ='Upload Images',existingIm
     newImages.splice(index, 1);
     setExistingImages(newImages);
   };
+  const openImagePopup = (imageUri) =>{
+     setImagePopupVisible(true)
+     setImageUrl(imageUri)
+  }
 
   return (
+    <>
     <ScrollView contentContainerStyle={styles.container}>
     <TouchableOpacity style={styles.uploadButton} onPress={pickImages}>
       
@@ -64,7 +75,8 @@ const AnnouncementImages = ({images,setImages, title ='Upload Images',existingIm
     <View style={styles.imageContainer}>
       {images && images.map((image, index) => (
         <View key={`new${index}`} style={styles.imageWrapper}>
-          <Image source={{ uri: image.uri }} style={styles.image} />
+           <TouchableOpacity onPress={openImagePopup.bind(this,image.uri)}><Image  source={{ uri: image.uri }} style={styles.image} /></TouchableOpacity>
+          
           <TouchableOpacity onPress={() => removeImage(index)} style={styles.removeButton}>
             <Text style={styles.removeButtonText}>Remove</Text>
           </TouchableOpacity>
@@ -72,7 +84,7 @@ const AnnouncementImages = ({images,setImages, title ='Upload Images',existingIm
       ))}
       {existingImages && existingImages.map((image, index) => (
         <View key={`existing${index}`} style={styles.imageWrapper}>
-          <Image source={{ uri: getMediaUrl()+'/'+image.filePath }} style={styles.image} />
+           <TouchableOpacity onPress={openImagePopup.bind(this,getMediaUrl()+'/'+image.filePath     )}><Image   source={{ uri: getMediaUrl()+'/'+image.filePath }} style={styles.image} /></TouchableOpacity>
           <TouchableOpacity onPress={() => removeExistingImage(index)} style={styles.removeButton}>
             <Text style={styles.removeButtonText}>Remove</Text>
           </TouchableOpacity>
@@ -80,6 +92,13 @@ const AnnouncementImages = ({images,setImages, title ='Upload Images',existingIm
       ))}
     </View>
     </ScrollView>
+    <ImagePopup
+    visible={isImagePopupVisible}
+    imageUrl={imageUrl}
+    fileType={fileType}
+    onClose={() => setImagePopupVisible(false)}
+  />
+  </> 
   );
 };
 
