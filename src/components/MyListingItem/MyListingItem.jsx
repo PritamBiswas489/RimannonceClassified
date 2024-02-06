@@ -9,7 +9,7 @@ import {
   deleteAnnouncement,
   closeAnnouncement,
 } from '../../services/announcementsAuth.service';
-import {getCategory} from '../../config/utility';
+import {getCategory, limitWords} from '../../config/utility';
 
 import {getMediaUrl} from '../../config/utility';
 import {useNavigation} from '@react-navigation/native';
@@ -18,16 +18,15 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import EditAnnouncementModal from '../EditAnnouncementModal/EditAnnouncementModal';
 
 const MyListingItem = props => {
-   
   const {item} = props;
-   
+
   const navigation = useNavigation();
   const [spinnberIsLoading, setSpinnberIsLoading] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
-  const [listem,setListItem] = useState(item);
-  
+  const [listem, setListItem] = useState(item);
 
-  const [isEditAnnouncementModalVisible, setEditAnnouncementModalVisible] = useState(false);
+  const [isEditAnnouncementModalVisible, setEditAnnouncementModalVisible] =
+    useState(false);
 
   const changeStatusAnnouncement = async detail => {
     setSpinnberIsLoading(true);
@@ -55,12 +54,12 @@ const MyListingItem = props => {
   const toDetailPage = id => {
     navigation.navigate('Announcement Details', {id});
   };
-  const editAnnouncementPageRedirect = async detail =>{
-     setEditAnnouncementModalVisible(true);
-  }
-  const updateStateItemValue = (item) =>{
+  const editAnnouncementPageRedirect = async detail => {
+    setEditAnnouncementModalVisible(true);
+  };
+  const updateStateItemValue = item => {
     setListItem(item);
-  }
+  };
 
   return (
     <>
@@ -78,9 +77,18 @@ const MyListingItem = props => {
               )}
             </View>
             <View style={styles.listDesc}>
-              <Text style={styles.listTitle}>
-                {`${listem.title} ${listem.id}`}
-              </Text>
+              <View style={styles.titleContainer}>
+                <Text style={styles.listTitle}>
+                  {limitWords(`${listem.title}`,2)}
+                </Text>
+                <ThreeDotDropdown
+                  item={listem}
+                  toDetailPage={toDetailPage}
+                  changeStatusAnnouncement={changeStatusAnnouncement}
+                  deleteAnnouncvement={deleteAnnouncvement}
+                  editAnnouncementPageRedirect={editAnnouncementPageRedirect}
+                />
+              </View>
               <Text style={styles.listSubTitle}>
                 {getCategory(listem.category)?.name}
               </Text>
@@ -113,13 +121,6 @@ const MyListingItem = props => {
                   </Text>
                 </View>
               )}
-              <ThreeDotDropdown
-                item={listem}
-                toDetailPage={toDetailPage}
-                changeStatusAnnouncement={changeStatusAnnouncement}
-                deleteAnnouncvement={deleteAnnouncvement}
-                editAnnouncementPageRedirect = {editAnnouncementPageRedirect}
-              />
             </View>
           </View>
         </View>
@@ -129,7 +130,13 @@ const MyListingItem = props => {
         textContent={'Processing...'}
         textStyle={{color: '#FFF'}}
       />
-      {isEditAnnouncementModalVisible && <EditAnnouncementModal item={listem} onClose = {()=>setEditAnnouncementModalVisible(false)} updateStateItemValue={updateStateItemValue} /> }
+      {isEditAnnouncementModalVisible && (
+        <EditAnnouncementModal
+          item={listem}
+          onClose={() => setEditAnnouncementModalVisible(false)}
+          updateStateItemValue={updateStateItemValue}
+        />
+      )}
     </>
   );
 };

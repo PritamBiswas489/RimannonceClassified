@@ -8,10 +8,22 @@ export const listAnnouncementService = async (page = 1) => {
 		return error;
 	}
 };
-export const getListGlobal = async (page = 1,category = '',search = '') => {
-	console.log(`/front/announcement/list-get-global?page=${page}&cat=${category}&search=${search}`);
+export const getListGlobal = async (page = 1,category = '',search = '',locationids = []) => {
+	const url = `/front/announcement/list-get-global?page=${page}&cat=${category}&search=${search}&locationids=${JSON.stringify(locationids)}`;
+	console.log(url)
 	try {
-		const response = await  api.get(`/front/announcement/list-get-global?page=${page}&cat=${category}&search=${search}`);
+		const response = await  api.get(url);
+		return response;
+	} catch (error) {
+		return error;
+	}
+
+}
+export const getListPremium = async (page = 1,category = '',search = '',locationids = []) => {
+	const url = `/front/announcement/list-get-premium?page=${page}&cat=${category}&search=${search}&locationids=${JSON.stringify(locationids)}`;
+	console.log(url)
+	try {
+		const response = await  api.get(url);
 		return response;
 	} catch (error) {
 		return error;

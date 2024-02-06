@@ -18,6 +18,7 @@ import Details from '../pages/Details/Details';
 import PostTrip from '../pages/PostTrip/PostTrip';
 import Logout from '../pages/Logout/Logout';
 import Global from '../pages/Global/Global';
+import Premium from '../pages/Premium/Premium';
 import Apartment from '../pages/Apartment/Apartment';
 import GpDelivery from '../pages/GpDelivery/GpDelivery';
 import EditAnnouncement from '../pages/EditAnnouncement/EditAnnouncement';
@@ -30,6 +31,8 @@ import SuccessGpDeliveryPre from '../pages/SuccessPages/SuccessGpDeliveryPre';
 
 import home from '../assets/images/tab/home.png';
 import global from '../assets/images/tab/global.png';
+import premium from '../assets/images/tab/premium.png';
+
 import appartment from '../assets/images/tab/appartment.png';
 import delivery from '../assets/images/tab/delivery.png';
 import plus from '../assets/images/tab/plus.png';
@@ -88,7 +91,7 @@ function Tabs() {
       }}>
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={Global}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -107,12 +110,12 @@ function Tabs() {
       />
       <Tab.Screen
         name="Global"
-        component={Global}
+        component={Premium}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Image
-                source={global}
+                source={premium}
                 resizeMode="contain"
                 style={{
                   width: 21,
@@ -125,26 +128,7 @@ function Tabs() {
         }}
       />
 
-      <Tab.Screen
-        name="Apartment"
-        component={Apartment}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Image
-                source={appartment}
-                resizeMode="contain"
-                style={{
-                  width: 21,
-                  height: 21,
-                  tintColor: focused ? '#009de0' : '#c4c4c4',
-                }}
-              />
-            </View>
-          ),
-        }}
-      />
-
+    
       {isLoggedIn ? (
         <Tab.Screen
           name="PostTrip"
@@ -205,25 +189,7 @@ function Tabs() {
         }}
       />
 
-      <Tab.Screen
-        name="GpCar"
-        component={GpCar}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Image
-                source={car}
-                resizeMode="contain"
-                style={{
-                  width: 21,
-                  height: 21,
-                  tintColor: focused ? '#009de0' : '#c4c4c4',
-                }}
-              />
-            </View>
-          ),
-        }}
-      />
+       
 
       {isLoggedIn ? (
         <Tab.Screen

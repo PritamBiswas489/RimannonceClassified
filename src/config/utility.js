@@ -21,6 +21,19 @@ export const fileToBase64 = (file) => {
 		console.log(fileInfo);
 	});
 };
+export function limitWords(inputString, limit) {
+    // Split the input string into an array of words
+    const words = inputString.split(/\s+/);
+
+    // If the number of words is already less than or equal to the limit, return the original string
+    if (words.length <= limit) {
+        return inputString;
+    }
+
+    // Select the first 'limit' number of words and join them back into a string
+    const limitedWords = words.slice(0, limit);
+    return limitedWords.join(' ')+'..';
+}
 export const getAppUrl = () =>{
 	const {type, appUrls} = env;
 	return appUrls[type].apiUrl;
@@ -205,3 +218,9 @@ export function getCategory(category){
       );
 	return filteredEntry;
 }  
+export function getDateString(inputDateString){
+	const inputDate = new Date(inputDateString);
+	const options = { day: 'numeric', month: 'long', year: '2-digit' };
+	const formattedDate = inputDate.toLocaleDateString('en-GB', options);
+	return formattedDate;
+}

@@ -21,6 +21,7 @@ import { getCategory } from '../../config/utility';
 import {ScrollView, GestureHandlerRootView} from 'react-native-gesture-handler';
 import { getMediaUrl } from '../../config/utility';
 import { useNavigation } from '@react-navigation/native';
+import { limitWords } from '../../config/utility';
 
 
 const MyFavorites = props => {
@@ -67,7 +68,7 @@ const MyFavorites = props => {
         </View>
         <View style={styles.listDesc}>
           <Text style={styles.listTitle}>
-            {item?.favoritesAnnouncement?.title} {item?.favoritesAnnouncement?.id}
+            {limitWords(item?.favoritesAnnouncement?.title,2)} 
           </Text>
           <Text style={styles.listSubTitle}>
             {getCategory(item?.favoritesAnnouncement?.category)?.name}</Text>
@@ -118,14 +119,13 @@ const MyFavorites = props => {
     if (!triggerPages.includes(page) && !stopSendRequest) {
       announcementList();
     }
-  }, [page]);
+  }, [page,refreshing]);
 
   const refreshData = () => {
-    setPage(1);
     setAnnouncements([]);
     setTriggerPages([]); //list of pages triggered
     setStopSendRequest(false);
-    announcementList();
+    setPage(1);
   };
 
   const onRefresh = React.useCallback(() => {

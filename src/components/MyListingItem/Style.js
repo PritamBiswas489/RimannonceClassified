@@ -14,6 +14,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
+  titleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
    
   container: {
     // display: 'flex',
@@ -137,6 +142,9 @@ const styles = StyleSheet.create({
     color: '#0e0a4a',
     fontSize: 18,
     fontFamily: 'Mulish-Bold',
+    marginRight:15,
+    
+    
   },
   listSubTitle: {
     color: '#0e0a4a',

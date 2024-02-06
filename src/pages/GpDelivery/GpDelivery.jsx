@@ -9,16 +9,25 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import React, {useState, useEffect, useLayoutEffect, useCallback, useRef} from 'react';
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+  useRef,
+} from 'react';
 import styles from './Style';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import { categories } from '../../config/categories';
-import { getListGetGpDelivery } from '../../services/announcements.service';
+import {useSelector} from 'react-redux';
+import {getListGetGpDelivery} from '../../services/announcements.service';
+
+import {Dropdown} from 'react-native-element-dropdown';
+import {Picker} from '@react-native-picker/picker';
 
 import favorite from '../../assets/images/home/favorite/background.png';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
- 
+
 import {getCategory} from '../../config/utility';
 import {ScrollView, GestureHandlerRootView} from 'react-native-gesture-handler';
 import {getMediaUrl} from '../../config/utility';
@@ -26,49 +35,56 @@ import {useNavigation} from '@react-navigation/native';
 import NavigationDrawerHeader from '../../components/drawerHeader';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import SkeletonLoader from '../../components/SkeletonLoader/SkeletonLoader';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
+import CategoryButton from '../../components/CategoryButton/CategoryButton';
+import { limitWords } from '../../config/utility';
 
-const GpDelivery = (props) => {
+const GpDelivery = props => {
+  const categories = useSelector(state => state['settingData'].categories);
+  const locations = useSelector(state => state['settingData'].locations);
   const [refreshing, setRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [activeCategoryIndex, setCategoryActiveIndex] = useState(0);
   const [page, setPage] = useState(1);
   const [announcements, setAnnouncements] = useState([]);
   const [triggerPages, setTriggerPages] = useState([]); //list of pages triggered
   const [stopSendRequest, setStopSendRequest] = useState(false);
-  const [showSkeletonLoader,setShowSkeletonLoader] = useState(false);
+  const [showSkeletonLoader, setShowSkeletonLoader] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('');
-
-  const [searchText,setSearchText] = useState('');
+  const [searchText, setSearchText] = useState('');
+  const [searchLocationIds, setSearchLocationIds] = useState('');
   const initialRender = useRef(true);
-  
-  
+
   const navigation = useNavigation();
 
   const announcementList = async () => {
-    if(page === 1){
-      setShowSkeletonLoader(true);
+    if (page === 1) {
+      setAnnouncements([]);
+      setShowSkeletonLoader(true); 
     }
-    setIsLoading(true);
-    console.log({triggerPages});
-    setTriggerPages(prev => [...prev, page]);
-    const response = await getListGetGpDelivery(page,searchText);
-    if (response.data.status === 200) {
-      setIsLoading(false);
-      setShowSkeletonLoader(false);
-      const records = response?.data?.data?.records;
-      if (records.length === 0) {
-        setStopSendRequest(true);
+    setTimeout(async () => {
+      console.log({page});
+      setIsLoading(true);
+      console.log({triggerPages});
+      setTriggerPages(prev => [...prev, page]);
+      const response = await getListGetGpDelivery(page, selectedCategory, searchText);
+      if (response.data.status === 200) {
+        setIsLoading(false);
+        setShowSkeletonLoader(false);
+        const records = response?.data?.data?.records;
+        if (records.length === 0) {
+          setStopSendRequest(true);
+        }
+        setAnnouncements(prevData => [...prevData, ...records]);
+      } else {
+        setIsLoading(false);
+        setShowSkeletonLoader(false);
+        Alert.alert(
+          'Error',
+          "Something went wrong. Can't able to fetch records.",
+          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+        );
       }
-      setAnnouncements(prevData => [...prevData, ...records]);
-    } else {
-      setIsLoading(false);
-      setShowSkeletonLoader(false);
-      Alert.alert(
-        'Error',
-        "Something went wrong. Can't able to fetch records.",
-        [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-      );
-    }
+    }, 1000);
   };
   const toDetailPage = id => {
     navigation.navigate('Announcement Details', {id});
@@ -91,11 +107,11 @@ const GpDelivery = (props) => {
           </View>
           <View style={styles.listDesc}>
             <Text style={styles.listTitle}>
-              {item.title}  {item.id}
+            {limitWords(item.title,2)}
             </Text>
-            {/* <Text style={styles.listSubTitle}>
+            <Text style={styles.listSubTitle}>
               {getCategory(item.category)?.name}
-            </Text> */}
+            </Text>
             <Text style={styles.listPrice}>
               {item.location &&
                 item.category !== 'gp_delivery' &&
@@ -134,76 +150,72 @@ const GpDelivery = (props) => {
       <ActivityIndicator size="large" color="#0000ff" />
     ) : null;
   };
+
   const handleEndReached = () => {
-    setPage(prevPage => prevPage + 1);
+    if (stopSendRequest === false) {
+      setPage(prevPage => prevPage + 1);
+    }
   };
 
   useEffect(() => {
     //console.log(announcements);
   }, [announcements]);
   useEffect(() => {
+    console.log(page);
     if (!triggerPages.includes(page) && !stopSendRequest) {
       announcementList();
     }
-  }, [page]);
+  }, [page, selectedCategory, searchText,searchLocationIds,refreshing]);
 
   const refreshData = () => {
     clearAnnouncements();
     resetPagination();
     fetchAnnouncements();
   };
-  
-  const clearAnnouncements = () => {
-    setAnnouncements([]);
-  };
-  
+
+  const clearAnnouncements = () => {};
+
   const resetPagination = () => {
     setTriggerPages([]);
     setStopSendRequest(false);
     setPage(1);
   };
-  
-  const fetchAnnouncements = () => {
-     announcementList();
-  };
+
+  const fetchAnnouncements = () => {};
 
   const onRefresh = React.useCallback(() => {
-       setRefreshing(true);
-       setTimeout(() => {
-       refreshData();
-       setRefreshing(false);
+    setRefreshing(true);
+    setTimeout(() => {
+      refreshData();
+      setRefreshing(false);
     }, 2000);
   }, []);
 
-  const CAT_DATA = [
-    {
-      id: 'all',
-      title: 'All',
-    },
-  ];
-  categories.forEach((catData,catIndex)=>{
-    if(catData.id!== 'gp_delivery'){
-        CAT_DATA.push({
-          id: catData.id,
-          title: catData.name,
-        })
-    }
-  })
-
-
-   
-
- 
-
-  useEffect(()=>{
-    //console.log({searchText})
-  },[searchText])
-
-  const searchDataRefresh = () =>{
+  const searchDataRefresh = () => {
     refreshData();
-  }
+  };
 
-  const Item = ({title, isActive, onPress}) => (
+  const handleRadioButtonPress = option => {
+    if (option !== selectedCategory) {
+      setSelectedCategory(option);
+    } else {
+      setSelectedCategory('');
+    }
+    refreshData();
+  };
+ 
+  const locationSearchSet = locationId =>{
+    if(!searchLocationIds.includes(locationId)){
+      setSearchLocationIds(preArray=>[...preArray,locationId])
+    }else{
+      const y = searchLocationIds
+      const t = y.filter(i=>i!==locationId)
+      setSearchLocationIds(t)
+    }
+    refreshData();
+  } 
+
+  const LocationItem = ({title, isActive, onPress}) => (
     <TouchableOpacity
       style={[styles.item, isActive && styles.activeItem]}
       onPress={onPress}>
@@ -217,18 +229,20 @@ const GpDelivery = (props) => {
     <SafeAreaView style={styles.body}>
       <NavigationDrawerHeader navigationProps={props.navigation} />
       <View style={styles.listTop}>
-        <SearchBar searchText={searchText} setSearchText={setSearchText}  searchDataRefresh={searchDataRefresh}></SearchBar>
-        
+        <SearchBar
+          searchText={searchText}
+          setSearchText={setSearchText}
+          searchDataRefresh={searchDataRefresh}></SearchBar>
+
       </View>
       <GestureHandlerRootView>
         <View style={styles.container}>
-          {showSkeletonLoader === true && <SkeletonLoader/>}
+          {showSkeletonLoader === true && <SkeletonLoader />}
           {announcements.length === 0 && showSkeletonLoader === false ? (
             <Text style={styles.noDataText}>No Record Found</Text>
           ) : (
             <FlatList
               data={announcements}
-               
               keyExtractor={(item, index) => `${index + item.uuid}`.toString()}
               renderItem={renderItem}
               ListFooterComponent={renderFooter}

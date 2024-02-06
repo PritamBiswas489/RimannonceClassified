@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet , Alert } from 'react-native';
-import Modal from 'react-native-modal';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet , Alert, Modal } from 'react-native';
+ 
 import Edit from '../PostAnnouncements/Edit/Edit';
  
 
 const EditAnnouncementModal = ({ item, onClose, updateStateItemValue }) => {
 
-  const handleSubmit = async () => {
-  };
+  
   return (
     <>
-    <Modal isVisible={true} onBackdropPress={onClose}>
+    <Modal isVisible={true}>
        <View style={styles.modalContainer}>
       <TouchableOpacity style={styles.closeButton} onPress={onClose}>
         <Text style={styles.closeButtonText}>X</Text>

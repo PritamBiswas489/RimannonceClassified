@@ -17,17 +17,18 @@ import AnnouncementImages from '../../AnnouncementImages/AnnouncementImages';
 import AnnouncementVideos from '../../AnnouncementVideos/AnnouncementVideos';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import {categories} from '../../../config/categories';
-import {subLocations} from '../../../config/subLocations';
-import {locations} from '../../../config/locations';
+ 
 import CategoryButton from '../../CategoryButton/CategoryButton';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import RNPickerSelect from 'react-native-picker-select';
 import { useDispatch } from 'react-redux';
 import { userAccountDataActions } from '../../../store/redux/user-account-data.redux';
 import WalletModal from '../../WalletModal/WalletModal';
 
 export default function GpDliveryRoute() {
+  const categories = useSelector(state => state['settingData'].categories)
+  const locations = useSelector(state => state['settingData'].locations)
+  const subLocations = useSelector(state => state['settingData'].subLocations)
   const [isModalVisible, setModalVisible] = useState(false);
   const isPromoted = useSelector(state => state['userAccountData'].isPromoted);
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ export default function GpDliveryRoute() {
   const [location, setLocation] = useState('');
   const [subLocationsSelected, setSubLocationsSelected] = useState([]);
   const [subLocationId, setSelectedSubLocation] = useState(null);
-  const [subLocation, setSubLocation] = useState('');
+  const [subLocation, setSubLocation] = useState(''); 
 
   const [gpDeliveryOrigin, setGpDeliveryOrigin] = useState('');
   const [gpDeliveryDestination, setGpDeliveryDestination] = useState('');
@@ -75,18 +76,9 @@ export default function GpDliveryRoute() {
 
   const amtData = useSelector(state => state['settingData']);
   useEffect(()=>{
-    if(category === 'gp_delivery'){
-      setPublishAmount(amtData.gb_delivery_premium_price);
-    }
-    if(category === 'apartment'){
-      setPublishAmount(amtData.apartment_premium_price);
-    }
-    if(category === 'car'){
-      setPublishAmount(amtData.car_premium_price);
-    }
-    if(category === 'land_sale'){
-      setPublishAmount(amtData.land_sale_premium_price);
-    }
+    const getCat = categories.find(cat=>cat.id===category);
+    
+    setPublishAmount(getCat?.price);
 
 
   },[category]);
@@ -278,7 +270,7 @@ export default function GpDliveryRoute() {
       navigation.navigate('Premium Announcement'); 
     } else {
       setIsLoading(false);
-      Alert.alert('Error', response?.data?.error?.message || 'Failed', [
+      Alert.alert('Error', response?.data?.error?.message || 'Server error.please try again later', [
         {text: 'OK', onPress: () => {
           if(response?.data?.data?.requestWallet){
              setModalVisible(true);
@@ -305,8 +297,7 @@ export default function GpDliveryRoute() {
                       data={categories}
                       showsHorizontalScrollIndicator={false}
                       renderItem={({item, index}) =>
-                        item.id !== 'cloths' &&
-                        item.id !== 'other' && (
+                        parseInt(item.isPremium) ===1   && (
                           <CategoryButton
                             selected={category === item.id}
                             onPress={() => handleRadioButtonPress(item.id)}

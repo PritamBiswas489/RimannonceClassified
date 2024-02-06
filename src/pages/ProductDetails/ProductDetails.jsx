@@ -22,6 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import OwnerContact from '../../components/ContactUserModal/OwnerContact';
+import { getDateString } from '../../config/utility';
 
 
 
@@ -178,6 +179,7 @@ export default function ProductDetails(props) {
                 </View>
                   <Text style={styles.descTitle}>{announcement?.title}</Text>
                   <Text style={styles.descSubTitle}>{getCategory(announcement.category)?.name}</Text>
+                  <Text style={styles.descSubTitle}>{getDateString(announcement?.createdAt)}</Text>
                  {announcement.category === 'gp_delivery' && <Text style={styles.descPrice}>From: {announcement.gpDeliveryOrigin} </Text>}
                  {announcement.category === 'gp_delivery' && <Text style={styles.descPrice}>To: {announcement.gpDeliveryDestination}</Text>}
                  {announcement.category === 'gp_delivery' && <Text style={styles.descPrice}>Date: {announcement.gpDeliveryDate}</Text>}

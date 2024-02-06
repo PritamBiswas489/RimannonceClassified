@@ -8,10 +8,9 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import {subLocations} from '../../../config/subLocations';
-import {locations} from '../../../config/locations';
+ 
 import RNPickerSelect from 'react-native-picker-select';
-import {categories} from '../../../config/categories';
+ 
 import Spinner from 'react-native-loading-spinner-overlay';
 import { createAnnouncementService } from '../../../services/announcementCreate.service';
 import AnnouncementImages from '../../AnnouncementImages/AnnouncementImages';
@@ -20,6 +19,9 @@ import {useNavigation} from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
 export default function ApartmentRoute() {
+  const categories = useSelector(state => state['settingData'].categories)
+  const locations = useSelector(state => state['settingData'].locations)
+  const subLocations = useSelector(state => state['settingData'].subLocations)
   const isPromoted = useSelector(state => state['userAccountData'].isPromoted);
   const [testData, setTestData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

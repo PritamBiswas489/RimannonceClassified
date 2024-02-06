@@ -81,18 +81,18 @@ const MyListing = props => {
     if (!triggerPages.includes(page) && !stopSendRequest) {
       announcementList();
     }
-  }, [page]);
+  }, [page,refreshing]);
 
   const refreshData = () => {
-    setPage(1);
     setAnnouncements([]);
     setTriggerPages([]); //list of pages triggered
     setStopSendRequest(false);
-    announcementList();
+    setPage(1);
   };
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    
     setTimeout(() => {
       refreshData();
       setRefreshing(false);

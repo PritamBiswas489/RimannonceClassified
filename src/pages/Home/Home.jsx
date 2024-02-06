@@ -31,6 +31,8 @@ import SkeletonLoader from '../../components/SkeletonLoader/SkeletonLoader';
 import {getMediaUrl} from '../../config/utility';
 import {getCategory} from '../../config/utility';
 
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
+
 const data = [
   {label: 'Sorted by ', value: '1'},
   {label: 'Item 2', value: '2'},
@@ -115,7 +117,11 @@ const Home = props => {
                         {backgroundColor: '#f18c86'},
                         styles.buttonIconSec,
                       ]}>
-                      <Image source={icon1} style={styles.buttonIcon} />
+                      <FontAwesomeIcon
+                                name="tshirt"
+                                size={28}
+                                color="#fff"
+                              />
                     </View>
                     <Text style={styles.buttonText}>Cars</Text>
                   </TouchableOpacity>

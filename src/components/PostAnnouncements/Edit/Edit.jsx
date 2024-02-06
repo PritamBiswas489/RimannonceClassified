@@ -17,9 +17,8 @@ import AnnouncementImages from '../../AnnouncementImages/AnnouncementImages';
 import AnnouncementVideos from '../../AnnouncementVideos/AnnouncementVideos';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import {categories} from '../../../config/categories';
-import {subLocations} from '../../../config/subLocations';
-import {locations} from '../../../config/locations';
+ 
+ 
 import CategoryButton from '../../CategoryButton/CategoryButton';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import RNPickerSelect from 'react-native-picker-select';
@@ -29,7 +28,9 @@ import WalletModal from '../../WalletModal/WalletModal';
 
 export default function Edit({item, onClose, updateStateItemValue}) {
   
-
+  const categories = useSelector(state => state['settingData'].categories)
+  const locations = useSelector(state => state['settingData'].locations)
+  const subLocations = useSelector(state => state['settingData'].subLocations)
   const [isModalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);

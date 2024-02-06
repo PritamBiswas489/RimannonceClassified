@@ -19,7 +19,7 @@ import React, {
 import styles from './Style';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
-import {getListGlobal} from '../../services/announcements.service';
+import {getListPremium} from '../../services/announcements.service';
 
 import {Dropdown} from 'react-native-element-dropdown';
 import {Picker} from '@react-native-picker/picker';
@@ -39,7 +39,7 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import CategoryButton from '../../components/CategoryButton/CategoryButton';
 import { limitWords } from '../../config/utility';
 
-const Global = props => {
+const Premium = props => {
   const categories = useSelector(state => state['settingData'].categories);
   const locations = useSelector(state => state['settingData'].locations);
   const [refreshing, setRefreshing] = useState(false);
@@ -66,7 +66,7 @@ const Global = props => {
       setIsLoading(true);
       console.log({triggerPages});
       setTriggerPages(prev => [...prev, page]);
-      const response = await getListGlobal(page, selectedCategory, searchText,searchLocationIds);
+      const response = await getListPremium(page, selectedCategory, searchText,searchLocationIds);
       if (response.data.status === 200) {
         setIsLoading(false);
         setShowSkeletonLoader(false);
@@ -107,7 +107,7 @@ const Global = props => {
           </View>
           <View style={styles.listDesc}>
             <Text style={styles.listTitle}>
-              {limitWords(item.title,2)}
+            {limitWords(item.title,2)}
             </Text>
             <Text style={styles.listSubTitle}>
               {getCategory(item.category)?.name}
@@ -186,9 +186,9 @@ const Global = props => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     refreshData();
-    setTimeout(() => { 
+    setTimeout(() => {
       setRefreshing(false);
-    }, 1000);
+    }, 2000);
   }, []);
 
   const searchDataRefresh = () => {
@@ -248,7 +248,7 @@ const Global = props => {
             data={categories}
             showsHorizontalScrollIndicator={false}
             renderItem={({item, index}) =>
-              item.id !== 'gp_delivery' && (
+              parseInt(item.isPremium) === 1 && item.id !== 'gp_delivery' && (
                 <CategoryButton
                   selected={selectedCategory === item.id}
                   onPress={() => handleRadioButtonPress(item.id)}
@@ -290,4 +290,4 @@ const Global = props => {
   );
 };
 
-export default Global;
+export default Premium;

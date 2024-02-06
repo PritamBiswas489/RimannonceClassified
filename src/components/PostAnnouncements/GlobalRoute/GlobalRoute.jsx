@@ -9,10 +9,9 @@ import {
   Alert,
   FlatList,
 } from 'react-native';
-import {subLocations} from '../../../config/subLocations';
-import {locations} from '../../../config/locations';
+ 
 import RNPickerSelect from 'react-native-picker-select';
-import {categories} from '../../../config/categories';
+ 
 import Spinner from 'react-native-loading-spinner-overlay';
 import {createAnnouncementService} from '../../../services/announcementCreate.service';
 import AnnouncementImages from '../../AnnouncementImages/AnnouncementImages';
@@ -20,9 +19,12 @@ import AnnouncementVideos from '../../AnnouncementVideos/AnnouncementVideos';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import CategoryButton from '../../CategoryButton/CategoryButton';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 
 export default function GlobalRoute(props) {
+  const categories = useSelector(state => state['settingData'].categories)
+  const locations = useSelector(state => state['settingData'].locations)
+  const subLocations = useSelector(state => state['settingData'].subLocations)
   const isPromoted = useSelector(state => state['userAccountData'].isPromoted);
   const [testData, setTestData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -163,7 +165,7 @@ export default function GlobalRoute(props) {
     // console.log(formData)
     const response = await createAnnouncementService(formData);
 
-    if (response?.data?.status === 200) {
+    if (response?.data?.status === 200) { 
       setIsLoading(false);
       setSelectedLocation('');
       setLocation('');
@@ -176,11 +178,11 @@ export default function GlobalRoute(props) {
       navigation.navigate('Global Announcement Success');
     } else {
       setIsLoading(false);
-      Alert.alert('Error', response?.data?.error?.message || 'Failed', [
+      Alert.alert('Error', response?.data?.error?.message || 'Server error.please try again later', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     }
-  };
+  };  
 
   const locationItems = [];
   locations.forEach((locDSata, locaIndex) => {
@@ -216,7 +218,7 @@ export default function GlobalRoute(props) {
                       data={categories}
                       showsHorizontalScrollIndicator={false}
                       renderItem={({item, index}) =>
-                      item.id !== 'gp_delivery' && (
+                      (item.id) !== 'gp_delivery' && (
                           <CategoryButton
                             selected={category === item.id}
                             onPress={() => handleRadioButtonPress(item.id)}

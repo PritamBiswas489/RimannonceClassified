@@ -14,19 +14,18 @@ const ImagePopup = ({visible, imageUrl, fileType, onClose}) => {
   return (
     <Modal
       animationType="slide"
-      transparent={true}
       visible={visible}
       onRequestClose={onClose}>
       <View style={styles.modalContainer}>
         <TouchableOpacity onPress={onClose} style={styles.closeButton}>
           {/* You can use any icon or text for the close button */}
-          <Text style={styles.closeButtonText}>Close</Text>
+          <Text style={styles.closeButtonText}>X</Text>
         </TouchableOpacity>
         {fileType === 'images' && (
           <Image
             source={{uri: imageUrl}}
             style={styles.image}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         )}
         {fileType === 'videos' && (
@@ -35,7 +34,7 @@ const ImagePopup = ({visible, imageUrl, fileType, onClose}) => {
               source={{uri: imageUrl}}
               style={styles.video}
               controls={false} // Set the poster image URL
-              resizeMode="contain"
+              resizeMode="cover"
             />
           </View>
         )}
@@ -51,14 +50,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: 'white',
   },
   videoContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-   
-     
   },
   video: {
     width: 400,
@@ -74,10 +71,13 @@ const styles = StyleSheet.create({
     top: 20,
     right: 20,
     padding: 10,
+   
   },
   closeButtonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 24,
+    color:'red',
+    fontWeight:'bold'
   },
 });
 
