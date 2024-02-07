@@ -193,22 +193,9 @@ export default function ProductDetails(props) {
                   </Text>
                 </View>
                 <View style={styles.submitArea}>
-                  {/* <Pressable onPress={()=>setModalVisible(true)}
-                    style={({pressed}) => [
-                      {
-                        backgroundColor: pressed
-                          ? 'rgba(0, 169, 184, 0.1)'
-                          : 'transparent',
-                      },
-                      styles.pressableContainer,
-                    ]}
-                    android_ripple={{color: 'rgba(0, 169, 184, 0.1)'}} // Ripple effect for Android
-                     >
-                    <View style={styles.nextBtnArea}>
-                      <Text style={styles.nextBtn}>Submit your Request</Text>
-                    </View>
-                  </Pressable> */}
-                  <OwnerContact contactnumber={announcement?.contactNumber} />
+                
+                  
+                  <OwnerContact contactnumber={announcement?.phoneCountryCode || ''+announcement?.contactNumber} />
                 </View>
               </View>
             </ScrollView>

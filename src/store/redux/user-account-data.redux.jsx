@@ -4,6 +4,7 @@ const initialState = {
     name:'',
     email:'',
     phone:'',
+    phoneCountryCode:'',
     avatar:'',
     role:'',
     isPromoted:0,

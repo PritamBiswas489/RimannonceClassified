@@ -29,8 +29,8 @@ const AnnouncementVideos = ({videos, setVideos,existingVideos=[], setExistingVid
           let fileType = response.type || response.assets?.[0]?.type;
 
           
-          if(parseFloat(bytesToMb(fileSize)) > 5){
-              Alert.alert('Error', 'Can\'t upload file more than 5 mb.', [
+          if(parseFloat(bytesToMb(fileSize)) > 10){
+              Alert.alert('Error', 'Can\'t upload file more than 10 mb.', [
                 {text: 'OK', onPress: () => console.log('OK Pressed')},
               ]);    
           }else{
@@ -91,6 +91,7 @@ const AnnouncementVideos = ({videos, setVideos,existingVideos=[], setExistingVid
     visible={isImagePopupVisible}
     imageUrl={imageUrl}
     fileType={fileType}
+   
     onClose={() => setImagePopupVisible(false)}
   /></>
   );

@@ -25,6 +25,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import {useDispatch} from 'react-redux';
 import {userAccountDataActions} from '../../../store/redux/user-account-data.redux';
 import WalletModal from '../../WalletModal/WalletModal';
+import CountryTelephoneField from '../../CountryTelephoneField/CountryTelephoneField';
 
 export default function Edit({item, onClose, updateStateItemValue}) {
   
@@ -38,6 +39,7 @@ export default function Edit({item, onClose, updateStateItemValue}) {
   const [category, setCategory] = useState(item.category);
   const [title, setTitle] = useState(item.title);
   const [description, setDescription] = useState(item.description);
+  const [phoneCountryCode, setphoneCountryCode] = useState(item.phoneCountryCode);
   const [contactNumber, setContactNumber] = useState(item.contactNumber);
 
   const [locationId, setSelectedLocation] = useState(item.locationId);
@@ -231,7 +233,10 @@ export default function Edit({item, onClose, updateStateItemValue}) {
     formData.append('title', title);
     formData.append('category', category);
     formData.append('description', description);
+    formData.append('phoneCountryCode', phoneCountryCode);
     formData.append('contactNumber', contactNumber);
+
+    
 
     if (category === 'gp_delivery') {
       formData.append('gpDeliveryOrigin', gpDeliveryOrigin);
@@ -438,12 +443,11 @@ export default function Edit({item, onClose, updateStateItemValue}) {
                     Contact number <Text style={styles.redAsterisk}>*</Text>
                   </Text>
                 </View>
-                <TextInput
-                  placeholder="Enter contact number"
-                  style={styles.input}
-                  placeholderTextColor="#9c9c9c"
-                  value={contactNumber}
-                  onChangeText={text => setContactNumber(text)}
+                <CountryTelephoneField
+                  countryCode={phoneCountryCode}
+                  setCountryCode={setphoneCountryCode}
+                  phoneNumber={contactNumber}
+                  setPhoneNumber={setContactNumber}
                 />
               </View>
 

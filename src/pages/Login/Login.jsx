@@ -85,6 +85,12 @@ const Login = props => {
           );
           dispatch(
             userAccountDataActions.setData({
+              field: 'phoneCountryCode',
+              data: user.phoneCountryCode,
+            }),
+          );
+          dispatch(
+            userAccountDataActions.setData({
                field: "phone",
                data:  user.phone,
             })

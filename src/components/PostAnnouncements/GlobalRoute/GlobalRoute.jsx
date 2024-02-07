@@ -9,9 +9,9 @@ import {
   Alert,
   FlatList,
 } from 'react-native';
- 
+
 import RNPickerSelect from 'react-native-picker-select';
- 
+
 import Spinner from 'react-native-loading-spinner-overlay';
 import {createAnnouncementService} from '../../../services/announcementCreate.service';
 import AnnouncementImages from '../../AnnouncementImages/AnnouncementImages';
@@ -20,12 +20,14 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import CategoryButton from '../../CategoryButton/CategoryButton';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
+import CountryTelephoneField from '../../CountryTelephoneField/CountryTelephoneField';
 
 export default function GlobalRoute(props) {
-  const categories = useSelector(state => state['settingData'].categories)
-  const locations = useSelector(state => state['settingData'].locations)
-  const subLocations = useSelector(state => state['settingData'].subLocations)
+  const categories = useSelector(state => state['settingData'].categories);
+  const locations = useSelector(state => state['settingData'].locations);
+  const subLocations = useSelector(state => state['settingData'].subLocations);
   const isPromoted = useSelector(state => state['userAccountData'].isPromoted);
+  const userAccData = useSelector(state => state['userAccountData']);
   const [testData, setTestData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [locationId, setSelectedLocation] = useState(null);
@@ -36,6 +38,7 @@ export default function GlobalRoute(props) {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
+  const [phoneCountryCode, setphoneCountryCode] = useState('+1');
   const [contactNumber, setContactNumber] = useState('');
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
@@ -43,13 +46,15 @@ export default function GlobalRoute(props) {
 
   useEffect(() => {
     if (testData === true) {
-        setSelectedLocation(8); 
-        setTitle('Demo location');
-        setDescription(
-          `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
-        );
-        setContactNumber('+919830990065');
+      setSelectedLocation(8);
+      setTitle('Demo location');
+      setDescription(
+        `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
+      );
+      
     }
+    setContactNumber(userAccData?.phone);
+    setphoneCountryCode(userAccData?.phoneCountryCode);
     setCategory('apartment');
   }, []);
 
@@ -161,28 +166,31 @@ export default function GlobalRoute(props) {
     formData.append('title', title);
     formData.append('category', category);
     formData.append('description', description);
+    formData.append('phoneCountryCode', phoneCountryCode);
     formData.append('contactNumber', contactNumber);
     // console.log(formData)
     const response = await createAnnouncementService(formData);
 
-    if (response?.data?.status === 200) { 
+    if (response?.data?.status === 200) {
       setIsLoading(false);
       setSelectedLocation('');
       setLocation('');
       setTitle('');
       setDescription('');
-      setContactNumber('');
+      // setContactNumber('');
       setCategory('');
       setImages('');
       setVideos('');
       navigation.navigate('Global Announcement Success');
     } else {
       setIsLoading(false);
-      Alert.alert('Error', response?.data?.error?.message || 'Server error.please try again later', [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ]);
+      Alert.alert(
+        'Error',
+        response?.data?.error?.message || 'Server error.please try again later',
+        [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+      );
     }
-  };  
+  };
 
   const locationItems = [];
   locations.forEach((locDSata, locaIndex) => {
@@ -194,7 +202,7 @@ export default function GlobalRoute(props) {
   }, [images]);
 
   useEffect(() => {
-    console.log({videos});
+    //console.log({videos});
   }, [videos]);
 
   const handleRadioButtonPress = option => {
@@ -218,7 +226,7 @@ export default function GlobalRoute(props) {
                       data={categories}
                       showsHorizontalScrollIndicator={false}
                       renderItem={({item, index}) =>
-                      (item.id) !== 'gp_delivery' && (
+                        item.id !== 'gp_delivery' && (
                           <CategoryButton
                             selected={category === item.id}
                             onPress={() => handleRadioButtonPress(item.id)}
@@ -350,12 +358,12 @@ export default function GlobalRoute(props) {
                     Contact number <Text style={styles.redAsterisk}>*</Text>
                   </Text>
                 </View>
-                <TextInput
-                  placeholder="Enter contact number"
-                  style={styles.input}
-                  placeholderTextColor="#9c9c9c"
-                  value={contactNumber}
-                  onChangeText={text => setContactNumber(text)}
+
+                <CountryTelephoneField
+                  countryCode={phoneCountryCode}
+                  setCountryCode={setphoneCountryCode}
+                  phoneNumber={contactNumber}
+                  setPhoneNumber={setContactNumber}
                 />
               </View>
 

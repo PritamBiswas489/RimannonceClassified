@@ -53,6 +53,12 @@ const App = () => {
         );
         dispatch(
           userAccountDataActions.setData({
+             field: "phoneCountryCode",
+             data:  user.phoneCountryCode,
+          })
+        );
+        dispatch(
+          userAccountDataActions.setData({
              field: "avatar",
              data:  user.avatar,
           })

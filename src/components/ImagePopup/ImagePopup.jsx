@@ -1,6 +1,6 @@
 // ImagePopup.js
 
-import React from 'react';
+import React,{useState, useRef} from 'react';
 import {
   Modal,
   View,
@@ -10,7 +10,11 @@ import {
   Text,
 } from 'react-native';
 import Video from 'react-native-video';
+import VideosPlayer from '../VideoPlayer/VideoPlayer';
 const ImagePopup = ({visible, imageUrl, fileType, onClose}) => {
+  const [paused, setPaused] = useState(false);
+  const videoRef = useRef(null);
+  
   return (
     <Modal
       animationType="slide"
@@ -30,12 +34,16 @@ const ImagePopup = ({visible, imageUrl, fileType, onClose}) => {
         )}
         {fileType === 'videos' && (
           <View style={styles.videoContainer}>
-            <Video
+            {/* <Video
+              ref={videoRef}
               source={{uri: imageUrl}}
-              style={styles.video}
-              controls={false} // Set the poster image URL
-              resizeMode="cover"
-            />
+              
+              style={styles.videoPlayer}
+              controls={true} // Set the poster image URL
+              resizeMode="contain"
+            /> */}
+            <VideosPlayer videoUri={imageUrl}/>
+             
           </View>
         )}
       </View>
@@ -51,6 +59,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
+  },
+  videoPlayer: {
+    width: 400,
+    height: 400,
   },
   videoContainer: {
     flex: 1,
@@ -78,6 +90,33 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color:'red',
     fontWeight:'bold'
+  },
+  playPauseButton: {
+    position: 'absolute',
+    bottom: 20,
+    width: 100,
+    height: 40,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+  },
+  playPauseButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  controlButton: {
+    position: 'absolute',
+    bottom: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  controlButtonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
   },
 });
 

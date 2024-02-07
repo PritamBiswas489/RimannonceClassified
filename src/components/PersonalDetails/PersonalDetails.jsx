@@ -36,6 +36,7 @@ import TermsAndCondition from '../TermsAndCondition/TermsAndCondition';
 import { deleteAuthTokens } from '../../config/auth';
 import { useNavigation } from '@react-navigation/native';
 import { deleteProfile } from '../../services/profile.service';
+import CountryTelephoneField from '../CountryTelephoneField/CountryTelephoneField';
 
 const PersonalDetails = props => {
   const navigation = useNavigation();
@@ -46,6 +47,8 @@ const PersonalDetails = props => {
   const name = useSelector(state => state['userAccountData'].name);
   const email = useSelector(state => state['userAccountData'].email);
   const phone = useSelector(state => state['userAccountData'].phone);
+  const phoneCountryCode = useSelector(state => state['userAccountData'].phoneCountryCode);
+
 
   const walletAmount = useSelector(
     state => state['userAccountData'].walletAmount,
@@ -54,7 +57,9 @@ const PersonalDetails = props => {
   const [updateName, setUpdateName] = useState(name);
   const [updateEmail, setUpdateEmail] = useState(email);
   const [updatePhone, setUpdatePhone] = useState(phone);
+  const [updatePhoneCountryCode, setUpdatePhoneCountryCode] = useState(phoneCountryCode);
   const [updateNewPassword, setUpdateNewPassword] = useState('');
+
 
   const processWallet = async () =>{
     setModalVisible(true)
@@ -151,6 +156,7 @@ const PersonalDetails = props => {
         phone: updatePhone,
         email: updateEmail,
         name: updateName,
+        phoneCountryCode:updatePhoneCountryCode,
         password: updateNewPassword,
       };
       const response = await editProfileService(data);
@@ -180,6 +186,12 @@ const PersonalDetails = props => {
           userAccountDataActions.setData({
             field: 'phone',
             data: user.phone,
+          }),
+        );
+        dispatch(
+          userAccountDataActions.setData({
+            field: 'phoneCountryCode',
+            data: user.phoneCountryCode,
           }),
         );
         dispatch(
@@ -265,15 +277,13 @@ const PersonalDetails = props => {
                       <Text style={styles.inputLabel}>Phone No</Text>
                     </View>
 
-                    <TextInput
-                      placeholder="+XX XXXX XXXX"
-                      style={styles.input}
-                      value={updatePhone}
-                      placeholderTextColor="#9c9c9c"
-                      onChangeText={text => setUpdatePhone(text)}
-                      keyboardType="phone-pad" // This makes the keyboard show numbers and symbols suitable for phone numbers
-                      // onChangeText={handlePhoneInputChange}
-                    />
+                    <CountryTelephoneField
+  countryCode={updatePhoneCountryCode}
+  setCountryCode={setUpdatePhoneCountryCode}
+  phoneNumber={updatePhone}
+  setPhoneNumber={setUpdatePhone}
+/>
+
                   </View>
                   <View style={styles.formGroup}>
                     <View style={styles.inputIconBox}>

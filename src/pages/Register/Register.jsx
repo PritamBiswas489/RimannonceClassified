@@ -2,145 +2,165 @@ import React, {useState} from 'react';
 import styles from './Style';
 import Icon from 'react-native-vector-icons/Feather';
 import CheckBox from '@react-native-community/checkbox';
-import {Text, View, TextInput, Pressable, RefreshControl, Alert} from 'react-native';
+import {
+  Text,
+  View,
+  TextInput,
+  Pressable,
+  RefreshControl,
+  Alert,
+} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { registrationService } from '../../services/signup.service';
-import { setAuthTokens } from '../../config/auth';
+import {registrationService} from '../../services/signup.service';
+import {setAuthTokens} from '../../config/auth';
 import NavigationDrawerHeader from '../../components/drawerHeader';
 
-import { useDispatch } from 'react-redux';
-import { userAccountDataActions } from '../../store/redux/user-account-data.redux';
+import {useDispatch} from 'react-redux';
+import {userAccountDataActions} from '../../store/redux/user-account-data.redux';
+import CountryTelephoneField from '../../components/CountryTelephoneField/CountryTelephoneField';
 
 const Register = props => {
-  const dispatch = useDispatch();  
+  const dispatch = useDispatch();
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const onRefresh = React.useCallback(() => {
-  }, []);
+  const onRefresh = React.useCallback(() => {}, []);
   const [isSelected, setSelection] = useState(false);
-  const [name,setName] =  useState('');
-  const [email,setEmail] =  useState('');
-  const [phoneNumber,setPhoneNumber] =  useState('');
-  const [password,setPassword] =  useState('');
-  const [confirmPassword,setConfirmPassword] =  useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneCountryCode, setphoneCountryCode] = useState('+1');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const registerProcess = async () => {
     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-    if(name.trim() === ''){
+    const passwordRegex =
+      /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    if (name.trim() === '') {
       Alert.alert('Error', 'Enter your name.', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
-    }else if(email.trim() === ''){
+    } else if (email.trim() === '') {
       Alert.alert('Error', 'Enter valid email address.', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
-    }else if (!emailPattern.test(email)) {
+    } else if (!emailPattern.test(email)) {
       Alert.alert('Error', 'Enter valid email address.', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
-    }else if(phoneNumber.trim() === ''){
+    } else if (phoneNumber.trim() === '') {
       Alert.alert('Error', 'Enter valid phone number.', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
-    }else if(password === '' || !passwordRegex.test(password)){
-      Alert.alert('Error', 'Password must be at least eight characters, one uppercase letter, one lowercase letter, one number and one special character.', [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ]);
-    }else if(password!== confirmPassword){
+    } else if (password === '' || !passwordRegex.test(password)) {
+      Alert.alert(
+        'Error',
+        'Password must be at least eight characters, one uppercase letter, one lowercase letter, one number and one special character.',
+        [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+      );
+    } else if (password !== confirmPassword) {
       Alert.alert('Error', 'Password and Confirm password must be same.', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
-    }else if (isSelected === false){
+    } else if (isSelected === false) {
       Alert.alert('Error', 'Select terms and conditions.', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
-    }else{
+    } else {
       setIsLoading(true);
       const data = {
         name: name,
         email: email,
+        phoneCountryCode: phoneCountryCode,
         phone: phoneNumber,
         password: password,
         confirmPassword: confirmPassword,
         role: 'USER',
       };
       const response = await registrationService(data);
-			if (response.data.status === 200) {
-          const { accessToken, refreshToken, user } = response.data.data;
-          setAuthTokens(accessToken, refreshToken);
-          dispatch(
-            userAccountDataActions.setData({
-              field: "id",
-              data:  user.id,
-            })
-          );
-          dispatch(
-            userAccountDataActions.setData({
-              field: "name",
-              data:  user.name,
-            })
-          );
-          dispatch(
-            userAccountDataActions.setData({
-               field: "email",
-               data:  user.email,
-            })
-          );
-          dispatch(
-            userAccountDataActions.setData({
-               field: "phone",
-               data:  user.phone,
-            })
-          );
-          dispatch(
-            userAccountDataActions.setData({
-               field: "avatar",
-               data:  user.avatar,
-            })
-          );
-          dispatch(
-            userAccountDataActions.setData({
-               field: "isPromoted",
-               data:  user.isPromoted,
-            })
-          );
-          dispatch(
-            userAccountDataActions.setData({
-               field: "isLoggedIn",
-               data:  true,
-            })
-          );
-           
-          setIsLoading(false);
-          Alert.alert('Success', 'Account successfully registered and logged in', [
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
-          ]);
-          setSelection(false);
-          setName('');
-          setEmail('');
-          setPhoneNumber('');
-          setPassword('');
-          setConfirmPassword('');
-          props.navigation.navigate('PersonalDetails');
-			} else {
-          setIsLoading(false);
-          Alert.alert('Error', response.data.error?.message, [
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
-          ]);
-			}
-      console.log({name, email,phoneNumber,password});
+      if (response.data.status === 200) {
+        const {accessToken, refreshToken, user} = response.data.data;
+        setAuthTokens(accessToken, refreshToken);
+        dispatch(
+          userAccountDataActions.setData({
+            field: 'id',
+            data: user.id,
+          }),
+        );
+        dispatch(
+          userAccountDataActions.setData({
+            field: 'name',
+            data: user.name,
+          }),
+        );
+        dispatch(
+          userAccountDataActions.setData({
+            field: 'email',
+            data: user.email,
+          }),
+        );
+        dispatch(
+          userAccountDataActions.setData({
+            field: 'phone',
+            data: user.phone,
+          }),
+        );
+        dispatch(
+          userAccountDataActions.setData({
+            field: 'phoneCountryCode',
+            data: user.phoneCountryCode,
+          }),
+        );
+        dispatch(
+          userAccountDataActions.setData({
+            field: 'avatar',
+            data: user.avatar,
+          }),
+        );
+        dispatch(
+          userAccountDataActions.setData({
+            field: 'isPromoted',
+            data: user.isPromoted,
+          }),
+        );
+        dispatch(
+          userAccountDataActions.setData({
+            field: 'isLoggedIn',
+            data: true,
+          }),
+        );
+
+        setIsLoading(false);
+        Alert.alert(
+          'Success',
+          'Account successfully registered and logged in',
+          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+        );
+        setSelection(false);
+        setName('');
+        setEmail('');
+        setPhoneNumber('');
+        setPassword('');
+        setConfirmPassword('');
+        props.navigation.navigate('Home');
+      } else {
+        setIsLoading(false);
+        Alert.alert('Error', response.data.error?.message, [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+      }
+      console.log({name, email, phoneNumber, password});
     }
-  }
+  };
 
   return (
     <>
       <SafeAreaView style={styles.container}>
         <GestureHandlerRootView>
-        <NavigationDrawerHeader navigationProps={props.navigation} />
+          <NavigationDrawerHeader navigationProps={props.navigation} />
           <ScrollView
             contentContainerStyle={styles.scrollView}
             refreshControl={
@@ -181,12 +201,11 @@ const Register = props => {
                       <Icon name="phone" style={styles.labelIcon} />
                       <Text style={styles.inputLabel}>Phone No.</Text>
                     </View>
-                    <TextInput
-                      placeholder=""
-                      style={styles.input}
-                      keyboardType="phone-pad"
-                      value={phoneNumber}
-                      onChangeText={text => setPhoneNumber(text)}
+                    <CountryTelephoneField
+                      countryCode={phoneCountryCode}
+                      setCountryCode={setphoneCountryCode}
+                      phoneNumber={phoneNumber}
+                      setPhoneNumber={setPhoneNumber}
                     />
                   </View>
                   <View style={styles.formGroup}>

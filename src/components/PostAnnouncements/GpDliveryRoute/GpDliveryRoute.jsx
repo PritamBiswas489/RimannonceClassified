@@ -24,6 +24,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { useDispatch } from 'react-redux';
 import { userAccountDataActions } from '../../../store/redux/user-account-data.redux';
 import WalletModal from '../../WalletModal/WalletModal';
+import CountryTelephoneField from '../../CountryTelephoneField/CountryTelephoneField';
 
 export default function GpDliveryRoute() {
   const categories = useSelector(state => state['settingData'].categories)
@@ -31,12 +32,14 @@ export default function GpDliveryRoute() {
   const subLocations = useSelector(state => state['settingData'].subLocations)
   const [isModalVisible, setModalVisible] = useState(false);
   const isPromoted = useSelector(state => state['userAccountData'].isPromoted);
+  const userAccData = useSelector(state => state['userAccountData']);
   const dispatch = useDispatch();
   const [testData, setTestData] = useState(false); 
   const [isLoading, setIsLoading] = useState(false);
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [phoneCountryCode, setphoneCountryCode] = useState('+1');
   const [contactNumber, setContactNumber] = useState('');
 
   const [locationId, setSelectedLocation] = useState(null);
@@ -65,11 +68,13 @@ export default function GpDliveryRoute() {
       setDescription(
         `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
       );
-      setContactNumber('+919830990065');
+       
       setGpDeliveryOrigin('B.P. 196. Nouakchott');
       setGpDeliveryDestination('B.P. 250. Nouakchott');
       setSelectedLocation(8); 
     }
+    setContactNumber(userAccData?.phone);
+    setphoneCountryCode(userAccData?.phoneCountryCode);
     setCategory('gp_delivery');
   }, []);
 
@@ -230,6 +235,8 @@ export default function GpDliveryRoute() {
     formData.append('title', title);
     formData.append('category', category);
     formData.append('description', description);
+    
+    formData.append('phoneCountryCode', phoneCountryCode);
     formData.append('contactNumber', contactNumber);
 
     if (category === 'gp_delivery') {
@@ -481,12 +488,11 @@ export default function GpDliveryRoute() {
                     Contact number <Text style={styles.redAsterisk}>*</Text>
                   </Text>
                 </View>
-                <TextInput
-                  placeholder="Enter contact number"
-                  style={styles.input}
-                  placeholderTextColor="#9c9c9c"
-                  value={contactNumber}
-                  onChangeText={text => setContactNumber(text)}
+                <CountryTelephoneField
+                  countryCode={phoneCountryCode}
+                  setCountryCode={setphoneCountryCode}
+                  phoneNumber={contactNumber}
+                  setPhoneNumber={setContactNumber}
                 />
               </View>
 
