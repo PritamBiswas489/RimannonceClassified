@@ -227,7 +227,9 @@ const GpDelivery = props => {
 
   return (
     <SafeAreaView style={styles.body}>
-      <NavigationDrawerHeader navigationProps={props.navigation} />
+      <View style={styles.header}>
+        <Text style={styles.headerText}>GP- Delivery : GP delivery</Text>
+      </View>
       <View style={styles.listTop}>
         <SearchBar
           searchText={searchText}

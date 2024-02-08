@@ -18,7 +18,7 @@ import React, {
 } from 'react';
 import styles from './Style';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {getListGlobal} from '../../services/announcements.service';
 
 import {Dropdown} from 'react-native-element-dropdown';
@@ -38,8 +38,11 @@ import SkeletonLoader from '../../components/SkeletonLoader/SkeletonLoader';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import CategoryButton from '../../components/CategoryButton/CategoryButton';
 import { limitWords } from '../../config/utility';
+import { linkingIdActions } from '../../store/redux/linking-id.redux';
 
 const Global = props => {
+  const dispatch = useDispatch();
+  const linkingAnnouncementId = useSelector(state => state['linkingId'].id);
   const categories = useSelector(state => state['settingData'].categories);
   const locations = useSelector(state => state['settingData'].locations);
   const [refreshing, setRefreshing] = useState(false);
@@ -53,6 +56,13 @@ const Global = props => {
   const [searchText, setSearchText] = useState('');
   const [searchLocationIds, setSearchLocationIds] = useState('');
   const initialRender = useRef(true);
+
+
+  useEffect(()=>{
+    if(linkingAnnouncementId > 0){
+      navigation.navigate('Announcement Details', {id:linkingAnnouncementId});
+    }
+  },[linkingAnnouncementId])
 
   const navigation = useNavigation();
 
@@ -227,7 +237,9 @@ const Global = props => {
 
   return (
     <SafeAreaView style={styles.body}>
-      <NavigationDrawerHeader navigationProps={props.navigation} />
+       <View style={styles.header}>
+        <Text style={styles.headerText}>Global : unverified user announces</Text>
+      </View>
       <View style={styles.listTop}>
         <SearchBar
           searchText={searchText}

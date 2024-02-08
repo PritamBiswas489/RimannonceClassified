@@ -118,12 +118,12 @@ const styles = StyleSheet.create({
      
   },
   iconContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: 'row-reverse',
+    // justifyContent: 'space-between',
     marginBottom:10
   },
   icon: {
-    marginRight: 10,
+    marginRight: 20,
   },
 });
 export default styles;

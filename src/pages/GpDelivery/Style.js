@@ -158,6 +158,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
      
   },
+  header: {
+    backgroundColor: '#08A7EB', // blue background color
+    padding: 10,
+    alignItems: 'center',
+    marginBottom:10
+  },
+  headerText: {
+    color: '#ffffff', // white text color
+    fontSize: 20,
+  },
 });
 
 export default styles;

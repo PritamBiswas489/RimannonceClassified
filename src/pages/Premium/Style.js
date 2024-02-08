@@ -161,7 +161,17 @@ const styles = StyleSheet.create({
   },
   dropdown:{
     color:'black'
-  }
+  },
+  header: {
+    backgroundColor: '#08A7EB', // blue background color
+    padding: 10,
+    alignItems: 'center',
+    marginBottom:10
+  },
+  headerText: {
+    color: '#ffffff', // white text color
+    fontSize: 20,
+  },
 });
 
 export default styles;

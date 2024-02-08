@@ -227,7 +227,9 @@ const Premium = props => {
 
   return (
     <SafeAreaView style={styles.body}>
-      <NavigationDrawerHeader navigationProps={props.navigation} />
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Premium : verified user announces</Text>
+      </View>
       <View style={styles.listTop}>
         <SearchBar
           searchText={searchText}

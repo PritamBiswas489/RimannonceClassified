@@ -23,6 +23,8 @@ import { useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import OwnerContact from '../../components/ContactUserModal/OwnerContact';
 import { getDateString } from '../../config/utility';
+import ReportAnnouncement from '../../components/ReportAnnouncement/ReportAnnouncement';
+import { getAppUrl } from '../../config/utility';
 
 
 
@@ -38,6 +40,11 @@ export default function ProductDetails(props) {
   const currentUserid = useSelector(state => state['userAccountData'].id);
   const [addedUnderFav,setAddedUnderFav] = useState(false);
   const [spinnberIsLoading,setSpinnberIsLoading] = useState(false);
+  const [isAnnModalVisible,setAnnModalVisible] =  useState(false);
+
+  const onCloseModal = () =>{
+    setAnnModalVisible(false);
+  }
 
    
   const getDetails = async () =>{
@@ -92,11 +99,14 @@ export default function ProductDetails(props) {
   },[addedUnderFav])
  
   const onHandleShare = async () => {
+    const deeplink = `${getAppUrl()}/share/${id}`;
+    const description =  announcement?.description;
     try {
       const result = await Share.share({
           message:
-          announcement?.description,
-          title: announcement?.title
+          `${description}: ${deeplink}`,
+          title: announcement?.title,
+          
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -128,6 +138,14 @@ export default function ProductDetails(props) {
       Alert.alert('Process failed')
     }
     
+  }
+  const onHandleReportModal = () =>{
+    if(parseInt(currentUserid) ===  0){
+      Alert.alert('You have to log in to report on this announcement')
+      return;
+    }
+    setAnnModalVisible(true)
+
   }
   
 
@@ -173,9 +191,12 @@ export default function ProductDetails(props) {
                 </View>}
                 <View style={styles.descriptionDetails}>
                 <View style={styles.iconContainer}>
+                  
+                  
+                  <Icon name="exclamation-triangle" onPress={onHandleReportModal} size={20} color="red" style={styles.icon} solid/>
+                  <Icon name="share" onPress={onHandleShare} size={20} color="green" style={styles.icon} />
                   {addedUnderFav && !loaderCheckFav && <Icon onPress={processAddFav} name="heart" size={20} color="red" style={styles.icon} solid />}
                   {!addedUnderFav && !loaderCheckFav && <Icon onPress={processAddFav} name="heart" size={20} color="red" style={styles.icon}   />}
-                  <Icon name="share" onPress={onHandleShare} size={20} color="green" style={styles.icon} />
                 </View>
                   <Text style={styles.descTitle}>{announcement?.title}</Text>
                   <Text style={styles.descSubTitle}>{getCategory(announcement.category)?.name}</Text>
@@ -208,6 +229,8 @@ export default function ProductDetails(props) {
         textStyle={{ color: '#FFF' }}
       />
       </SafeAreaView>
+
+      <ReportAnnouncement id={id} isVisible={isAnnModalVisible} onClose={onCloseModal}/>
       
       {/* { isModalVisible && <ContactUserModal contactnumber={announcement?.contactNumber} toggleModal = { () =>{
     setModalVisible(false);

@@ -35,3 +35,14 @@ export const closeAnnouncement =  async (id) =>{
 
 
 }
+
+export const reportAnnouncement =  async (data) =>{
+	try {
+		const response = await  api.post(`/auth/announcement/report-listing`,data);
+		return response;
+	} catch (error) {
+		return error;
+	}
+
+
+}

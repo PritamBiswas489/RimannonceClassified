@@ -22,6 +22,7 @@ import Premium from '../pages/Premium/Premium';
 import Apartment from '../pages/Apartment/Apartment';
 import GpDelivery from '../pages/GpDelivery/GpDelivery';
 import EditAnnouncement from '../pages/EditAnnouncement/EditAnnouncement';
+import SplashScreen from '../pages/SplashScreen/SplashScreen';
  
 import SuccessGlobal from '../pages/SuccessPages/SuccessGlobal';
 import SuccessApartment from '../pages/SuccessPages/SuccessApartment';
@@ -242,6 +243,7 @@ const Routers = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+       
         <Stack.Screen
           name="Root"
           component={Tabs}

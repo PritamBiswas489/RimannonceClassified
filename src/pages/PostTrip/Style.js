@@ -172,5 +172,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#27A2DA',
   
   },
+ 
 });
 export default styles;
