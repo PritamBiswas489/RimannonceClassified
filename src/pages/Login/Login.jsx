@@ -120,6 +120,12 @@ const Login = props => {
                data:  user.walletAmount,
             })
           );
+          dispatch(
+            userAccountDataActions.setData({
+               field: "language",
+               data:  user.language,
+            })
+          );
 
           setIsLoading(false);
           Alert.alert('Success', 'Successfully logged in', [

@@ -8,7 +8,7 @@ import {
   Image,
   Alert,
   TouchableOpacity,
-  Button
+  Button,
 } from 'react-native';
 import styles from './Style';
 
@@ -18,8 +18,9 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView, GestureHandlerRootView} from 'react-native-gesture-handler';
 import profile from '../../assets/images/profile.png';
 import {useSelector} from 'react-redux';
+import {langlist} from '../../config/languages';
+import RNPickerSelect from 'react-native-picker-select';
 
- 
 import Spinner from 'react-native-loading-spinner-overlay';
 import {
   editProfileService,
@@ -31,24 +32,30 @@ import AvatarChange from '../../components/AvatarChange/AvatarChange';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import WalletModal from '../../components/WalletModal/WalletModal';
-import { getUserWalletAmount } from '../../services/auth.service';
+import {getUserWalletAmount} from '../../services/auth.service';
 import TermsAndCondition from '../TermsAndCondition/TermsAndCondition';
-import { deleteAuthTokens } from '../../config/auth';
-import { useNavigation } from '@react-navigation/native';
-import { deleteProfile } from '../../services/profile.service';
+import {deleteAuthTokens} from '../../config/auth';
+import {useNavigation} from '@react-navigation/native';
+import {deleteProfile} from '../../services/profile.service';
 import CountryTelephoneField from '../CountryTelephoneField/CountryTelephoneField';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
 
 const PersonalDetails = props => {
+  const ulang = useSelector(state => state['userAccountData'].language);
+  const langs = ulang === 'fr' ? fr_lang.languages : en_lang.languages;
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [isModalVisible, setModalVisible] = useState(false);
-  const [tcModalVisible, setTcModalVisible] =  useState(false);
+  const [tcModalVisible, setTcModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const name = useSelector(state => state['userAccountData'].name);
   const email = useSelector(state => state['userAccountData'].email);
   const phone = useSelector(state => state['userAccountData'].phone);
-  const phoneCountryCode = useSelector(state => state['userAccountData'].phoneCountryCode);
-
+  const language = useSelector(state => state['userAccountData'].language);
+  const phoneCountryCode = useSelector(
+    state => state['userAccountData'].phoneCountryCode,
+  );
 
   const walletAmount = useSelector(
     state => state['userAccountData'].walletAmount,
@@ -57,54 +64,58 @@ const PersonalDetails = props => {
   const [updateName, setUpdateName] = useState(name);
   const [updateEmail, setUpdateEmail] = useState(email);
   const [updatePhone, setUpdatePhone] = useState(phone);
-  const [updatePhoneCountryCode, setUpdatePhoneCountryCode] = useState(phoneCountryCode);
+  const [updatePhoneCountryCode, setUpdatePhoneCountryCode] =
+    useState(phoneCountryCode);
   const [updateNewPassword, setUpdateNewPassword] = useState('');
 
+  const [updateLanguage, setUpdateLanguage] = useState(language);
 
-  const processWallet = async () =>{
-    setModalVisible(true)
+  const processWallet = async () => {
+    setModalVisible(true);
     const response = await getUserWalletAmount();
-    if(response?.data?.status === 200){
-      if(response?.data?.data?.walletAmount){
+    if (response?.data?.status === 200) {
+      if (response?.data?.data?.walletAmount) {
         // console.log(response?.data?.data?.walletAmount);
-        if(parseFloat(walletAmount) !== parseFloat(response?.data?.data?.walletAmount)){
-          Alert.alert('Your wallet updated');
+        if (
+          parseFloat(walletAmount) !==
+          parseFloat(response?.data?.data?.walletAmount)
+        ) {
+          Alert.alert(langs?.Your_wallet_updated);
         }
         dispatch(
           userAccountDataActions.setData({
-             field: "walletAmount",
-             data:  response?.data?.data?.walletAmount,
-          })
+            field: 'walletAmount',
+            data: response?.data?.data?.walletAmount,
+          }),
         );
       }
     }
-  }
-  const toggleModal = () =>{
+  };
+  const toggleModal = () => {
     setModalVisible(false);
-  } 
-  const toggleTcModal = () =>{
-     setTcModalVisible(false);
-  }
-  const logoutAfterDeleteAccount = async ()=>{
+  };
+  const toggleTcModal = () => {
+    setTcModalVisible(false);
+  };
+  const logoutAfterDeleteAccount = async () => {
     setIsLoading(true);
     const response = await deleteProfile();
     //console.log(response?.data?.data)
-    if(response?.data?.status === 200){
-        await deleteAuthTokens(); 
-        dispatch(userAccountDataActions.resetState());
-        navigation.navigate('Login');
-    }else{
+    if (response?.data?.status === 200) {
+      await deleteAuthTokens();
+      dispatch(userAccountDataActions.resetState());
+      navigation.navigate('Login');
+    } else {
       setIsLoading(false);
-      Alert.alert('ERROR','Unable to delete profile.Try again later')
+      Alert.alert('ERROR', 'Unable to delete profile.Try again later');
     }
-
-  }
-  const deleteAccount = () =>{
+  };
+  const deleteAccount = () => {
     //  Alert.alert('Delete Account')
-     
-     Alert.alert(
-      'Confirmation',
-      'Are you sure you want to delete your profile permanently?',
+
+    Alert.alert(
+      langs?.Confirmation,
+      langs?.con1,
       [
         {
           text: 'Cancel',
@@ -117,37 +128,37 @@ const PersonalDetails = props => {
           },
         },
       ],
-      { cancelable: false }
+      {cancelable: false},
     );
-  }
+  };
 
   const updateProfileData = async () => {
     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex =
       /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
     if (updateName.trim() === '') {
-      Alert.alert('Error', 'Name field required.', [
+      Alert.alert('Error', langs?.Name_field_required, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (updateEmail.trim() === '') {
-      Alert.alert('Error', 'Enter valid email address.', [
+      Alert.alert('Error', langs?.Enter_valid_email_address, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (!emailPattern.test(updateEmail)) {
-      Alert.alert('Error', 'Enter valid email address.', [
+      Alert.alert('Error', langs?.Enter_valid_email_address, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (updatePhone.trim() === '') {
-      Alert.alert('Error', 'Enter valid phone number.', [
+      Alert.alert('Error', langs?.Enter_valid_phone_number, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (
       updateNewPassword !== '' &&
       !passwordRegex.test(updateNewPassword)
     ) {
-      Alert.alert(
+      Alert.alert( 
         'Error',
-        'Password must be at least eight characters, one uppercase letter, one lowercase letter, one number and one special character.',
+         langs?.passErrorOne,
         [{text: 'OK', onPress: () => console.log('OK Pressed')}],
       );
     } else {
@@ -156,7 +167,8 @@ const PersonalDetails = props => {
         phone: updatePhone,
         email: updateEmail,
         name: updateName,
-        phoneCountryCode:updatePhoneCountryCode,
+        language: updateLanguage,
+        phoneCountryCode: updatePhoneCountryCode,
         password: updateNewPassword,
       };
       const response = await editProfileService(data);
@@ -200,6 +212,12 @@ const PersonalDetails = props => {
             data: user.avatar,
           }),
         );
+        dispatch(
+          userAccountDataActions.setData({
+            field: 'language',
+            data: user.language,
+          }),
+        );
         setIsLoading(false);
         setUpdateNewPassword('');
         Alert.alert(
@@ -223,136 +241,179 @@ const PersonalDetails = props => {
       setRefreshing(false);
     }, 2000);
   }, []);
+
+  const langItems = [];
+ 
+  for (let key in langlist) {
+    langItems.push({label: langlist[key], value: key});
+  }
+   
   return (
     <>
-      
-        <GestureHandlerRootView>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.scrollView}>
-            <View style={styles.container}>
-              <View style={styles.rowContainer}>
-                <View style={styles.walletContainer}>
-                  <TouchableOpacity onPress={processWallet}>
-                    <View style={styles.walletInnerContainer}>
-                      <Icon
-                        name="credit-card"
-                        
-                        style={styles.walletIcon}
-                      />
-                      <Text style={styles.walletAmount}>${walletAmount}</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-
-                <TouchableOpacity onPress={() =>  navigation.navigate('Logout')}>
-                  <View style={styles.logoutContainer}>
-                    <MaterialIcons name="logout" style={styles.logoutIcon} />
-                    <Text style={styles.logoutText}>Logout</Text>
+      <GestureHandlerRootView>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.scrollView}>
+          <View style={styles.container}>
+            <View style={styles.rowContainer}>
+              <View style={styles.walletContainer}>
+                <TouchableOpacity onPress={processWallet}>
+                  <View style={styles.walletInnerContainer}>
+                    <Icon name="credit-card" style={styles.walletIcon} />
+                    <Text style={styles.walletAmount}>${walletAmount}</Text>
                   </View>
                 </TouchableOpacity>
               </View>
 
-              <View style={styles.loginTop}>
-                <AvatarChange />
-                <View style={styles.formWrap}>
-                  <View style={styles.formGroup}>
-                    <View style={styles.inputIconBox}>
-                      <Icon name="user" style={styles.labelIcon} />
-                      <Text style={styles.inputLabel}>Full Name</Text>
-                    </View>
+              <TouchableOpacity onPress={() => navigation.navigate('Logout')}>
+                <View style={styles.logoutContainer}>
+                  <MaterialIcons name="logout" style={styles.logoutIcon} />
+                  <Text style={styles.logoutText}>{langs?.Logout}</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
 
-                    <TextInput
-                      placeholder="Enter Your name"
-                      style={styles.input}
-                      value={updateName}
-                      onChangeText={text => setUpdateName(text)}
-                      placeholderTextColor="#9c9c9c"
-                    />
-                  </View>
-                  <View style={styles.formGroup}>
-                    <View style={styles.inputIconBox}>
-                      <Icon name="phone" style={styles.labelIcon} />
-                      <Text style={styles.inputLabel}>Phone No</Text>
-                    </View>
-
-                    <CountryTelephoneField
-  countryCode={updatePhoneCountryCode}
-  setCountryCode={setUpdatePhoneCountryCode}
-  phoneNumber={updatePhone}
-  setPhoneNumber={setUpdatePhone}
-/>
-
-                  </View>
-                  <View style={styles.formGroup}>
-                    <View style={styles.inputIconBox}>
-                      <SimpleLineIcons
-                        name="envelope"
-                        style={styles.labelIcon}
-                      />
-                      <Text style={styles.inputLabel}>E-mail</Text>
-                    </View>
-
-                    <TextInput
-                      placeholder="Enter Your e-mail"
-                      style={styles.input}
-                      value={updateEmail}
-                      onChangeText={text => setUpdateEmail(text)}
-                      placeholderTextColor="#9c9c9c"
-                    />
+            <View style={styles.loginTop}>
+              <AvatarChange />
+              <View style={styles.formWrap}>
+                <View style={styles.formGroup}>
+                  <View style={styles.inputIconBox}>
+                    <Icon name="user" style={styles.labelIcon} />
+                    <Text style={styles.inputLabel}>{langs?.Full_Name}</Text>
                   </View>
 
-                  <View style={styles.formGroup}>
-                    <View style={styles.inputIconBox}>
-                      <SimpleLineIcons name="lock" style={styles.labelIcon} />
-                      <Text style={styles.inputLabel}>New password</Text>
-                    </View>
-                    <TextInput
-                      style={styles.input}
-                      placeholder="***********"
-                      secureTextEntry={true}
-                      value={updateNewPassword}
-                      onChangeText={text => setUpdateNewPassword(text)}
-                      placeholderTextColor="#9c9c9c"
-                    />
-                  </View>
-                  <View style={[styles.formGroup, styles.submit]}>
-                    <Pressable
-                      style={styles.tcInBtn}
-                      onPress={()=>setTcModalVisible(true)}>
-                      <Text style={styles.text}>Terms and conditions</Text>
-                    </Pressable>
-                  </View>
-                  <View style={[styles.formGroup, styles.submit]}>
-                    <Pressable
-                      style={styles.signInBtn}
-                      onPress={() => updateProfileData()}>
-                      <Text style={styles.text}>Update Details</Text>
-                    </Pressable>
+                  <TextInput
+                    placeholder={langs?.Enter_Your_name}
+                    style={styles.input}
+                    value={updateName}
+                    onChangeText={text => setUpdateName(text)}
+                    placeholderTextColor="#9c9c9c"
+                  />
+                </View>
+                <View style={styles.formGroup}>
+                  <View style={styles.inputIconBox}>
+                    <Icon name="phone" style={styles.labelIcon} />
+                    <Text style={styles.inputLabel}>{langs.Phone_No}</Text>
                   </View>
 
-                  <View style={[styles.formGroup, styles.submit]}>
-                    <Pressable
-                      style={styles.deleteInBtn}
-                      onPress={() => deleteAccount()}>
-                      <Text style={styles.text}>Delete Account</Text>
-                    </Pressable>
+                  <CountryTelephoneField
+                    countryCode={updatePhoneCountryCode}
+                    setCountryCode={setUpdatePhoneCountryCode}
+                    phoneNumber={updatePhone}
+                    setPhoneNumber={setUpdatePhone}
+                  />
+                </View>
+                <View style={styles.formGroup}>
+                  <View style={styles.inputIconBox}>
+                    <SimpleLineIcons name="envelope" style={styles.labelIcon} />
+                    <Text style={styles.inputLabel}>{langs?.E_mail}</Text>
                   </View>
+
+                  <TextInput
+                    placeholder={langs?.Enter_Your_e_mail}
+                    style={styles.input}
+                    value={updateEmail}
+                    onChangeText={text => setUpdateEmail(text)}
+                    placeholderTextColor="#9c9c9c"
+                  />
+                </View>
+
+                <View style={styles.formGroup}>
+                <View style={styles.inputIconBox}>
+                  <Text style={styles.inputLabel}>
+                  {langs?.App_language} <Text style={styles.redAsterisk}>*</Text>
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    borderWidth: 1,
+                    borderColor: '#ededed',
+                    borderRadius: 8,
+                  }}>
+                  <RNPickerSelect
+                    placeholder={{
+                      label: langs?.Select_language,
+                      value: null,
+                      color: '#9EA0A4',
+                    }}
+                    items={langItems}
+                    onValueChange={value => setUpdateLanguage(value)}
+                    style={{
+                      inputAndroid: {
+                        fontSize: 16,
+                        paddingHorizontal: 10,
+                        paddingVertical: 8,
+                        borderWidth: 1,
+                        borderColor: 'black',
+                        borderRadius: 8,
+                        color: 'black',
+                      },
+                      inputIOS: {
+                        fontSize: 16,
+                        paddingHorizontal: 10,
+                        paddingVertical: 12,
+                        borderWidth: 1,
+                        borderColor: 'gray',
+                        borderRadius: 8,
+                        color: 'black',
+                      },
+                    }}
+                    value={updateLanguage}
+                  />
+                </View>
+              </View>
+
+                <View style={styles.formGroup}>
+                  <View style={styles.inputIconBox}>
+                    <SimpleLineIcons name="lock" style={styles.labelIcon} />
+                    <Text style={styles.inputLabel}>{langs?.New_password}</Text>
+                  </View>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="***********"
+                    secureTextEntry={true}
+                    value={updateNewPassword}
+                    onChangeText={text => setUpdateNewPassword(text)}
+                    placeholderTextColor="#9c9c9c"
+                  />
+                </View>
+                <View style={[styles.formGroup, styles.submit]}>
+                  <Pressable
+                    style={styles.tcInBtn}
+                    onPress={() => setTcModalVisible(true)}>
+                    <Text style={styles.text}>{langs?.Terms_and_conditions}</Text>
+                  </Pressable>
+                </View>
+                <View style={[styles.formGroup, styles.submit]}>
+                  <Pressable
+                    style={styles.signInBtn}
+                    onPress={() => updateProfileData()}>
+                    <Text style={styles.text}>{langs?.Update_Details}</Text>
+                  </Pressable>
+                </View>
+
+                <View style={[styles.formGroup, styles.submit]}>
+                  <Pressable
+                    style={styles.deleteInBtn}
+                    onPress={() => deleteAccount()}>
+                    <Text style={styles.text}>{langs?.Delete_Account}</Text>
+                  </Pressable>
                 </View>
               </View>
             </View>
-          </ScrollView>
-        </GestureHandlerRootView>
-        <Spinner
-          visible={isLoading}
-          textContent={'Loading...'}
-          textStyle={{color: '#FFF'}}
-        />
-       
-      { isModalVisible && <WalletModal  toggleModal = {toggleModal} /> }
+          </View>
+        </ScrollView>
+      </GestureHandlerRootView>
+      <Spinner
+        visible={isLoading}
+        textContent={'Loading...'}
+        textStyle={{color: '#FFF'}}
+      />
 
-      { tcModalVisible && <TermsAndCondition  toggleTcModal = {toggleTcModal} /> }
+      {isModalVisible && <WalletModal toggleModal={toggleModal} />}
+
+      {tcModalVisible && <TermsAndCondition toggleTcModal={toggleTcModal} />}
     </>
   );
 };

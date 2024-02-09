@@ -21,8 +21,14 @@ import {useSelector} from 'react-redux';
 import CategoryButton from '../../CategoryButton/CategoryButton';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import CountryTelephoneField from '../../CountryTelephoneField/CountryTelephoneField';
+import * as fr_lang from '../../../languages/lang_fr';
+import * as en_lang from '../../../languages/lang_en';
+ 
+ 
 
 export default function GlobalRoute(props) {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
   const categories = useSelector(state => state['settingData'].categories);
   const locations = useSelector(state => state['settingData'].locations);
   const subLocations = useSelector(state => state['settingData'].subLocations);
@@ -104,32 +110,32 @@ export default function GlobalRoute(props) {
     let valid = true;
     if (category.trim() === '') {
       valid = false;
-      Alert.alert('Error', 'Select category' || 'Failed', [
+      Alert.alert('Error', langs?.Select_category || 'Failed', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (title.trim() === '') {
       valid = false;
-      Alert.alert('Error', 'Enter title' || 'Failed', [
+      Alert.alert('Error', langs?.Enter_title || 'Failed', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (location.trim() === '') {
       valid = false;
-      Alert.alert('Error', 'Enter location' || 'Failed', [
+      Alert.alert('Error', langs?.Enter_location || 'Failed', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (subLocationsSelected.length > 0 && subLocation === '') {
       valid = false;
-      Alert.alert('Error', 'Select sublocation' || 'Failed', [
+      Alert.alert('Error', langs?.Select_sublocation || 'Failed', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (contactNumber.trim() === '') {
       valid = false;
-      Alert.alert('Error', 'Enter contact number' || 'Failed', [
+      Alert.alert('Error', langs?.Enter_contact_number || 'Failed', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (description.trim() === '') {
       valid = false;
-      Alert.alert('Error', 'Enter description' || 'Failed', [
+      Alert.alert('Error', langs?.Enter_description || 'Failed', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     }
@@ -218,7 +224,7 @@ export default function GlobalRoute(props) {
               <View style={styles.formGroup}>
                 <View>
                   <Text style={styles.inputLabel}>
-                    Select Catgeory <Text style={styles.redAsterisk}>*</Text>
+                    {langs?.Select_Catgeory} <Text style={styles.redAsterisk}>*</Text>
                   </Text>
                   <View style={styles.radioButtonContainer}>
                     <FlatList
@@ -252,11 +258,11 @@ export default function GlobalRoute(props) {
               <View style={styles.formGroup}>
                 <View style={styles.inputIconBox}>
                   <Text style={styles.inputLabel}>
-                    Title <Text style={styles.redAsterisk}>*</Text>
+                    {langs?.Title} <Text style={styles.redAsterisk}>*</Text>
                   </Text>
                 </View>
                 <TextInput
-                  placeholder="Enter Title of the announcement"
+                  placeholder={langs?.placeHolder1}
                   style={styles.input}
                   placeholderTextColor="#9c9c9c"
                   value={title}
@@ -266,7 +272,7 @@ export default function GlobalRoute(props) {
               <View style={styles.formGroup}>
                 <View style={styles.inputIconBox}>
                   <Text style={styles.inputLabel}>
-                    Location <Text style={styles.redAsterisk}>*</Text>
+                    {langs?.Location} <Text style={styles.redAsterisk}>*</Text>
                   </Text>
                 </View>
                 <View
@@ -277,7 +283,7 @@ export default function GlobalRoute(props) {
                   }}>
                   <RNPickerSelect
                     placeholder={{
-                      label: 'Select an location of announcement',
+                      label: langs?.placeHolder2,
                       value: null,
                       color: '#9EA0A4',
                     }}
@@ -310,7 +316,7 @@ export default function GlobalRoute(props) {
               {subLocationsSelected.length > 0 && (
                 <View style={styles.formGroup}>
                   <View style={styles.inputIconBox}>
-                    <Text style={styles.inputLabel}>Sub Location</Text>
+                    <Text style={styles.inputLabel}>{langs?.Sub_Location}</Text>
                   </View>
                   <View
                     style={{
@@ -320,7 +326,7 @@ export default function GlobalRoute(props) {
                     }}>
                     <RNPickerSelect
                       placeholder={{
-                        label: 'Select an sub location',
+                        label: langs?.placeHolder3,
                         value: null,
                         color: '#9EA0A4',
                       }}
@@ -355,7 +361,7 @@ export default function GlobalRoute(props) {
               <View style={styles.formGroup}>
                 <View style={styles.inputIconBox}>
                   <Text style={styles.inputLabel}>
-                    Contact number <Text style={styles.redAsterisk}>*</Text>
+                    {langs?.Contact_number} <Text style={styles.redAsterisk}>*</Text>
                   </Text>
                 </View>
 
@@ -370,11 +376,11 @@ export default function GlobalRoute(props) {
               <View style={styles.formGroup}>
                 <View style={styles.inputIconBox}>
                   <Text style={styles.inputLabel}>
-                    Description <Text style={styles.redAsterisk}>*</Text>
+                    {langs?.Description} <Text style={styles.redAsterisk}>*</Text>
                   </Text>
                 </View>
                 <TextInput
-                  placeholder="Enter Description of the anouncement"
+                  placeholder={langs?.placeHolder4}
                   style={styles.textArea}
                   placeholderTextColor="#9c9c9c"
                   multiline={true}
@@ -385,13 +391,13 @@ export default function GlobalRoute(props) {
                 />
               </View>
             </View>
-            <AnnouncementImages images={images} setImages={setImages} />
+            <AnnouncementImages title={langs?.Upload_images} images={images} setImages={setImages} />
             <AnnouncementVideos videos={videos} setVideos={setVideos} />
             <View style={[styles.formGroup, styles.dFlexCenter]}>
               <Pressable
                 style={styles.addFlyerBtn}
                 onPress={() => publishAnnouncement()}>
-                <Text style={styles.publish}>Publish</Text>
+                <Text style={styles.publish}>{langs?.Publish}</Text>
               </Pressable>
             </View>
           </View>

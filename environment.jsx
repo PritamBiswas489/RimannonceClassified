@@ -1,5 +1,5 @@
 export const env = {
-  type: 'prod', //prod staging dev
+  type: 'dev', //prod staging dev
   appUrls: {
     dev: {
       apiUrl: 'http://192.168.29.117:4000',

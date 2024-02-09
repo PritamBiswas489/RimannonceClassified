@@ -3,8 +3,13 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, FlatList, StyleSheet,Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; // You can choose any other icon set
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import { useSelector } from 'react-redux';
 
 const ThreeDotDropdown = ({item,toDetailPage,changeStatusAnnouncement,deleteAnnouncvement,editAnnouncementPageRedirect}) => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [itemStatus,setItemStatus] = useState(item.status)
 
@@ -13,10 +18,10 @@ const ThreeDotDropdown = ({item,toDetailPage,changeStatusAnnouncement,deleteAnno
   if(itemStatus === 'ACTIVE'){
     
     options = [
-        { id: 1, label: 'Edit', onPress: () => handleOptionPress('EDIT') },
-        { id: 2, label: 'Delete', onPress: () => handleOptionPress('DELETE') },
-        { id: 3, label: 'Close', onPress: () => handleOptionPress('CLOSE') },
-        { id: 4, label: 'Preview', onPress: () => handleOptionPress('PREVIEW') },
+        { id: 1, label: langs?.Edit, onPress: () => handleOptionPress('EDIT') },
+        { id: 2, label: langs?.Delete, onPress: () => handleOptionPress('DELETE') },
+        { id: 3, label: langs?.Close, onPress: () => handleOptionPress('CLOSE') },
+        { id: 4, label: langs?.Preview, onPress: () => handleOptionPress('PREVIEW') },
     ];
 
   }else{

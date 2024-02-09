@@ -105,6 +105,15 @@ const App = () => {
         );
         dispatch(
           userAccountDataActions.setData({
+             field: "language",
+             data:  user.language,
+          })
+        );
+
+
+        
+        dispatch(
+          userAccountDataActions.setData({
              field: "isLoggedIn",
              data:  true,
           })

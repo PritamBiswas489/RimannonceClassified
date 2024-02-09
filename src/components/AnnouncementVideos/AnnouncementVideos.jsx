@@ -5,8 +5,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { bytesToMb } from '../../config/utility';
 import ImagePopup from '../ImagePopup/ImagePopup';
 import { getMediaUrl } from '../../config/utility';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import { useSelector } from 'react-redux';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 
 const AnnouncementVideos = ({videos, setVideos,existingVideos=[], setExistingVideos, setDeleteVideosIdProcess}) => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
+  
   const [isImagePopupVisible, setImagePopupVisible] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [fileType, setFileType] = useState('videos'); 
@@ -65,7 +72,7 @@ const AnnouncementVideos = ({videos, setVideos,existingVideos=[], setExistingVid
     <ScrollView contentContainerStyle={styles.container}>
       <TouchableOpacity style={styles.uploadButton} onPress={pickVideos}>
       
-        <Text style={styles.uploadButtonText}><Icon name="cloud-upload" size={25} color="#fff" style={styles.icon} /> Upload Videos</Text>
+        <Text style={styles.uploadButtonText}><Icon name="cloud-upload" size={25} color="#fff" style={styles.icon} /> {langs?.Upload_Videos}</Text>
       </TouchableOpacity>
 
       <View style={styles.videoContainer}>
@@ -74,7 +81,11 @@ const AnnouncementVideos = ({videos, setVideos,existingVideos=[], setExistingVid
             {/* <Image source={require('./play_button.png')} style={styles.playButton} /> */}
              <TouchableOpacity onPress={openImagePopup.bind(this,video.uri)}><Image  source={{ uri: getMediaUrl() + '/images/play-1.png' }} style={styles.video} /></TouchableOpacity>  
             <TouchableOpacity onPress={() => removeVideo(index)} style={styles.removeButton}>
-              <Text style={styles.removeButtonText}>Remove</Text>
+            <FontAwesomeIcon
+                                name="trash"
+                                size={16}
+                                color="white"
+                              />
             </TouchableOpacity>
           </View>
         ))}
@@ -82,7 +93,11 @@ const AnnouncementVideos = ({videos, setVideos,existingVideos=[], setExistingVid
         <View key={`existing${index}`} style={styles.videoWrapper}>
            <TouchableOpacity onPress={openImagePopup.bind(this,getMediaUrl()+'/'+video.filePath     )}><Image   source={{ uri: getMediaUrl() + '/images/play-1.png' }} style={styles.video} /></TouchableOpacity>
           <TouchableOpacity onPress={() => removeExistingVideo(index)} style={styles.removeButton}>
-            <Text style={styles.removeButtonText}>Remove</Text>
+          <FontAwesomeIcon
+                                name="trash"
+                                size={16}
+                                color="white"
+                              />
           </TouchableOpacity>
         </View>
       ))}

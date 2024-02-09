@@ -26,9 +26,12 @@ import {useDispatch} from 'react-redux';
 import {userAccountDataActions} from '../../../store/redux/user-account-data.redux';
 import WalletModal from '../../WalletModal/WalletModal';
 import CountryTelephoneField from '../../CountryTelephoneField/CountryTelephoneField';
+import * as fr_lang from '../../../languages/lang_fr';
+import * as en_lang from '../../../languages/lang_en';
 
 export default function Edit({item, onClose, updateStateItemValue}) {
-  
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
   const categories = useSelector(state => state['settingData'].categories)
   const locations = useSelector(state => state['settingData'].locations)
   const subLocations = useSelector(state => state['settingData'].subLocations)
@@ -146,17 +149,17 @@ export default function Edit({item, onClose, updateStateItemValue}) {
     let valid = true;
     if (title.trim() === '') {
       valid = false;
-      Alert.alert('Error', 'Enter title', [
+      Alert.alert('Error', langs?.Enter_title, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if ( category === 'gp_delivery' && gpDeliveryDate.trim() === '') {
       valid = false;
-      Alert.alert('Error', 'Select delivery date', [
+      Alert.alert('Error', langs?.Select_delivery_date, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (category === 'gp_delivery' && gpDeliveryOrigin.trim() === '' ) {
       valid = false;
-      Alert.alert('Error', 'Enter delivery origin', [
+      Alert.alert('Error', langs?.Enter_delivery_origin, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (
@@ -165,12 +168,12 @@ export default function Edit({item, onClose, updateStateItemValue}) {
       gpDeliveryDestination.trim() === ''
     ) {
       valid = false;
-      Alert.alert('Error', 'Enter delivery destination', [
+      Alert.alert('Error', langs?.Enter_delivery_destination, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if ( category !== 'gp_delivery' && location.trim() === '') {
       valid = false;
-      Alert.alert('Error', 'Enter location', [
+      Alert.alert('Error', langs?.Enter_location, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (
@@ -179,17 +182,17 @@ export default function Edit({item, onClose, updateStateItemValue}) {
       category !== 'gp_delivery'
     ) {
       valid = false;
-      Alert.alert('Error', 'Select sublocation', [
+      Alert.alert('Error', langs?.Select_sublocation, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (contactNumber.trim() === '') {
       valid = false;
-      Alert.alert('Error', 'Enter contact number', [
+      Alert.alert('Error', langs?.Enter_contact_number, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (description.trim() === '') {
       valid = false;
-      Alert.alert('Error', 'Enter description', [
+      Alert.alert('Error', langs?.Enter_description, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     }
@@ -285,11 +288,11 @@ export default function Edit({item, onClose, updateStateItemValue}) {
               <View style={styles.formGroup}>
                 <View style={styles.inputIconBox}>
                   <Text style={styles.inputLabel}>
-                    Title <Text style={styles.redAsterisk}>*</Text>
+                    {langs?.Enter_title} <Text style={styles.redAsterisk}>*</Text>
                   </Text>
                 </View>
                 <TextInput
-                  placeholder="Enter Title of the announcement"
+                  placeholder= {langs?.placeHolder1}
                   style={styles.input}
                   placeholderTextColor="#9c9c9c"
                   value={title}
@@ -301,7 +304,7 @@ export default function Edit({item, onClose, updateStateItemValue}) {
                   <View style={styles.formGroup}>
                     <View style={styles.inputIconBox}>
                       <Text style={styles.inputLabel}>
-                        Date of departure{' '}
+                        {langs?.placeHolder9}
                         <Text style={styles.redAsterisk}>*</Text>
                       </Text>
                     </View>
@@ -314,12 +317,12 @@ export default function Edit({item, onClose, updateStateItemValue}) {
                   <View style={styles.formGroup}>
                     <View style={styles.inputIconBox}>
                       <Text style={styles.inputLabel}>
-                        Origin Location{' '}
+                      {langs?.placeHolder7}
                         <Text style={styles.redAsterisk}>*</Text>
                       </Text>
                     </View>
                     <TextInput
-                      placeholder="Enter Origin Location"
+                      placeholder={langs?.placeHolder8}
                       style={styles.input}
                       placeholderTextColor="#9c9c9c"
                       value={gpDeliveryOrigin}
@@ -330,12 +333,12 @@ export default function Edit({item, onClose, updateStateItemValue}) {
                   <View style={styles.formGroup}>
                     <View style={styles.inputIconBox}>
                       <Text style={styles.inputLabel}>
-                        Destination Location{' '}
+                      {langs?.placeHolder5}
                         <Text style={styles.redAsterisk}>*</Text>
                       </Text>
                     </View>
                     <TextInput
-                      placeholder="Enter Destination Location"
+                      placeholder={langs?.placeHolder6}
                       style={styles.input}
                       placeholderTextColor="#9c9c9c"
                       value={gpDeliveryDestination}
@@ -349,7 +352,7 @@ export default function Edit({item, onClose, updateStateItemValue}) {
                   <View style={styles.formGroup}>
                     <View style={styles.inputIconBox}>
                       <Text style={styles.inputLabel}>
-                        Location <Text style={styles.redAsterisk}>*</Text>
+                      {langs?.Location} <Text style={styles.redAsterisk}>*</Text>
                       </Text>
                     </View>
                     <View
@@ -360,7 +363,7 @@ export default function Edit({item, onClose, updateStateItemValue}) {
                       }}>
                       <RNPickerSelect
                         placeholder={{
-                          label: 'Select a location of announcement',
+                          label: langs?.placeHolder2,
                           value: null,
                           color: '#9EA0A4',
                         }}
@@ -393,7 +396,7 @@ export default function Edit({item, onClose, updateStateItemValue}) {
                   {subLocationsSelected.length > 0 && (
                     <View style={styles.formGroup}>
                       <View style={styles.inputIconBox}>
-                        <Text style={styles.inputLabel}>Sub Location</Text>
+                        <Text style={styles.inputLabel}>{langs?.Sub_Location}</Text>
                       </View>
                       <View
                         style={{
@@ -403,7 +406,7 @@ export default function Edit({item, onClose, updateStateItemValue}) {
                         }}>
                         <RNPickerSelect
                           placeholder={{
-                            label: 'Select a sub location',
+                            label: langs?.placeHolder3,
                             value: null,
                             color: '#9EA0A4',
                           }}
@@ -440,7 +443,7 @@ export default function Edit({item, onClose, updateStateItemValue}) {
               <View style={styles.formGroup}>
                 <View style={styles.inputIconBox}>
                   <Text style={styles.inputLabel}>
-                    Contact number <Text style={styles.redAsterisk}>*</Text>
+                    {langs?.Contact_number} <Text style={styles.redAsterisk}>*</Text>
                   </Text>
                 </View>
                 <CountryTelephoneField
@@ -454,11 +457,11 @@ export default function Edit({item, onClose, updateStateItemValue}) {
               <View style={styles.formGroup}>
                 <View style={styles.inputIconBox}>
                   <Text style={styles.inputLabel}>
-                    Description <Text style={styles.redAsterisk}>*</Text>
+                  {langs?.Description} <Text style={styles.redAsterisk}>*</Text>
                   </Text>
                 </View>
                 <TextInput
-                  placeholder="Enter Description of the anouncement"
+                  placeholder={langs?.placeHolder4}
                   style={styles.textArea}
                   placeholderTextColor="#9c9c9c"
                   multiline={true}
@@ -471,7 +474,7 @@ export default function Edit({item, onClose, updateStateItemValue}) {
             </View>
             {category === 'gp_delivery' && (
               <AnnouncementImages
-                title="Upload flyer"
+                title={langs?.Upload_flyer}
                 images={images}
                 setImages={setImages}
                 existingImages={existingImages}

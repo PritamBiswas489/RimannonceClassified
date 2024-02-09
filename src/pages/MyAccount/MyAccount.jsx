@@ -10,26 +10,27 @@ import {
 } from 'react-native';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 
-import fUp from '../../assets/images/f-up.png';
-import calender from '../../assets/images/calender.png';
-import map from '../../assets/images/map.png';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+
 import NavigationDrawerHeader from '../../components/drawerHeader';
 import PersonalDetails from '../../components/PersonalDetails/PersonalDetails';
 const PersonalDetailsTab = () => <PersonalDetails />;
 import FloatingContactUsButton from '../../components/FloatingContactUsButton/FloatingContactUsButton';
 import MyListing from '../../components/MyListing/MyListing';
 import MyFavorites from '../../components/MyFavorites/MyFavorites';
- 
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import { useSelector } from 'react-redux'; 
  
  
 const MyAccount = (props) => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    {key: 'one', title: 'Account'},
-    {key: 'two', title: 'My listing'},
-    {key: 'three', title: 'My Favorites'},
+    {key: 'one', title: langs?.Account},
+    {key: 'two', title: langs?.My_listing},
+    {key: 'three', title: langs?.My_Favorites},
   ]);
   
   return (

@@ -14,9 +14,14 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import RNPickerSelect from 'react-native-picker-select';
+import { useSelector } from 'react-redux';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
 
 
 const SearchBar = ({searchText,setSearchText, searchDataRefresh}) => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
   const [seachFieldText,setValueSeachFieldText]  = useState('');
   const [selectedLocation, setSelectedLocation] = useState(null);
  
@@ -31,7 +36,7 @@ const SearchBar = ({searchText,setSearchText, searchDataRefresh}) => {
       <GestureHandlerRootView>
         <View style={styles.searchArea}>
           <View style={styles.searchAreaInner}>
-            <TextInput  returnKeyType="done"  onSubmitEditing={handleSearch}  onChangeText={(text)=>setValueSeachFieldText(text)} value={seachFieldText} placeholderTextColor={'black'} placeholder="Search with title...." style={styles.input} />
+            <TextInput  returnKeyType="done"  onSubmitEditing={handleSearch}  onChangeText={(text)=>setValueSeachFieldText(text)} value={seachFieldText} placeholderTextColor={'black'} placeholder={`${langs?.searchTitle || 'Search with title'}....`} style={styles.input} />
             <TouchableOpacity onPress={handleSearch}   style={styles.searchIconBox}>
               <Icon name="search" style={styles.searchIconImage} />
             </TouchableOpacity>

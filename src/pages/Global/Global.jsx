@@ -39,8 +39,12 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import CategoryButton from '../../components/CategoryButton/CategoryButton';
 import { limitWords } from '../../config/utility';
 import { linkingIdActions } from '../../store/redux/linking-id.redux';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
 
 const Global = props => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
   const dispatch = useDispatch();
   const linkingAnnouncementId = useSelector(state => state['linkingId'].id);
   const categories = useSelector(state => state['settingData'].categories);
@@ -238,7 +242,7 @@ const Global = props => {
   return (
     <SafeAreaView style={styles.body}>
        <View style={styles.header}>
-        <Text style={styles.headerText}>Global : unverified user announces</Text>
+        <Text style={styles.headerText}>{langs?.globalHeading}</Text>
       </View>
       <View style={styles.listTop}>
         <SearchBar

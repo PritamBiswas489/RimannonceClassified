@@ -38,8 +38,12 @@ import SkeletonLoader from '../../components/SkeletonLoader/SkeletonLoader';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import CategoryButton from '../../components/CategoryButton/CategoryButton';
 import { limitWords } from '../../config/utility';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
 
 const Premium = props => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
   const categories = useSelector(state => state['settingData'].categories);
   const locations = useSelector(state => state['settingData'].locations);
   const [refreshing, setRefreshing] = useState(false);
@@ -228,7 +232,7 @@ const Premium = props => {
   return (
     <SafeAreaView style={styles.body}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Premium : verified user announces</Text>
+        <Text style={styles.headerText}>{langs?.premiumTitle}</Text>
       </View>
       <View style={styles.listTop}>
         <SearchBar

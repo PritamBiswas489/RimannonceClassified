@@ -116,6 +116,12 @@ const Register = props => {
         );
         dispatch(
           userAccountDataActions.setData({
+             field: "language",
+             data:  user.language,
+          })
+        );
+        dispatch(
+          userAccountDataActions.setData({
             field: 'avatar',
             data: user.avatar,
           }),

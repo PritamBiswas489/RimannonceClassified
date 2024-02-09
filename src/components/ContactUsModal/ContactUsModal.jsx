@@ -3,8 +3,12 @@ import { View, Text, TouchableOpacity, TextInput, StyleSheet , Alert } from 'rea
 import Modal from 'react-native-modal';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { contactUsProcess } from '../../services/profile.service';
-
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import { useSelector } from 'react-redux';
 const ContactUsModal = ({ isVisible, onClose }) => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [processingLoader, setProcessingLoader] = useState(false);
@@ -18,7 +22,7 @@ const ContactUsModal = ({ isVisible, onClose }) => {
         setSubject('');
         setMessage('');
         onClose();
-        Alert.alert('SUCCESS','Message successfully send.We will contact you as soon as possible');
+        Alert.alert('SUCCESS',langs?.success1);
     }else{
         setProcessingLoader(false)
         Alert.alert('ERROR','Process failed.Try again later');
@@ -29,17 +33,17 @@ const ContactUsModal = ({ isVisible, onClose }) => {
     <>
     <Modal isVisible={isVisible} onBackdropPress={onClose}>
       <View style={styles.modalContainer}>
-        <Text style={styles.modalTitle}>Contact Us</Text>
+        <Text style={styles.modalTitle}>{langs?.Contact_Us}</Text>
         <TextInput
             style={styles.input}
-            placeholder="Subject"
+            placeholder={langs?.Subject}
             placeholderTextColor={'black'}
             value={subject}
             onChangeText={(text) => setSubject(text)}
           />
           <TextInput
             style={[styles.input, styles.textArea]}
-            placeholder="Message"
+            placeholder={langs?.Message}
             placeholderTextColor={'black'}
             multiline
             numberOfLines={4}
@@ -47,10 +51,10 @@ const ContactUsModal = ({ isVisible, onClose }) => {
             onChangeText={(text) => setMessage(text)}
           />
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitButtonText}>Submit</Text>
+          <Text style={styles.submitButtonText}>{langs?.Submit}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-          <Text style={styles.closeText}>Close</Text>
+          <Text style={styles.closeText}>{langs?.Close}</Text>
         </TouchableOpacity>
       </View>
      

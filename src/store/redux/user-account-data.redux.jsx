@@ -9,6 +9,7 @@ const initialState = {
     role:'',
     isPromoted:0,
     walletAmount:0.00,
+    language : 'en',
     isLoggedIn:false
  };
  const userAccountDataSlice = createSlice({
