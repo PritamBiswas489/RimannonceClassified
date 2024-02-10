@@ -1,10 +1,10 @@
 export const languages = {
     searchTitle : 'Search with title',
-    globalHeading : 'Global : unverified user announces',
-    premiumTitle:'Premium : verified user announces',
+    globalHeading : 'Community announcements',
+    premiumTitle:'Selection of Excellence',
     gpDelivery:'GP- Delivery : GP delivery',
-    Global:'Global',
-    Premium:'Premium',
+    Global:'Community',
+    Premium:'Excellence',
     Select_Catgeory : 'Select Catgeory',
     Title : 'Title',
     Location : 'Location',
@@ -69,6 +69,75 @@ export const languages = {
     Delete: 'Delete',
     Close: 'Close',
     Preview: 'Preview',
+    //===== New language added on 10/02/2024 =======//
+    AlertMessage1 : "Are you sure you want to delete this announcement?",
+    AlertMessage2 : "Are you sure you want to close this announcement?",
+    AlertMessage3 : 'Unable to load  app! Check your network connection or restart the app.',
+    AlertMessage4 : "Upload failed.",
+    AlertMessage5 : 'Can\'t upload file more than [filesize] mb.',
+    AlertMessage6 : "Can't upload more than [limit] images",
+    AlertMessage7 : "Can't upload more than [limit] videos",
+    AlertMessage8 : 'Enter your name.',
+    AlertMessage9 : 'Enter valid email address.',
+    AlertMessage10 : 'Enter valid phone number.',
+    AlertMessage11 : 'Password must be at least eight characters, one uppercase letter, one lowercase letter, one number and one special character.',
+    AlertMessage12 : 'Password and Confirm password must be same.',
+    AlertMessage13 : 'Select terms and conditions.',
+    AlertMessage14 : 'Account successfully registered and logged in',
+    AlertMessage15 : 'Enter login phone number.',
+    AlertMessage16 : 'Enter  password.',
+    AlertMessage17:  'Successfully logged in',
+    AlertMessage18 : 'Enter valid email address.',
+    AlertMessage19 : 'Announcement successfully closed',
+    AlertMessage20 : 'Failed to close announcement',
+    AlertMessage21 : 'Failed to delete announcement',
+    AlertMessage22 : 'You have to log in to add announcement in your favorite list',
+    AlertMessage23  : 'Process failed',
+    AlertMessage24 : 'You have to log in to report on this announcement',
+    AlertMessage25 : 'Enter reason.',
+    AlertMessage26 : 'Report Successfully submitted',
+    AlertMessage27 : 'Report this announcement',
+    AlertMessage28 : 'Write your reason here',
+    AlertMessage29 : 'Submit report',
+    AlertMessage30 : 'Close',
+    AlertMessage31 : "Something went wrong. Can't able to fetch records.",
+    AlertMessage32 :"No Record Found",
+    AlertMessage33 : 'Your profile picture successfully updated',
+    AlertMessage34: 'upload failed',
+    AlertMessage35: 'Check your email.Forget password email send to your provided email address',
+    AlertMessage36:'Unable to delete profile.Try again later',
+    AlertMessage37:'Account successfully updated',
+    AlertMessage38:'Process failed.Try again later',
+
+    
+    AlertMessage39:'Announcement updated successfully',
+    AlertMessage40:'',
+
+
+
+
+
+    Register : 'Register',
+    Full_Name : 'Full Name',
+    Email : 'Email',
+    Phone_No : 'Phone No.',
+    Password : 'Password',
+    Confirm_Password : 'Confirm Password',
+    Agree_with : 'Agree with',
+    Term_Conditions : 'Term & Conditions.',
+    Sign_up : 'Sign up',
+    Dont_have_an_account  : "Don't have an account ?",
+    have_an_account  : "Have an account ?",
+    Login :'Login',
+    Sign_In : 'Sign In',
+    Forget_Password : 'Forget Password?',
+    forget_password_heading : 'Enter your email address to reset your password.',
+    Email_address:'Email address',
+    Reset_Password : 'Reset Password',
+    
+    Description : 'Description'
+     
+     
 
 
 

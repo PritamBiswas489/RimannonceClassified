@@ -12,13 +12,18 @@ import { Linking } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { getAuthUserService } from './src/services/auth.service';
 import { getSettings } from './src/services/settings.service';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { userAccountDataActions } from './src/store/redux/user-account-data.redux';
 import { settingsDataActions } from './src/store/redux/settings-data.redux';
 import { Alert } from 'react-native';
 import { linkingIdActions } from './src/store/redux/linking-id.redux';
+import * as fr_lang from './src/languages/lang_fr';
+import * as en_lang from './src/languages/lang_en';
+import * as ar_lang from './src/languages/lang_ar';
 
 const App = () => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const [checkingLoader,setCheckingLoader] = useState(true);
   const [settingsLoader,setSettingsLoader] = useState(true);
   const [urlProcessing,setUrlProcessing] = useState(true);
@@ -124,6 +129,7 @@ const App = () => {
       dispatch(userAccountDataActions.resetState());
      }
   }
+   
   const getSettingData = async() =>{
     const response = await getSettings()
     if (response?.data?.status === 200) {
@@ -139,7 +145,7 @@ const App = () => {
       }
       setSettingsLoader(false);
     }else{
-      Alert.alert('Unable to load  app! Check your network connection or restart the app.')
+      Alert.alert(langs?.AlertMessage3)
       dispatch(settingsDataActions.resetState());
      }  
   }

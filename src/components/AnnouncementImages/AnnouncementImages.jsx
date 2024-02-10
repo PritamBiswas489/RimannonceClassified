@@ -7,16 +7,21 @@ import { getMediaUrl } from '../../config/utility';
 import ImagePopup from '../ImagePopup/ImagePopup';
 import * as fr_lang from '../../languages/lang_fr';
 import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
+
 import { useSelector } from 'react-redux';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 
 const AnnouncementImages = ({images,setImages, title ='Upload Images',existingImages=[], setExistingImages, setDeleteImagesIdProcess}) => {
   const language = useSelector(state => state['userAccountData'].language);
-  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
 
   const [isImagePopupVisible, setImagePopupVisible] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [fileType, setFileType] = useState('images'); 
+
+  const maxImagesSize = 2
+  const maxFileUploadLimit = 6
 
   const pickImages = () => {
     const options = {
@@ -29,7 +34,7 @@ const AnnouncementImages = ({images,setImages, title ='Upload Images',existingIm
         if (response.didCancel) {
           //console.log('User cancelled image picker');
         } else if (response.error) {
-              Alert.alert('Error', 'Upload failed.', [
+              Alert.alert('Error', langs?.AlertMessage4, [
                 {text: 'OK', onPress: () => console.log('OK Pressed')},
               ]);  
         } else {
@@ -39,13 +44,13 @@ const AnnouncementImages = ({images,setImages, title ='Upload Images',existingIm
           let fileType = response.type || response.assets?.[0]?.type;
 
 
-          if(parseFloat(bytesToMb(fileSize)) > 2){
-            Alert.alert('Error', 'Can\'t upload file more than 2 mb.', [
+          if(parseFloat(bytesToMb(fileSize)) > maxImagesSize){
+            Alert.alert('Error', langs?.AlertMessage5.replace('[filesize]',maxImagesSize), [
               {text: 'OK', onPress: () => console.log('OK Pressed')},
             ]);    
           }else{
-              if(images.length ===6 ) {
-                Alert.alert("Can't upload more than 6 images");
+              if(images.length ===maxFileUploadLimit ) {
+                Alert.alert(langs?.AlertMessage6.replace('[limit]',maxFileUploadLimit));
               }else{  
                 setImages([...images, { uri: imageUri ,fileName: fileName, fileType: fileType}]); 
               }

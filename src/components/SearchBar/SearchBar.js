@@ -17,11 +17,12 @@ import RNPickerSelect from 'react-native-picker-select';
 import { useSelector } from 'react-redux';
 import * as fr_lang from '../../languages/lang_fr';
 import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
 
 
 const SearchBar = ({searchText,setSearchText, searchDataRefresh}) => {
   const language = useSelector(state => state['userAccountData'].language);
-  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const [seachFieldText,setValueSeachFieldText]  = useState('');
   const [selectedLocation, setSelectedLocation] = useState(null);
  

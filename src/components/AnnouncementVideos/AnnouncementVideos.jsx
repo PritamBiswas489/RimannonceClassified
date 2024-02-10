@@ -7,17 +7,22 @@ import ImagePopup from '../ImagePopup/ImagePopup';
 import { getMediaUrl } from '../../config/utility';
 import * as fr_lang from '../../languages/lang_fr';
 import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
 import { useSelector } from 'react-redux';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 
 const AnnouncementVideos = ({videos, setVideos,existingVideos=[], setExistingVideos, setDeleteVideosIdProcess}) => {
   const language = useSelector(state => state['userAccountData'].language);
-  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   
   const [isImagePopupVisible, setImagePopupVisible] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [fileType, setFileType] = useState('videos'); 
 
+  const maxImagesSize = 10
+  const maxFileUploadLimit = 3
+
+   
 
   const pickVideos = () => {
     const options = {
@@ -26,7 +31,7 @@ const AnnouncementVideos = ({videos, setVideos,existingVideos=[], setExistingVid
     launchImageLibrary(options, (response) => {
         if (response.didCancel) {
         } else if (response.error) {
-              Alert.alert('Error', 'Upload failed.', [
+              Alert.alert('Error', langs?.AlertMessage4, [
                 {text: 'OK', onPress: () => console.log('OK Pressed')},
               ]);  
         } else {
@@ -36,13 +41,13 @@ const AnnouncementVideos = ({videos, setVideos,existingVideos=[], setExistingVid
           let fileType = response.type || response.assets?.[0]?.type;
 
           
-          if(parseFloat(bytesToMb(fileSize)) > 10){
-              Alert.alert('Error', 'Can\'t upload file more than 10 mb.', [
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-              ]);    
+          if(parseFloat(bytesToMb(fileSize)) > maxImagesSize){
+            Alert.alert('Error', langs?.AlertMessage5.replace('[filesize]',maxImagesSize), [
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ]);    
           }else{
-            if(videos.length ===3 ) {
-              Alert.alert("Can't upload more than 3 videos");
+            if(videos.length ===maxFileUploadLimit ) {
+              Alert.alert(langs?.AlertMessage7.replace('[limit]',maxFileUploadLimit));
             }else{  
                   setVideos([...videos, { uri: videoUrl,fileName: fileName, fileType: fileType }]);
             }

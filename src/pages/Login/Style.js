@@ -4,11 +4,16 @@ const styles = StyleSheet.create({
     display: 'flex',
     height: '100%',
   },
+  scrollView: {
+    flex: 1, // Take up all available space
+  },
   loginContainer: {
+    flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: 30,
     paddingVertical: 30,
-    marginBottom:100
+    marginBottom:50,
+     
   },
   LoginTitle: {
     color: '#030233',

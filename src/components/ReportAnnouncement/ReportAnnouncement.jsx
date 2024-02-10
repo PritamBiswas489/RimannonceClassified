@@ -10,15 +10,21 @@ import {
 } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { reportAnnouncement } from '../../services/announcementsAuth.service';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
+import { useSelector } from 'react-redux';
 
 
 const ReportAnnouncement = ({ id, isVisible, onClose }) => {
   const [reason, setReason] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
 
   const sendReportAnnouncement = async () => {
     if(reason.trim() === ''){
-        Alert.alert('Error', 'Enter reason.', [
+        Alert.alert('Error', langs?.AlertMessage25, [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
         ]);
     }else{
@@ -27,7 +33,7 @@ const ReportAnnouncement = ({ id, isVisible, onClose }) => {
         if (response?.data?.status === 200) {
             setIsLoading(false);
             setReason('');
-            Alert.alert('Success', response?.data?.message || 'Report Successfully submitted', [
+            Alert.alert('Success',  langs?.AlertMessage26, [
               {text: 'OK', onPress: () => console.log('OK Pressed')},
             ]);
             onClose();
@@ -50,12 +56,12 @@ const ReportAnnouncement = ({ id, isVisible, onClose }) => {
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Report this announcement</Text>
+          <Text style={styles.modalTitle}>{langs?.AlertMessage27}</Text>
           <Text style={styles.modalSubtitle}>
           </Text>
           <TextInput
             style={styles.input}
-            placeholder="Write your reason here"
+            placeholder={langs?.AlertMessage28}
             placeholderTextColor={"white"}
             autoCapitalize="none"
             multiline={true} 
@@ -66,10 +72,10 @@ const ReportAnnouncement = ({ id, isVisible, onClose }) => {
             style={styles.resetButton}
             onPress={sendReportAnnouncement}
           >
-            <Text style={styles.resetButtonText}>Submit report</Text>
+            <Text style={styles.resetButtonText}>{langs?.AlertMessage29}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Text style={styles.closeButtonText}>Close</Text>
+            <Text style={styles.closeButtonText}>{langs?.AlertMessage30}</Text>
           </TouchableOpacity>
         </View>
       </View>

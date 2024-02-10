@@ -22,10 +22,14 @@ import {ScrollView, GestureHandlerRootView} from 'react-native-gesture-handler';
 import { getMediaUrl } from '../../config/utility';
 import { useNavigation } from '@react-navigation/native';
 import { limitWords } from '../../config/utility';
+import { useSelector } from 'react-redux';
 
 
 const MyFavorites = props => {
+  const language = useSelector(state => state['userAccountData'].language);
+  
   const [refreshing, setRefreshing] = useState(false);
+  const categories = useSelector(state => state['settingData'].categories);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [announcements, setAnnouncements] = useState([]);
@@ -58,8 +62,11 @@ const MyFavorites = props => {
   const toDetailPage = (id) =>{
     navigation.navigate('Announcement Details',{id});
   }
+ 
+   
   const renderItem = ({item}) => {
-    // console.log(getMediaUrl()+'/'+item?.media);
+    const getCat =   getCategory(item?.favoritesAnnouncement?.category,categories); 
+    const name = language === 'fr' ? getCat?.frName : language === 'ar' ? getCat?.arName : getCat?.name;
     return (<View style={styles.listBox}>
       <TouchableOpacity onPress={(toDetailPage.bind(this,item?.favoritesAnnouncement?.id))} style={styles.listBoxInner}>
         <View style={styles.listImageBox}>
@@ -71,20 +78,29 @@ const MyFavorites = props => {
             {limitWords(item?.favoritesAnnouncement?.title,2)} 
           </Text>
           <Text style={styles.listSubTitle}>
-            {getCategory(item?.favoritesAnnouncement?.category)?.name}</Text>
+            {name}</Text>
           <Text style={styles.listPrice}>
-            {item?.favoritesAnnouncement?.location && item?.favoritesAnnouncement?.category !== 'gp_delivery' && item?.favoritesAnnouncement?.location}
-            
+             
+            {item?.favoritesAnnouncement?.announcementLocation?.name &&
+                item?.favoritesAnnouncement?.category !== 'gp_delivery' &&
+                language === 'fr' ? item?.favoritesAnnouncement?.announcementLocation?.frName : language === 'ar' ? item?.favoritesAnnouncement?.announcementLocation?.arName : item?.favoritesAnnouncement?.announcementLocation?.name
+                
+                }
+
+
             {item?.favoritesAnnouncement?.gpDeliveryOrigin &&
               item?.favoritesAnnouncement?.category === 'gp_delivery' &&
               item?.favoritesAnnouncement?.gpDeliveryOrigin}
           </Text>
 
-          {item?.favoritesAnnouncement?.subLocation && item?.favoritesAnnouncement?.category !== 'gp_delivery' && (
-            <Text style={styles.listPrice}>
-              {item?.favoritesAnnouncement?.subLocation}
-            </Text>
-          )}
+         
+
+{item?.favoritesAnnouncement?.announcementSubLocation?.name && item?.favoritesAnnouncement.category !== 'gp_delivery' && (
+              <Text style={styles.listPrice}>{
+                language === 'fr' ? item?.favoritesAnnouncement?.announcementSubLocation?.frName : language === 'ar' ? item?.favoritesAnnouncement?.announcementSubLocation?.arName : item?.favoritesAnnouncement?.announcementSubLocation?.name
+                
+                 }</Text>
+            )}
 
           {item?.favoritesAnnouncement?.gpDeliveryDestination && item?.favoritesAnnouncement?.category === 'gp_delivery' && (
             <Text style={styles.listPrice}>

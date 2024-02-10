@@ -23,12 +23,13 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import CountryTelephoneField from '../../CountryTelephoneField/CountryTelephoneField';
 import * as fr_lang from '../../../languages/lang_fr';
 import * as en_lang from '../../../languages/lang_en';
+import * as ar_lang from '../../../languages/lang_ar';
  
  
 
 export default function GlobalRoute(props) {
   const language = useSelector(state => state['userAccountData'].language);
-  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const categories = useSelector(state => state['settingData'].categories);
   const locations = useSelector(state => state['settingData'].locations);
   const subLocations = useSelector(state => state['settingData'].subLocations);
@@ -72,7 +73,7 @@ export default function GlobalRoute(props) {
       const filteredLocations = filteredEntry ? filteredEntry.locations : [];
       const locationItems = [];
       filteredLocations.forEach((locDSata, locaIndex) => {
-        locationItems.push({label: locDSata.name, value: locDSata.id});
+        locationItems.push({label: language === 'fr' ? locDSata?.frName : language === 'ar' ? locDSata?.arName : locDSata?.name, value: locDSata.id});
       });
       setSubLocationsSelected(locationItems);
       setSelectedSubLocation(null);
@@ -200,7 +201,9 @@ export default function GlobalRoute(props) {
 
   const locationItems = [];
   locations.forEach((locDSata, locaIndex) => {
-    locationItems.push({label: locDSata.name, value: locDSata.id});
+    locationItems.push({
+      label: language === 'fr' ? locDSata?.frName : language === 'ar' ? locDSata?.arName : locDSata?.name , 
+      value: locDSata.id});
   });
 
   useEffect(() => {
@@ -244,6 +247,8 @@ export default function GlobalRoute(props) {
                               />
                             }
                             label={item.name}
+                            labelFr={item.frName}
+                            labelAr={item.arName}
                           />
                         )
                       }

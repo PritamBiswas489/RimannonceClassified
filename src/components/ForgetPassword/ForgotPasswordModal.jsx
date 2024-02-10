@@ -10,19 +10,26 @@ import {
 } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { forgetPasswordService } from '../../services/login.service';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
+import { useSelector } from 'react-redux';
+
 
 const ForgotPasswordModal = ({ isVisible, onClose }) => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleResetPassword = async () => {
     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(email.trim() === ''){
-        Alert.alert('Error', 'Enter valid email address.', [
+        Alert.alert('Error', langs?.AlertMessage18, [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
         ]);
     }else if (!emailPattern.test(email)) {
-        Alert.alert('Error', 'Enter valid email address.', [
+        Alert.alert('Error', langs?.AlertMessage18, [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
         ]);
     }else{
@@ -32,7 +39,7 @@ const ForgotPasswordModal = ({ isVisible, onClose }) => {
         if (response?.data?.status === 200) {
             setIsLoading(false);
             setEmail('');
-            Alert.alert('Success', response?.data?.message || 'Check your email', [
+            Alert.alert('Success',langs?.AlertMessage35 , [
               {text: 'OK', onPress: () => console.log('OK Pressed')},
             ]);
             onClose();
@@ -55,13 +62,13 @@ const ForgotPasswordModal = ({ isVisible, onClose }) => {
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Forgot Password</Text>
+          <Text style={styles.modalTitle}>{langs?.Forget_Password}</Text>
           <Text style={styles.modalSubtitle}>
-            Enter your email address to reset your password.
+            {langs?.forget_password_heading}
           </Text>
           <TextInput
             style={styles.input}
-            placeholder="Email address"
+            placeholder={langs?.Email_address}
             keyboardType="email-address"
             autoCapitalize="none"
             onChangeText={(text) => setEmail(text)}
@@ -70,10 +77,10 @@ const ForgotPasswordModal = ({ isVisible, onClose }) => {
             style={styles.resetButton}
             onPress={handleResetPassword}
           >
-            <Text style={styles.resetButtonText}>Reset Password</Text>
+            <Text style={styles.resetButtonText}>{langs?.Reset_Password}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Text style={styles.closeButtonText}>Close</Text>
+            <Text style={styles.closeButtonText}>{langs?.Close}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -99,14 +106,17 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     width: '80%',
+    color:'white'
   },
   modalTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
+    color:'white'
   },
   modalSubtitle: {
     marginBottom: 20,
+    color:'white'
   },
   input: {
     height: 40,
@@ -114,6 +124,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 20,
     padding: 10,
+    color:'white'
   },
   resetButton: {
     backgroundColor: '#4CAF50',

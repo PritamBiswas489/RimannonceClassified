@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from './Style';
 import {
   Text,
@@ -12,6 +12,7 @@ import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 
 import * as fr_lang from '../../languages/lang_fr';
 import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
 import { useSelector } from 'react-redux';
 
 
@@ -26,13 +27,19 @@ const GlobalTab = () => <GlobalRoute />;
  
 const PostTrip = (props) => {
   const language = useSelector(state => state['userAccountData'].language);
-  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
-  const [routes] = useState([
+  const [routes,setRoutes] = useState([
     {key: 'third', title: langs?.Global},
     {key: 'second', title: langs?.Premium},
   ]);
+  useEffect(()=>{
+    setRoutes([
+      {key: 'third', title: langs?.Global},
+    {key: 'second', title: langs?.Premium},
+    ])
+  },[language])
 
   
   return (

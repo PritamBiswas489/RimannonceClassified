@@ -1,6 +1,6 @@
 import moment from 'moment-timezone';
 import { env } from '../../environment';
-import { categories } from './categories';
+ 
 export const fileToBase64 = (file) => {
 	return new Promise((resolve) => {
 		let fileInfo;
@@ -212,7 +212,8 @@ export function bytesToMb(bytes) {
 	return bytes / (1024 * 1024); // 1 MB = 1024 KB * 1024 bytes
   }
   
-export function getCategory(category){
+export function getCategory(category,categories){
+	
 	const filteredEntry = categories.find(
         entry => entry.id === category,
       );

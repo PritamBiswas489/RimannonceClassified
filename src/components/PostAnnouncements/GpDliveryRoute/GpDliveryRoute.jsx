@@ -27,11 +27,12 @@ import WalletModal from '../../WalletModal/WalletModal';
 import CountryTelephoneField from '../../CountryTelephoneField/CountryTelephoneField';
 import * as fr_lang from '../../../languages/lang_fr';
 import * as en_lang from '../../../languages/lang_en';
+import * as ar_lang from '../../../languages/lang_ar';
  
 
 export default function GpDliveryRoute() {
   const language = useSelector(state => state['userAccountData'].language);
-  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const categories = useSelector(state => state['settingData'].categories)
   const locations = useSelector(state => state['settingData'].locations)
   const subLocations = useSelector(state => state['settingData'].subLocations)
@@ -321,6 +322,8 @@ export default function GpDliveryRoute() {
                               />
                             }
                             label={item.name}
+                            labelFr={item.frName}
+                            labelAr={item.arName}
                           />
                         )
                       }

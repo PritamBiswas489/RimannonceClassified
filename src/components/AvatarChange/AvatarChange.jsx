@@ -7,8 +7,13 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { uploadProfilePic } from '../../services/profile.service';
 import { userAccountDataActions } from '../../store/redux/user-account-data.redux';
 import { getMediaUrl } from '../../config/utility';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
 
 const AvatarChange = () => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
     const dispatch = useDispatch();  
     const [isLoading, setIsLoading] = useState(false);
     let avatar = useSelector(state => state['userAccountData'].avatar);
@@ -41,14 +46,14 @@ const AvatarChange = () => {
                   data: response?.data?.data?.imagePath,
                 }),
               );
-              Alert.alert('Success', response?.data?.message || 'Your profile picture successfully updated', [
+              Alert.alert('Success', langs?.AlertMessage33 , [
                 {text: 'OK', onPress: () => console.log('OK Pressed')},
               ]);
             }else{
               setIsLoading(false);
               setAvatarChange(false);
               console.log(response);
-              Alert.alert('Error', response?.data?.error?.message || 'upload failed', [
+              Alert.alert('Error', response?.data?.error?.message || langs?.AlertMessage34, [
                 {text: 'OK', onPress: () => console.log('OK Pressed')},
               ]);
             }

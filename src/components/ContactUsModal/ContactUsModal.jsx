@@ -5,10 +5,11 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { contactUsProcess } from '../../services/profile.service';
 import * as fr_lang from '../../languages/lang_fr';
 import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
 import { useSelector } from 'react-redux';
 const ContactUsModal = ({ isVisible, onClose }) => {
   const language = useSelector(state => state['userAccountData'].language);
-  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [processingLoader, setProcessingLoader] = useState(false);
@@ -25,7 +26,7 @@ const ContactUsModal = ({ isVisible, onClose }) => {
         Alert.alert('SUCCESS',langs?.success1);
     }else{
         setProcessingLoader(false)
-        Alert.alert('ERROR','Process failed.Try again later');
+        Alert.alert('ERROR',langs?.AlertMessage38);
     }
   };
 

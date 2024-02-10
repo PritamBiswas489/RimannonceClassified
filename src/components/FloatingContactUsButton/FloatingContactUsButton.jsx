@@ -2,8 +2,14 @@ import React, {useState} from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ContactUsModal from '../ContactUsModal/ContactUsModal';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
+import { useSelector } from 'react-redux'; 
 
 const FloatingContactUsButton = ({ onPress }) => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -12,7 +18,7 @@ const FloatingContactUsButton = ({ onPress }) => {
     <View style={styles.container}>
       <TouchableOpacity style={styles.button}  onPress={toggleModal}>
         <Icon name="mail-outline" size={24} color="white" />
-        <Text style={styles.buttonText}>Contact us</Text>
+        <Text style={styles.buttonText}>{langs?.Contact_Us}</Text>
       </TouchableOpacity>
 
       <ContactUsModal isVisible={isModalVisible} onClose={toggleModal} />

@@ -25,11 +25,17 @@ import OwnerContact from '../../components/ContactUserModal/OwnerContact';
 import { getDateString } from '../../config/utility';
 import ReportAnnouncement from '../../components/ReportAnnouncement/ReportAnnouncement';
 import { getAppUrl } from '../../config/utility';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
 
 
 
 //get announcement details
 export default function ProductDetails(props) {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
+  const categories = useSelector(state => state['settingData'].categories);
   const {id} = props.route.params;
   //console.log('============= details =====================//', id);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -121,7 +127,7 @@ export default function ProductDetails(props) {
 
   const processAddFav = async () =>{
     if(parseInt(currentUserid) ===  0){
-        Alert.alert('You have to log in to add announcement in your favorite list')
+        Alert.alert(langs?.AlertMessage22)
         return;
     }
     setSpinnberIsLoading(true)
@@ -135,13 +141,13 @@ export default function ProductDetails(props) {
       }
     }else{
       setSpinnberIsLoading(false)
-      Alert.alert('Process failed')
+      Alert.alert(langs?.AlertMessage23)
     }
     
   }
   const onHandleReportModal = () =>{
     if(parseInt(currentUserid) ===  0){
-      Alert.alert('You have to log in to report on this announcement')
+      Alert.alert(langs?.AlertMessage24)
       return;
     }
     setAnnModalVisible(true)
@@ -174,6 +180,13 @@ export default function ProductDetails(props) {
   ];
    
 
+  const [catName,setCatName] = useState('');
+  useEffect(()=>{
+    const getCat = announcement ?.category && getCategory(announcement.category,categories); 
+    const name = language === 'fr' ? getCat?.frName : language === 'ar' ? getCat?.arName : getCat?.name;
+    setCatName(name);
+  },[language,categories,announcement])
+
   return (
     <>
       <SafeAreaView style={styles.body}>
@@ -199,16 +212,22 @@ export default function ProductDetails(props) {
                   {!addedUnderFav && !loaderCheckFav && <Icon onPress={processAddFav} name="heart" size={20} color="red" style={styles.icon}   />}
                 </View>
                   <Text style={styles.descTitle}>{announcement?.title}</Text>
-                  <Text style={styles.descSubTitle}>{getCategory(announcement.category)?.name}</Text>
+                  <Text style={styles.descSubTitle}>{catName}</Text>
                   <Text style={styles.descSubTitle}>{getDateString(announcement?.createdAt)}</Text>
                  {announcement.category === 'gp_delivery' && <Text style={styles.descPrice}>From: {announcement.gpDeliveryOrigin} </Text>}
                  {announcement.category === 'gp_delivery' && <Text style={styles.descPrice}>To: {announcement.gpDeliveryDestination}</Text>}
                  {announcement.category === 'gp_delivery' && <Text style={styles.descPrice}>Date: {announcement.gpDeliveryDate}</Text>}
-                 {announcement.category !== 'gp_delivery' && <Text style={styles.descPrice}>{announcement.location} {announcement?.subLocation && ', '+announcement?.subLocation}</Text>}
+                 {announcement.category !== 'gp_delivery' && <Text style={styles.descPrice}>{
+                 language === 'fr' ? announcement?.announcementLocation?.frName : language === 'ar' ? announcement?.announcementLocation?.arName : announcement?.announcementLocation?.name
+                 
+                 } {
+                  language === 'fr' ? announcement?.announcementSubLocation?.frName : language === 'ar' ? announcement?.announcementSubLocation?.arName : announcement?.announcementSubLocation?.name
+                 
+                 }</Text>}
                   
                 </View>
                 <View style={styles.description}>
-                  <Text style={styles.descriptionTitle}>Description</Text>
+                  <Text style={styles.descriptionTitle}>{langs?.Description}</Text>
                   <Text style={styles.descriptionArea}>
                   {announcement?.description}
                   </Text>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './Style';
 import {
   Text,
@@ -19,20 +19,28 @@ import MyListing from '../../components/MyListing/MyListing';
 import MyFavorites from '../../components/MyFavorites/MyFavorites';
 import * as fr_lang from '../../languages/lang_fr';
 import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
 import { useSelector } from 'react-redux'; 
  
  
 const MyAccount = (props) => {
   const language = useSelector(state => state['userAccountData'].language);
-  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
+   
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
-  const [routes] = useState([
+  const [routes,setRoutes] = useState([
     {key: 'one', title: langs?.Account},
     {key: 'two', title: langs?.My_listing},
     {key: 'three', title: langs?.My_Favorites},
   ]);
-  
+  useEffect(()=>{
+    setRoutes([
+      {key: 'one', title: langs?.Account},
+      {key: 'two', title: langs?.My_listing},
+      {key: 'three', title: langs?.My_Favorites},
+    ])
+  },[language])
   return (
     <>
     <NavigationDrawerHeader navigationProps={props.navigation} />

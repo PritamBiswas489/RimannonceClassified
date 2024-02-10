@@ -21,8 +21,14 @@ import NavigationDrawerHeader from '../../components/drawerHeader';
 import {useDispatch} from 'react-redux';
 import {userAccountDataActions} from '../../store/redux/user-account-data.redux';
 import CountryTelephoneField from '../../components/CountryTelephoneField/CountryTelephoneField';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
+import { useSelector } from 'react-redux';
 
 const Register = props => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -40,33 +46,33 @@ const Register = props => {
     const passwordRegex =
       /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
     if (name.trim() === '') {
-      Alert.alert('Error', 'Enter your name.', [
+      Alert.alert('Error', langs?.AlertMessage8, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (email.trim() === '') {
-      Alert.alert('Error', 'Enter valid email address.', [
+      Alert.alert('Error', langs?.AlertMessage9, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (!emailPattern.test(email)) {
-      Alert.alert('Error', 'Enter valid email address.', [
+      Alert.alert('Error', langs?.AlertMessage9, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (phoneNumber.trim() === '') {
-      Alert.alert('Error', 'Enter valid phone number.', [
+      Alert.alert('Error', langs?.AlertMessage10, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (password === '' || !passwordRegex.test(password)) {
       Alert.alert(
         'Error',
-        'Password must be at least eight characters, one uppercase letter, one lowercase letter, one number and one special character.',
+        langs?.AlertMessage11,
         [{text: 'OK', onPress: () => console.log('OK Pressed')}],
       );
     } else if (password !== confirmPassword) {
-      Alert.alert('Error', 'Password and Confirm password must be same.', [
+      Alert.alert('Error', langs?.AlertMessage12, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else if (isSelected === false) {
-      Alert.alert('Error', 'Select terms and conditions.', [
+      Alert.alert('Error', langs?.AlertMessage13, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else {
@@ -142,7 +148,7 @@ const Register = props => {
         setIsLoading(false);
         Alert.alert(
           'Success',
-          'Account successfully registered and logged in',
+          langs?.AlertMessage14,
           [{text: 'OK', onPress: () => console.log('OK Pressed')}],
         );
         setSelection(false);
@@ -175,13 +181,13 @@ const Register = props => {
             <View style={[{flex: 2}, styles.loginContainer]}>
               <View style={styles.loginTop}>
                 <View>
-                  <Text style={styles.LoginTitle}>Register</Text>
+                  <Text style={styles.LoginTitle}>{langs?.Register}</Text>
                 </View>
                 <View style={styles.formWrap}>
                   <View style={styles.formGroup}>
                     <View style={styles.inputIconBox}>
                       <Icon name="user" style={styles.labelIcon} />
-                      <Text style={styles.inputLabel}>Full Name</Text>
+                      <Text style={styles.inputLabel}>{langs?.Full_Name}</Text>
                     </View>
                     <TextInput
                       onChangeText={text => setName(text)}
@@ -193,7 +199,7 @@ const Register = props => {
                   <View style={styles.formGroup}>
                     <View style={styles.inputIconBox}>
                       <Icon name="mail" style={styles.labelIcon} />
-                      <Text style={styles.inputLabel}>Email</Text>
+                      <Text style={styles.inputLabel}>{langs?.Email}</Text>
                     </View>
                     <TextInput
                       placeholder=""
@@ -205,7 +211,7 @@ const Register = props => {
                   <View style={styles.formGroup}>
                     <View style={styles.inputIconBox}>
                       <Icon name="phone" style={styles.labelIcon} />
-                      <Text style={styles.inputLabel}>Phone No.</Text>
+                      <Text style={styles.inputLabel}>{langs?.Phone_No}</Text>
                     </View>
                     <CountryTelephoneField
                       countryCode={phoneCountryCode}
@@ -217,7 +223,7 @@ const Register = props => {
                   <View style={styles.formGroup}>
                     <View style={styles.inputIconBox}>
                       <Icon name="lock" style={styles.labelIcon} />
-                      <Text style={styles.inputLabel}>Password</Text>
+                      <Text style={styles.inputLabel}>{langs?.Password}</Text>
                     </View>
                     <TextInput
                       placeholder="***********"
@@ -231,7 +237,7 @@ const Register = props => {
                   <View style={styles.formGroup}>
                     <View style={styles.inputIconBox}>
                       <Icon name="lock" style={styles.labelIcon} />
-                      <Text style={styles.inputLabel}>Confirm Password</Text>
+                      <Text style={styles.inputLabel}>{langs?.Confirm_Password}</Text>
                     </View>
                     <TextInput
                       placeholder="***********"
@@ -250,13 +256,13 @@ const Register = props => {
                       onValueChange={() => setSelection(!isSelected)}
                       tintColors={{true: '#009DE0', false: '#EDEDED'}}
                     />
-                    <Text style={styles.ckbLabel}>Agree with</Text>
+                    <Text style={styles.ckbLabel}>{langs?.Agree_with}</Text>
                     {/* </View> */}
                     <View>
                       <Text
                         style={styles.forgetPassWord}
                         onPress={() => props.navigation.navigate('')}>
-                        Term & Conditions.
+                        {langs?.Term_Conditions}
                       </Text>
                     </View>
                   </View>
@@ -265,17 +271,17 @@ const Register = props => {
                       <Pressable
                         style={styles.signInBtn}
                         onPress={() => registerProcess()}>
-                        <Text style={styles.text}>Sign up</Text>
+                        <Text style={styles.text}>{langs?.Sign_up}</Text>
                       </Pressable>
                     </View>
                     <View style={styles.haveAccount}>
                       <Text style={styles.haveAccountText}>
-                        Don't have an account ?
+                      {langs?.have_an_account}
                       </Text>
                       <Text
                         style={styles.signUpLink}
                         onPress={() => props.navigation.navigate('Login')}>
-                        Login
+                        {langs?.Login}
                       </Text>
                     </View>
                   </View>

@@ -40,10 +40,11 @@ import {deleteProfile} from '../../services/profile.service';
 import CountryTelephoneField from '../CountryTelephoneField/CountryTelephoneField';
 import * as fr_lang from '../../languages/lang_fr';
 import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
 
 const PersonalDetails = props => {
   const ulang = useSelector(state => state['userAccountData'].language);
-  const langs = ulang === 'fr' ? fr_lang.languages : en_lang.languages;
+  const langs = ulang === 'fr' ? fr_lang.languages : ulang === 'ar' ? ar_lang.languages : en_lang.languages;
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [isModalVisible, setModalVisible] = useState(false);
@@ -107,7 +108,7 @@ const PersonalDetails = props => {
       navigation.navigate('Login');
     } else {
       setIsLoading(false);
-      Alert.alert('ERROR', 'Unable to delete profile.Try again later');
+      Alert.alert('ERROR', langs?.AlertMessage36);
     }
   };
   const deleteAccount = () => {
@@ -222,7 +223,7 @@ const PersonalDetails = props => {
         setUpdateNewPassword('');
         Alert.alert(
           'Success',
-          response?.data?.message || 'Account successfully updated',
+          langs?.AlertMessage37 ,
           [{text: 'OK', onPress: () => console.log('OK Pressed')}],
         );
       } else {

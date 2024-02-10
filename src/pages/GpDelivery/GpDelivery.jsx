@@ -40,10 +40,11 @@ import CategoryButton from '../../components/CategoryButton/CategoryButton';
 import { limitWords } from '../../config/utility';
 import * as fr_lang from '../../languages/lang_fr';
 import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
 
 const GpDelivery = props => {
   const language = useSelector(state => state['userAccountData'].language);
-  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const categories = useSelector(state => state['settingData'].categories);
   const locations = useSelector(state => state['settingData'].locations);
   const [refreshing, setRefreshing] = useState(false);
@@ -84,7 +85,7 @@ const GpDelivery = props => {
         setShowSkeletonLoader(false);
         Alert.alert(
           'Error',
-          "Something went wrong. Can't able to fetch records.",
+          langs?.AlertMessage31,
           [{text: 'OK', onPress: () => console.log('OK Pressed')}],
         );
       }
@@ -113,9 +114,7 @@ const GpDelivery = props => {
             <Text style={styles.listTitle}>
             {limitWords(item.title,2)}
             </Text>
-            <Text style={styles.listSubTitle}>
-              {getCategory(item.category)?.name}
-            </Text>
+            
             <Text style={styles.listPrice}>
               {item.location &&
                 item.category !== 'gp_delivery' &&
@@ -245,7 +244,7 @@ const GpDelivery = props => {
         <View style={styles.container}>
           {showSkeletonLoader === true && <SkeletonLoader />}
           {announcements.length === 0 && showSkeletonLoader === false ? (
-            <Text style={styles.noDataText}>No Record Found</Text>
+            <Text style={styles.noDataText}>{langs?.AlertMessage32}</Text>
           ) : (
             <FlatList
               data={announcements}

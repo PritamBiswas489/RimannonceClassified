@@ -24,8 +24,16 @@ import {useNavigation} from '@react-navigation/native';
 import ThreeDotDropdown from '../ThreeDotDropdown/ThreeDotDropdown';
 import Spinner from 'react-native-loading-spinner-overlay';
 import MyListingItem from '../MyListingItem/MyListingItem';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
+import { useSelector } from 'react-redux';
+
 
 const MyListing = props => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages :  en_lang.languages;
+  
   const [refreshing, setRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -51,7 +59,7 @@ const MyListing = props => {
       setIsLoading(false);
       Alert.alert(
         'Error',
-        "Something went wrong. Can't able to fetch records.",
+        langs?.AlertMessage31,
         [{text: 'OK', onPress: () => console.log('OK Pressed')}],
       );
     }
@@ -104,7 +112,7 @@ const MyListing = props => {
       <GestureHandlerRootView>
         <View style={styles.container}>
           {announcements.length === 0 ? (
-            <Text style={styles.noDataText}>No Record Found</Text>
+            <Text style={styles.noDataText}>{langs?.AlertMessage32}</Text>
           ) : (
             <FlatList
               data={announcements}

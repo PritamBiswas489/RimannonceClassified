@@ -1,9 +1,13 @@
 import {View, Text, Image, Alert} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './Style';
 
 import favorite from '../../assets/images/home/favorite/background.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
+import { useSelector } from 'react-redux';
 
 import {
   deleteAnnouncement,
@@ -18,6 +22,9 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import EditAnnouncementModal from '../EditAnnouncementModal/EditAnnouncementModal';
 
 const MyListingItem = props => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
+  const categories = useSelector(state => state['settingData'].categories);
   const {item} = props;
 
   const navigation = useNavigation();
@@ -33,10 +40,10 @@ const MyListingItem = props => {
     const response = await closeAnnouncement(detail.id);
     if (response?.data?.status === 200) {
       setSpinnberIsLoading(false);
-      Alert.alert('SUCCESS', 'Announcement successfully closed');
+      Alert.alert('SUCCESS', langs?.AlertMessage19);
     } else {
       setSpinnberIsLoading(false);
-      Alert.alert('ERROR', 'Failed to delete announcement');
+      Alert.alert('ERROR', langs?.AlertMessage20);
     }
   };
   //delete announcement
@@ -48,7 +55,7 @@ const MyListingItem = props => {
       setSpinnberIsLoading(false);
     } else {
       setSpinnberIsLoading(false);
-      Alert.alert('ERROR', 'Failed to delete announcement');
+      Alert.alert('ERROR', langs?.AlertMessage21);
     }
   };
   const toDetailPage = id => {
@@ -60,6 +67,14 @@ const MyListingItem = props => {
   const updateStateItemValue = item => {
     setListItem(item);
   };
+  const [catName,setCatName] = useState('');
+  useEffect(()=>{
+    const getCat = listem ?.category && getCategory(listem.category,categories); 
+    const name = language === 'fr' ? getCat?.frName : language === 'ar' ? getCat?.arName : getCat?.name;
+    setCatName(name);
+  },[language,categories,listem])
+   
+  
 
   return (
     <>
@@ -90,21 +105,28 @@ const MyListingItem = props => {
                 />
               </View>
               <Text style={styles.listSubTitle}>
-                {getCategory(listem.category)?.name}
+                {catName}
               </Text>
               <Text style={styles.listPrice}>
-                {listem.location &&
-                  listem.category !== 'gp_delivery' &&
-                  listem.location}
+              {listem?.announcementLocation?.name &&
+                listem.category !== 'gp_delivery' &&
+                
+                language === 'fr' ? listem?.announcementLocation?.frName : language === 'ar' ? listem?.announcementLocation?.arName : listem?.announcementLocation?.name
+                
+                }
 
                 {listem.gpDeliveryOrigin &&
                   listem.category === 'gp_delivery' &&
                   listem.gpDeliveryOrigin}
               </Text>
 
-              {listem.subLocation && listem.category !== 'gp_delivery' && (
-                <Text style={styles.listPrice}>{listem.subLocation}</Text>
-              )}
+              {listem?.announcementSubLocation?.name && listem.category !== 'gp_delivery' && (
+              <Text style={styles.listPrice}>{
+                language === 'fr' ? listem?.announcementSubLocation?.frName : language === 'ar' ? listem?.announcementSubLocation?.arName : listem?.announcementSubLocation?.name
+                
+                 }</Text>
+            )}
+
 
               {listem.gpDeliveryDestination &&
                 listem.category === 'gp_delivery' && (

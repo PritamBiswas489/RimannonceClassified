@@ -2,8 +2,14 @@
 import React from 'react';
 import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import {Icon} from 'react-native-elements';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
+import { useSelector } from 'react-redux';
 
-const CategoryButton = ({selected, onPress, icon, label}) => {
+const CategoryButton = ({selected, onPress, icon, label, labelFr, labelAr}) => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const name = language === 'fr' ? labelFr : language === 'ar' ? labelAr : label;
   return (
     <TouchableOpacity onPress={onPress}>
       <View
@@ -12,7 +18,7 @@ const CategoryButton = ({selected, onPress, icon, label}) => {
           selected && styles.selectedContainer,
         ]}>
         {icon}
-        {label && <Text style={styles.labelStyle}>{label}</Text>}
+        {label && <Text style={styles.labelStyle}>{name}</Text>}
       </View>
     </TouchableOpacity>
   );

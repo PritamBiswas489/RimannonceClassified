@@ -8,6 +8,12 @@ import NavigationDrawerHeader from '../../components/drawerHeader';
 import { useDispatch } from 'react-redux';
 import { userAccountDataActions } from '../../store/redux/user-account-data.redux';
 import ForgotPasswordModal from '../../components/ForgetPassword/ForgotPasswordModal';
+import {ScrollView} from 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
+import { useSelector } from 'react-redux';
 
 
 import {
@@ -35,7 +41,8 @@ const CustomCheckBox = ({label, checked, onChange}) => {
 };
 
 const Login = props => {
-   
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const dispatch = useDispatch();  
   const [isLoading, setIsLoading] = useState(false);
   const [loginPhoneNumber,setPhoneNumber] =  useState('12234567891');
@@ -47,11 +54,11 @@ const Login = props => {
   }
   const processLogin = async ()=>{
     if(loginPhoneNumber.trim() === ''){
-      Alert.alert('Error', 'Enter login phone number.', [
+      Alert.alert('Error', langs?.AlertMessage15, [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     }else if(loginPassword === ''){
-      Alert.alert('Error', 'Enter  password.', [
+      Alert.alert('Error', langs?.AlertMessage16, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     }else{
@@ -128,7 +135,7 @@ const Login = props => {
           );
 
           setIsLoading(false);
-          Alert.alert('Success', 'Successfully logged in', [
+          Alert.alert('Success', langs?.AlertMessage17, [
             {text: 'OK', onPress: () => console.log('OK Pressed')},
           ]);
           
@@ -146,8 +153,13 @@ const Login = props => {
 
   return (
     <SafeAreaView>
-      <NavigationDrawerHeader navigationProps={props.navigation} />
+      <GestureHandlerRootView>
+          
       <View style={styles.container}>
+      <NavigationDrawerHeader navigationProps={props.navigation} />
+          <ScrollView
+            contentContainerStyle={styles.scrollView}
+             >
         <View style={[{flex: 1}, styles.loginContainer]}>
           <View style={[{flex: 4}, styles.loginTop]}>
             <View>
@@ -186,7 +198,7 @@ const Login = props => {
                   <Text
                     style={styles.forgetPassWord}
                     onPress={() => setForgetPassowordIsVisible(true)}>
-                    Forget Password?
+                    {langs?.Forget_Password}
                   </Text>
                 </View>
               </View>
@@ -200,12 +212,12 @@ const Login = props => {
                 onPress={() => processLogin()}>
  
     
-                <Text style={styles.text}>Sign In</Text>
+                <Text style={styles.text}>{langs?.Sign_In}</Text>
               </Pressable>
             </View>
             <View style={styles.haveAccount}>
               <Text style={styles.haveAccountText}>
-                Don't have an account ?
+               {langs?.Dont_have_an_account}
               </Text>
               <Text
                 style={styles.signUpLink}
@@ -215,7 +227,10 @@ const Login = props => {
             </View>
           </View>
         </View>
+        </ScrollView>
+        
       </View>
+      </GestureHandlerRootView>
       <Spinner
         visible={isLoading}
         textContent={'Loading...'}

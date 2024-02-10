@@ -40,10 +40,11 @@ import CategoryButton from '../../components/CategoryButton/CategoryButton';
 import { limitWords } from '../../config/utility';
 import * as fr_lang from '../../languages/lang_fr';
 import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
 
 const Premium = props => {
   const language = useSelector(state => state['userAccountData'].language);
-  const langs = language === 'fr' ? fr_lang.languages : en_lang.languages;
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const categories = useSelector(state => state['settingData'].categories);
   const locations = useSelector(state => state['settingData'].locations);
   const [refreshing, setRefreshing] = useState(false);
@@ -94,6 +95,8 @@ const Premium = props => {
     navigation.navigate('Announcement Details', {id});
   };
   const renderItem = ({item}) => {
+    const getCat = getCategory(item.category,categories); 
+    const name = language === 'fr' ? getCat?.frName : language === 'ar' ? getCat?.arName : getCat?.name;
     return (
       <View style={styles.listBox}>
         <TouchableOpacity
@@ -114,20 +117,26 @@ const Premium = props => {
             {limitWords(item.title,2)}
             </Text>
             <Text style={styles.listSubTitle}>
-              {getCategory(item.category)?.name}
+              {name}
             </Text>
             <Text style={styles.listPrice}>
-              {item.location &&
+            {item?.announcementLocation?.name &&
                 item.category !== 'gp_delivery' &&
-                item.location}
+                
+                language === 'fr' ? item?.announcementLocation?.frName : language === 'ar' ? item?.announcementLocation?.arName : item?.announcementLocation?.name
+                
+                }
 
               {item.gpDeliveryOrigin &&
                 item.category === 'gp_delivery' &&
                 item.gpDeliveryOrigin}
             </Text>
 
-            {item.subLocation && item.category !== 'gp_delivery' && (
-              <Text style={styles.listPrice}>{item.subLocation}</Text>
+            {item?.announcementSubLocation?.name && item.category !== 'gp_delivery' && (
+              <Text style={styles.listPrice}>{
+                language === 'fr' ? item?.announcementSubLocation?.frName : language === 'ar' ? item?.announcementSubLocation?.arName : item?.announcementSubLocation?.name
+                
+                 }</Text>
             )}
 
             {item.gpDeliveryDestination && item.category === 'gp_delivery' && (
@@ -244,7 +253,12 @@ const Premium = props => {
           horizontal
           data={locations}
           showsHorizontalScrollIndicator={false}
-          renderItem={({item, index}) => <LocationItem title={item.name} isActive={searchLocationIds.includes(item.id)} onPress={() => locationSearchSet(item.id)} />}
+          renderItem={({item, index}) => {
+            return <LocationItem title={
+             language === 'fr' ? item?.frName : language === 'ar' ? item?.arName : item?.name
+ 
+            } isActive={searchLocationIds.includes(item.id)} onPress={() => locationSearchSet(item.id)} />
+           }}
           keyExtractor={item => item.id}
         />
 
@@ -262,6 +276,8 @@ const Premium = props => {
                     <FontAwesomeIcon name={item.icon} size={28} color="#555" />
                   }
                   label={item.name}
+                  labelFr={item.frName}
+                  labelAr={item.arName}
                 />
               )
             }
