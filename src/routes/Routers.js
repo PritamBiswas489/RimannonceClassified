@@ -23,7 +23,7 @@ import Apartment from '../pages/Apartment/Apartment';
 import GpDelivery from '../pages/GpDelivery/GpDelivery';
 import EditAnnouncement from '../pages/EditAnnouncement/EditAnnouncement';
 import SplashScreen from '../pages/SplashScreen/SplashScreen';
- 
+
 import SuccessGlobal from '../pages/SuccessPages/SuccessGlobal';
 import SuccessApartment from '../pages/SuccessPages/SuccessApartment';
 import SuccessApartmentPre from '../pages/SuccessPages/SuccessApartmentPre';
@@ -43,6 +43,11 @@ import car from '../assets/images/tab/car-1.png';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import GpCar from '../pages/GpCar/GpCar';
+ 
+
+import * as fr_lang from '../languages/lang_fr';
+import * as en_lang from '../languages/lang_en';
+import * as ar_lang from '../languages/lang_ar';
 
 const Drawer = createDrawerNavigator();
 
@@ -129,7 +134,6 @@ function Tabs() {
         }}
       />
 
-    
       {isLoggedIn ? (
         <Tab.Screen
           name="PostTrip"
@@ -190,8 +194,6 @@ function Tabs() {
         }}
       />
 
-       
-
       {isLoggedIn ? (
         <Tab.Screen
           name="Account"
@@ -240,10 +242,11 @@ function Tabs() {
 const Stack = createStackNavigator();
 
 const Routers = () => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   return (
     <NavigationContainer>
       <Stack.Navigator>
-       
         <Stack.Screen
           name="Root"
           component={Tabs}
@@ -251,6 +254,7 @@ const Routers = () => {
         />
         <Stack.Screen
           name="Global Announcement Success"
+          options={{ title: langs?.Global_Announcement_Success }}
           component={SuccessGlobal}
         />
         <Stack.Screen
@@ -263,17 +267,21 @@ const Routers = () => {
         />
         <Stack.Screen
           name="Premium Announcement"
+          options={{ title: langs?.Premium_Announcement }}
           component={SuccessGpDelivery}
         />
         <Stack.Screen
           name="GP Delivery Announcement"
           component={SuccessGpDeliveryPre}
         />
-        <Stack.Screen name="Logout" component={Logout} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Announcement Details" component={ProductDetails} />
-        
+        <Stack.Screen name="Logout" options={{ title: langs?.Logout }} component={Logout} />
+        <Stack.Screen name="Login" options={{ title: langs?.Login }} component={Login} />
+        <Stack.Screen name="Register" options={{ title: langs?.Register }} component={Register} />
+        <Stack.Screen
+          name="Announcement Details"
+          options={{title: langs?.Announcement_Details}}
+          component={ProductDetails}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

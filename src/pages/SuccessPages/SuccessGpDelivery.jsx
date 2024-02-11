@@ -3,9 +3,15 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
-import ContactAdminPremium from '../../components/ContactAdminPremium/ContactAdminPremium';
+ 
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
+import { useSelector } from 'react-redux';
 
 const SuccessGpDelivery = props => {
+  const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const navigation = useNavigation();
 
   const handleGoHome = () => {
@@ -17,7 +23,7 @@ const SuccessGpDelivery = props => {
       <View style={styles.container}>
         <Icon name="check-circle" size={100} color="#4CAF50" />
         <Text style={styles.successText}>
-          Premium Announcement Successfully Done.
+          {langs?.AlertMessage40}
         </Text>
          
       </View>

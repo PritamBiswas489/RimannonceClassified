@@ -25,9 +25,12 @@ import * as fr_lang from '../../languages/lang_fr';
 import * as en_lang from '../../languages/lang_en';
 import * as ar_lang from '../../languages/lang_ar';
 import { useSelector } from 'react-redux';
+import TermsAndCondition from '../../components/TermsAndCondition/TermsAndCondition';
+
 
 const Register = props => {
   const language = useSelector(state => state['userAccountData'].language);
+  console.log({language})
   const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = React.useState(false);
@@ -40,6 +43,11 @@ const Register = props => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [tcModalVisible, setTcModalVisible] = useState(false);
+
+  const toggleTcModal = () => {
+    setTcModalVisible(false);
+  };
 
   const registerProcess = async () => {
     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -84,8 +92,10 @@ const Register = props => {
         phone: phoneNumber,
         password: password,
         confirmPassword: confirmPassword,
+        language:language,
         role: 'USER',
       };
+       
       const response = await registrationService(data);
       if (response.data.status === 200) {
         const {accessToken, refreshToken, user} = response.data.data;
@@ -261,7 +271,7 @@ const Register = props => {
                     <View>
                       <Text
                         style={styles.forgetPassWord}
-                        onPress={() => props.navigation.navigate('')}>
+                        onPress={() => setTcModalVisible(true)}>
                         {langs?.Term_Conditions}
                       </Text>
                     </View>
@@ -296,6 +306,7 @@ const Register = props => {
           textStyle={{color: '#FFF'}}
         />
       </SafeAreaView>
+      {tcModalVisible && <TermsAndCondition toggleTcModal={toggleTcModal} />}
     </>
   );
 };

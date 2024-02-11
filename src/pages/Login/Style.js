@@ -3,6 +3,8 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     height: '100%',
+    backgroundColor: '#fff',
+    
   },
   scrollView: {
     flex: 1, // Take up all available space
@@ -12,8 +14,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingHorizontal: 30,
     paddingVertical: 30,
-    marginBottom:50,
-     
+    marginBottom:50
   },
   LoginTitle: {
     color: '#030233',
@@ -131,6 +132,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+     
   },
   haveAccountText: {
     fontSize: 16,

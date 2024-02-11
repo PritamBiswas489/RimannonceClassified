@@ -109,7 +109,10 @@ export const languages = {
 
     
     AlertMessage39:'Announcement updated successfully',
-    AlertMessage40:'',
+    
+    AlertMessage40:'Premium Announcement Successfully Done.',
+    AlertMessage41:'Global Entry Successfully Done!',
+
 
 
 
@@ -133,7 +136,16 @@ export const languages = {
     Email_address:'Email address',
     Reset_Password : 'Reset Password',
     
-    Description : 'Description'
+    Description : 'Description',
+
+
+    LogoutMessage : 'Are you sure you want to log out?',
+    Cancel : 'Cancel',
+    Back : 'Back',
+
+    Announcement_Details : 'Announcement Details',
+    Premium_Announcement : 'Premium Announcement',
+    Global_Announcement_Success : 'Global Announcement Success',
      
      
 

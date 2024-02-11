@@ -1,9 +1,16 @@
 import React from 'react';
 import { View, Text, ScrollView, Modal, Button, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
+ 
 
 const TermsAndCondition = ({toggleTcModal,setTcModalVisible}) => {
-  const terms_conditions = useSelector(state => state['settingData'].terms_conditions);
+  
+  const language = useSelector(state => state['userAccountData'].language);
+  const terms_conditions = language === 'fr' ? useSelector(state => state['settingData'].terms_conditions_fr) 
+  : language === 'ar' ? useSelector(state => state['settingData'].terms_conditions_ar) : useSelector(state => state['settingData'].terms_conditions);
   return (
     <View style={styles.container}>
 

@@ -69,6 +69,9 @@ export const languages = {
     Delete: 'Delete',
     Close: 'Close',
     Preview: 'Preview',
+
+
+
     //===== New language added on 10/02/2024 =======//
     AlertMessage1 : "Are you sure you want to delete this announcement?",
     AlertMessage2 : "Are you sure you want to close this announcement?",
@@ -111,7 +114,10 @@ export const languages = {
 
     
     AlertMessage39:'Announcement updated successfully',
-    AlertMessage40:'',
+   
+   
+    AlertMessage40:'Premium Announcement Successfully Done.',
+    AlertMessage41:'Global Entry Successfully Done!',
 
 
 
@@ -134,8 +140,16 @@ export const languages = {
     forget_password_heading : 'Enter your email address to reset your password.',
     Email_address:'Email address',
     Reset_Password : 'Reset Password',
-    
-    Description : 'Description'
+    Description : 'Description',
+
+   
+    LogoutMessage : 'Are you sure you want to log out?',
+    Cancel : 'Cancel',
+    Back : 'Back',
+
+    Announcement_Details : 'Announcement Details',
+    Premium_Announcement : 'Premium Announcement',
+    Global_Announcement_Success : 'Global Announcement Success',
      
      
 

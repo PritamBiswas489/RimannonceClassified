@@ -3,6 +3,8 @@ const initialState = {
     admin_call_number : '',
     admin_whatsapp_number : '',
     terms_conditions:'',
+    terms_conditions_fr:'',
+    terms_conditions_ar:'',
     categories:[],
     locations:[],
     subLocations:[],

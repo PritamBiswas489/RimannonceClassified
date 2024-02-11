@@ -20,14 +20,21 @@ import { linkingIdActions } from './src/store/redux/linking-id.redux';
 import * as fr_lang from './src/languages/lang_fr';
 import * as en_lang from './src/languages/lang_en';
 import * as ar_lang from './src/languages/lang_ar';
+import * as RNLocalize from 'react-native-localize';
 
 const App = () => {
   const language = useSelector(state => state['userAccountData'].language);
   const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const [checkingLoader,setCheckingLoader] = useState(true);
+  
   const [settingsLoader,setSettingsLoader] = useState(true);
   const [urlProcessing,setUrlProcessing] = useState(true);
   const dispatch = useDispatch();
+
+  const preferredLanguages = RNLocalize.getLocales();
+  const defaultLanguage = preferredLanguages[0].languageCode;
+   
+ 
 
   useEffect(() => {
      
@@ -114,9 +121,6 @@ const App = () => {
              data:  user.language,
           })
         );
-
-
-        
         dispatch(
           userAccountDataActions.setData({
              field: "isLoggedIn",
@@ -127,6 +131,22 @@ const App = () => {
      }else{
       setCheckingLoader(false);
       dispatch(userAccountDataActions.resetState());
+      if(defaultLanguage === 'fr' || defaultLanguage === 'en' || defaultLanguage ==='ar'){
+        dispatch(
+          userAccountDataActions.setData({
+             field: "language",
+             data:  defaultLanguage,
+          })
+        );
+      }else{
+        dispatch(
+          userAccountDataActions.setData({
+             field: "language",
+             data: "fr",
+          })
+        );
+      }
+      
      }
   }
    
