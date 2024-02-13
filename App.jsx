@@ -64,7 +64,7 @@ const App = () => {
   const checkingUserAuth = async ()=>{
      console.log("==== initialize mobile app ======");
      const response = await getAuthUserService();
-     if (response?.data?.status === 200) {
+     if (response?.data?.status === 200 && response?.data?.data?.user?.id) {
          const { user } = response.data.data;
         //  console.log({user});
          dispatch(

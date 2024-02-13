@@ -23,10 +23,15 @@ import { getMediaUrl } from '../../config/utility';
 import { useNavigation } from '@react-navigation/native';
 import { limitWords } from '../../config/utility';
 import { useSelector } from 'react-redux';
-
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
+import NoDataFoundMessage from '../NoDataFoundMessage/NoDataFoundMessage';
 
 const MyFavorites = props => {
   const language = useSelector(state => state['userAccountData'].language);
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
+  
   
   const [refreshing, setRefreshing] = useState(false);
   const categories = useSelector(state => state['settingData'].categories);
@@ -79,6 +84,7 @@ const MyFavorites = props => {
           </Text>
           <Text style={styles.listSubTitle}>
             {name}</Text>
+            <Text style={styles.listSubTitle}>{item?.favoritesAnnouncement?.price} MRU</Text>
           <Text style={styles.listPrice}>
              
             {item?.favoritesAnnouncement?.announcementLocation?.name &&
@@ -157,7 +163,14 @@ const MyFavorites = props => {
       <GestureHandlerRootView>
         <View style={styles.container}>
         {announcements.length === 0 ? (
-        <Text style={styles.noDataText}>No Record Found</Text>
+          <ScrollView
+          contentContainerStyle={styles.scrollView}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            
+          }>
+         <NoDataFoundMessage message={langs?.AlertMessage32} />
+         </ScrollView>
       ) : (
           <FlatList
             data={announcements}

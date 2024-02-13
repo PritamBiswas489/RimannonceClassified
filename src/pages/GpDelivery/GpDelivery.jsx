@@ -37,14 +37,20 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 import SkeletonLoader from '../../components/SkeletonLoader/SkeletonLoader';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import CategoryButton from '../../components/CategoryButton/CategoryButton';
-import { limitWords } from '../../config/utility';
+import {limitWords} from '../../config/utility';
 import * as fr_lang from '../../languages/lang_fr';
 import * as en_lang from '../../languages/lang_en';
 import * as ar_lang from '../../languages/lang_ar';
+import NoDataFoundMessage from '../../components/NoDataFoundMessage/NoDataFoundMessage';
 
 const GpDelivery = props => {
   const language = useSelector(state => state['userAccountData'].language);
-  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
+  const langs =
+    language === 'fr'
+      ? fr_lang.languages
+      : language === 'ar'
+      ? ar_lang.languages
+      : en_lang.languages;
   const categories = useSelector(state => state['settingData'].categories);
   const locations = useSelector(state => state['settingData'].locations);
   const [refreshing, setRefreshing] = useState(false);
@@ -64,14 +70,18 @@ const GpDelivery = props => {
   const announcementList = async () => {
     if (page === 1) {
       setAnnouncements([]);
-      setShowSkeletonLoader(true); 
+      setShowSkeletonLoader(true);
     }
     setTimeout(async () => {
       console.log({page});
       setIsLoading(true);
       console.log({triggerPages});
       setTriggerPages(prev => [...prev, page]);
-      const response = await getListGetGpDelivery(page, selectedCategory, searchText);
+      const response = await getListGetGpDelivery(
+        page,
+        selectedCategory,
+        searchText,
+      );
       if (response.data.status === 200) {
         setIsLoading(false);
         setShowSkeletonLoader(false);
@@ -83,11 +93,9 @@ const GpDelivery = props => {
       } else {
         setIsLoading(false);
         setShowSkeletonLoader(false);
-        Alert.alert(
-          'Error',
-          langs?.AlertMessage31,
-          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-        );
+        Alert.alert('Error', langs?.AlertMessage31, [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
       }
     }, 1000);
   };
@@ -111,10 +119,8 @@ const GpDelivery = props => {
             )}
           </View>
           <View style={styles.listDesc}>
-            <Text style={styles.listTitle}>
-            {limitWords(item.title,2)}
-            </Text>
-            
+            <Text style={styles.listTitle}>{limitWords(item.title, 2)}</Text>
+
             <Text style={styles.listPrice}>
               {item.location &&
                 item.category !== 'gp_delivery' &&
@@ -134,6 +140,8 @@ const GpDelivery = props => {
                 {'-> ' + item.gpDeliveryDestination}
               </Text>
             )}
+
+            <Text style={styles.listSubTitle}>{item?.price} MRU</Text>
 
             {item.gpDeliveryDate && (
               <View style={styles.dateTime}>
@@ -168,7 +176,7 @@ const GpDelivery = props => {
     if (!triggerPages.includes(page) && !stopSendRequest) {
       announcementList();
     }
-  }, [page, selectedCategory, searchText,searchLocationIds,refreshing]);
+  }, [page, selectedCategory, searchText, searchLocationIds, refreshing]);
 
   const refreshData = () => {
     clearAnnouncements();
@@ -206,17 +214,17 @@ const GpDelivery = props => {
     }
     refreshData();
   };
- 
-  const locationSearchSet = locationId =>{
-    if(!searchLocationIds.includes(locationId)){
-      setSearchLocationIds(preArray=>[...preArray,locationId])
-    }else{
-      const y = searchLocationIds
-      const t = y.filter(i=>i!==locationId)
-      setSearchLocationIds(t)
+
+  const locationSearchSet = locationId => {
+    if (!searchLocationIds.includes(locationId)) {
+      setSearchLocationIds(preArray => [...preArray, locationId]);
+    } else {
+      const y = searchLocationIds;
+      const t = y.filter(i => i !== locationId);
+      setSearchLocationIds(t);
     }
     refreshData();
-  } 
+  };
 
   const LocationItem = ({title, isActive, onPress}) => (
     <TouchableOpacity
@@ -238,13 +246,19 @@ const GpDelivery = props => {
           searchText={searchText}
           setSearchText={setSearchText}
           searchDataRefresh={searchDataRefresh}></SearchBar>
-
       </View>
       <GestureHandlerRootView>
         <View style={styles.container}>
           {showSkeletonLoader === true && <SkeletonLoader />}
           {announcements.length === 0 && showSkeletonLoader === false ? (
-            <Text style={styles.noDataText}>{langs?.AlertMessage32}</Text>
+             <ScrollView
+             contentContainerStyle={styles.scrollView}
+             refreshControl={
+               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+               
+             }>
+            <NoDataFoundMessage message={langs?.AlertMessage32} />
+            </ScrollView>
           ) : (
             <FlatList
               data={announcements}

@@ -1,6 +1,6 @@
 import React , {useState} from 'react';
 import {View, Image, TouchableOpacity, Text, Alert} from 'react-native';
-import logo from '../../assets/images/Logo-2.png';
+import logo from '../../assets/images/logo-ggg.jpg';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 

@@ -30,7 +30,7 @@ import TermsAndCondition from '../../components/TermsAndCondition/TermsAndCondit
 
 const Register = props => {
   const language = useSelector(state => state['userAccountData'].language);
-  console.log({language})
+  // console.log({language})
   const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = React.useState(false);

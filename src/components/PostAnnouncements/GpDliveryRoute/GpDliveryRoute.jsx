@@ -25,6 +25,7 @@ import { useDispatch } from 'react-redux';
 import { userAccountDataActions } from '../../../store/redux/user-account-data.redux';
 import WalletModal from '../../WalletModal/WalletModal';
 import CountryTelephoneField from '../../CountryTelephoneField/CountryTelephoneField';
+import { validatePrice } from '../../../config/utility';
 import * as fr_lang from '../../../languages/lang_fr';
 import * as en_lang from '../../../languages/lang_en';
 import * as ar_lang from '../../../languages/lang_ar';
@@ -44,6 +45,7 @@ export default function GpDliveryRoute() {
   const [isLoading, setIsLoading] = useState(false);
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
+  const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
   const [phoneCountryCode, setphoneCountryCode] = useState('+1');
   const [contactNumber, setContactNumber] = useState('');
@@ -77,6 +79,7 @@ export default function GpDliveryRoute() {
        
       setGpDeliveryOrigin('B.P. 196. Nouakchott');
       setGpDeliveryDestination('B.P. 250. Nouakchott');
+      setPrice('20.00') 
       setSelectedLocation(8); 
     }
     setContactNumber(userAccData?.phone);
@@ -151,6 +154,12 @@ export default function GpDliveryRoute() {
       Alert.alert('Error', langs?.Enter_title, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
+    }else if(!validatePrice(parseFloat(price))){
+      valid = false;
+      Alert.alert('Error', langs?.Enter_valid_price || 'Failed', [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+
     } else if ( category === 'gp_delivery' && gpDeliveryDate.trim() === '') {
       valid = false;
       Alert.alert('Error', langs?.Select_delivery_date, [
@@ -239,6 +248,7 @@ export default function GpDliveryRoute() {
     }
 
     formData.append('title', title);
+    formData.append('price', price);
     formData.append('category', category);
     formData.append('description', description);
     
@@ -269,6 +279,7 @@ export default function GpDliveryRoute() {
         })
       );
       setTitle('');
+      setPrice('');
       setDescription('');
       setContactNumber('');
       setGpDeliveryOrigin('');
@@ -347,6 +358,21 @@ export default function GpDliveryRoute() {
                   placeholderTextColor="#9c9c9c"
                   value={title}
                   onChangeText={text => setTitle(text)}
+                />
+              </View>
+              <View style={styles.formGroup}>
+                <View style={styles.inputIconBox}>
+                  <Text style={styles.inputLabel}>
+                    {langs?.Price} <Text style={styles.redAsterisk}>*</Text>
+                  </Text>
+                </View>
+                <TextInput
+                  value={price}
+                  onChangeText={text => setPrice(text)}
+                  keyboardType="numeric"
+                  placeholderTextColor="#9c9c9c"
+                  placeholder={langs?.Enter_price}
+                  style={styles.input}
                 />
               </View>
               {category === 'gp_delivery' && (

@@ -28,11 +28,12 @@ import * as fr_lang from '../../languages/lang_fr';
 import * as en_lang from '../../languages/lang_en';
 import * as ar_lang from '../../languages/lang_ar';
 import { useSelector } from 'react-redux';
+import NoDataFoundMessage from '../NoDataFoundMessage/NoDataFoundMessage';
 
 
 const MyListing = props => {
   const language = useSelector(state => state['userAccountData'].language);
-  const langs = language === 'fr' ? fr_lang.languages :  en_lang.languages;
+  const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   
   const [refreshing, setRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -112,7 +113,14 @@ const MyListing = props => {
       <GestureHandlerRootView>
         <View style={styles.container}>
           {announcements.length === 0 ? (
-            <Text style={styles.noDataText}>{langs?.AlertMessage32}</Text>
+            <ScrollView
+            contentContainerStyle={styles.scrollView}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              
+            }>
+           <NoDataFoundMessage message={langs?.AlertMessage32} />
+           </ScrollView>
           ) : (
             <FlatList
               data={announcements}

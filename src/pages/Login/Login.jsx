@@ -45,8 +45,8 @@ const Login = props => {
   const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const dispatch = useDispatch();  
   const [isLoading, setIsLoading] = useState(false);
-  const [loginPhoneNumber,setPhoneNumber] =  useState('12234567891');
-  const [loginPassword,setLoginPassword] =  useState('Pritam123@#');  
+  const [loginPhoneNumber,setPhoneNumber] =  useState('');
+  const [loginPassword,setLoginPassword] =  useState('');  
   const [isForgetPassowordVisible,setForgetPassowordIsVisible] =  useState(false);
 
   const onCloseModal = () =>{

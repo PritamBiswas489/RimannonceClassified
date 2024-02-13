@@ -107,6 +107,7 @@ const MyListingItem = props => {
               <Text style={styles.listSubTitle}>
                 {catName}
               </Text>
+              <Text style={styles.listSubTitle}>{listem?.price} MRU</Text>
               <Text style={styles.listPrice}>
               {listem?.announcementLocation?.name &&
                 listem.category !== 'gp_delivery' &&

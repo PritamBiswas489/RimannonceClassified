@@ -2,16 +2,23 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import ContactAdminPremium from '../ContactAdminPremium/ContactAdminPremium'; 
+import * as fr_lang from '../../languages/lang_fr';
+import * as en_lang from '../../languages/lang_en';
+import * as ar_lang from '../../languages/lang_ar';
+import { useSelector } from 'react-redux';
+
 
 const WalletModal = ({toggleModal}) => {
+  const ulang = useSelector(state => state['userAccountData'].language);
+  const langs = ulang === 'fr' ? fr_lang.languages : ulang === 'ar' ? ar_lang.languages : en_lang.languages;
     return (
       <View style={styles.container}>
         <Modal isVisible={true} style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalText}>To add amount in the wallet, contact admin using these buttons below:</Text>
+            <Text style={styles.modalText}>{langs?.callAdminText}</Text>
             <ContactAdminPremium />
             <TouchableOpacity onPress={toggleModal} style={styles.closeModalButton}>
-              <Text style={styles.closeModalButtonText}>Close</Text>
+              <Text style={styles.closeModalButtonText}>{langs?.Close}</Text>
             </TouchableOpacity>
           </View>
         </Modal>

@@ -42,6 +42,7 @@ import { linkingIdActions } from '../../store/redux/linking-id.redux';
 import * as fr_lang from '../../languages/lang_fr';
 import * as en_lang from '../../languages/lang_en';
 import * as ar_lang from '../../languages/lang_ar';
+import NoDataFoundMessage from '../../components/NoDataFoundMessage/NoDataFoundMessage';
 
 const Global = props => {
   const language = useSelector(state => state['userAccountData'].language);
@@ -155,6 +156,10 @@ const Global = props => {
                 {'-> ' + item.gpDeliveryDestination}
               </Text>
             )}
+
+            <Text style={styles.listSubTitle}>
+              {item?.price} MRU
+            </Text>
 
             {item.gpDeliveryDate && (
               <View style={styles.dateTime}>
@@ -302,7 +307,15 @@ const Global = props => {
         <View style={styles.container}>
           {showSkeletonLoader === true && <SkeletonLoader />}
           {announcements.length === 0 && showSkeletonLoader === false ? (
-            <Text style={styles.noDataText}>{langs?.AlertMessage32}</Text>
+             
+             <ScrollView
+             contentContainerStyle={styles.scrollView}
+             refreshControl={
+               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+               
+             }>
+            <NoDataFoundMessage message={langs?.AlertMessage32} />
+            </ScrollView>
           ) : (
             <FlatList
               data={announcements}

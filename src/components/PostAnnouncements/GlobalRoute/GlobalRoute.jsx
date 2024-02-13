@@ -21,6 +21,7 @@ import {useSelector} from 'react-redux';
 import CategoryButton from '../../CategoryButton/CategoryButton';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import CountryTelephoneField from '../../CountryTelephoneField/CountryTelephoneField';
+import { validatePrice } from '../../../config/utility';
 import * as fr_lang from '../../../languages/lang_fr';
 import * as en_lang from '../../../languages/lang_en';
 import * as ar_lang from '../../../languages/lang_ar';
@@ -43,6 +44,7 @@ export default function GlobalRoute(props) {
   const [subLocationId, setSelectedSubLocation] = useState(null);
   const [subLocation, setSubLocation] = useState('');
   const [title, setTitle] = useState('');
+  const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [phoneCountryCode, setphoneCountryCode] = useState('+1');
@@ -55,6 +57,7 @@ export default function GlobalRoute(props) {
     if (testData === true) {
       setSelectedLocation(8);
       setTitle('Demo location');
+      setPrice('20.00') 
       setDescription(
         `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
       );
@@ -108,6 +111,7 @@ export default function GlobalRoute(props) {
 
   //publish announcement
   const publishAnnouncement = async () => {
+  
     let valid = true;
     if (category.trim() === '') {
       valid = false;
@@ -119,6 +123,12 @@ export default function GlobalRoute(props) {
       Alert.alert('Error', langs?.Enter_title || 'Failed', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
+    }else if(!validatePrice(parseFloat(price))){
+      valid = false;
+      Alert.alert('Error', langs?.Enter_valid_price || 'Failed', [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+
     } else if (location.trim() === '') {
       valid = false;
       Alert.alert('Error', langs?.Enter_location || 'Failed', [
@@ -168,6 +178,7 @@ export default function GlobalRoute(props) {
     }
     formData.append('locationId', locationId);
     formData.append('location', location);
+    formData.append('price', price);
     formData.append('subLocationId', subLocationId);
     formData.append('subLocation', subLocation);
     formData.append('title', title);
@@ -183,6 +194,7 @@ export default function GlobalRoute(props) {
       setSelectedLocation('');
       setLocation('');
       setTitle('');
+      setPrice('');
       setDescription('');
       // setContactNumber('');
       setCategory('');
@@ -217,6 +229,10 @@ export default function GlobalRoute(props) {
   const handleRadioButtonPress = option => {
     setCategory(option);
   };
+
+  
+
+  
 
   return (
     <>
@@ -272,6 +288,22 @@ export default function GlobalRoute(props) {
                   placeholderTextColor="#9c9c9c"
                   value={title}
                   onChangeText={text => setTitle(text)}
+                />
+              </View>
+
+              <View style={styles.formGroup}>
+                <View style={styles.inputIconBox}>
+                  <Text style={styles.inputLabel}>
+                    {langs?.Price} <Text style={styles.redAsterisk}>*</Text>
+                  </Text>
+                </View>
+                <TextInput
+                  value={price}
+                  onChangeText={text => setPrice(text)}
+                  keyboardType="numeric"
+                  placeholderTextColor="#9c9c9c"
+                  placeholder={langs?.Enter_price}
+                  style={styles.input}
                 />
               </View>
               <View style={styles.formGroup}>

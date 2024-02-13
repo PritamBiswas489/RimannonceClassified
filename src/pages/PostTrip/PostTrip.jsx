@@ -18,10 +18,9 @@ import { useSelector } from 'react-redux';
 
 import NavigationDrawerHeader from '../../components/drawerHeader';
 
-import ApartmentRoute from '../../components/PostAnnouncements/ApartmentRoute/ApartmentRoute';
 import GlobalRoute from '../../components/PostAnnouncements/GlobalRoute/GlobalRoute';
 import GpDliveryRoute from '../../components/PostAnnouncements/GpDliveryRoute/GpDliveryRoute';
-const ApartmentTab = () => <ApartmentRoute />;
+ 
 const GpDliveryTab = () => <GpDliveryRoute />;
 const GlobalTab = () => <GlobalRoute />;
  

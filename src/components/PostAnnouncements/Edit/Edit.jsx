@@ -29,6 +29,7 @@ import CountryTelephoneField from '../../CountryTelephoneField/CountryTelephoneF
 import * as fr_lang from '../../../languages/lang_fr';
 import * as en_lang from '../../../languages/lang_en';
 import * as ar_lang from '../../../languages/lang_ar';
+import { validatePrice } from '../../../config/utility';
 
 export default function Edit({item, onClose, updateStateItemValue}) {
   const language = useSelector(state => state['userAccountData'].language);
@@ -42,6 +43,7 @@ export default function Edit({item, onClose, updateStateItemValue}) {
   const [announcementId, setAnnouncementId] = useState(item.id);
   const [category, setCategory] = useState(item.category);
   const [title, setTitle] = useState(item.title);
+  const [price, setPrice] = useState(item.price);
   const [description, setDescription] = useState(item.description);
   const [phoneCountryCode, setphoneCountryCode] = useState(item.phoneCountryCode);
   const [contactNumber, setContactNumber] = useState(item.contactNumber);
@@ -153,6 +155,12 @@ export default function Edit({item, onClose, updateStateItemValue}) {
       Alert.alert('Error', langs?.Enter_title, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
+    }else if(!validatePrice(parseFloat(price))){
+      valid = false;
+      Alert.alert('Error', langs?.Enter_valid_price || 'Failed', [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+
     } else if ( category === 'gp_delivery' && gpDeliveryDate.trim() === '') {
       valid = false;
       Alert.alert('Error', langs?.Select_delivery_date, [
@@ -235,6 +243,7 @@ export default function Edit({item, onClose, updateStateItemValue}) {
 
     formData.append('id', announcementId);
     formData.append('title', title);
+    formData.append('price', price);
     formData.append('category', category);
     formData.append('description', description);
     formData.append('phoneCountryCode', phoneCountryCode);
@@ -298,6 +307,21 @@ export default function Edit({item, onClose, updateStateItemValue}) {
                   placeholderTextColor="#9c9c9c"
                   value={title}
                   onChangeText={text => setTitle(text)}
+                />
+              </View>
+              <View style={styles.formGroup}>
+                <View style={styles.inputIconBox}>
+                  <Text style={styles.inputLabel}>
+                    {langs?.Price} <Text style={styles.redAsterisk}>*</Text>
+                  </Text>
+                </View>
+                <TextInput
+                  value={price}
+                  onChangeText={text => setPrice(text)}
+                  keyboardType="numeric"
+                  placeholderTextColor="#9c9c9c"
+                  placeholder={langs?.Enter_price}
+                  style={styles.input}
                 />
               </View>
               {category === 'gp_delivery' && (

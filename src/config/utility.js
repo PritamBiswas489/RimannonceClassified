@@ -225,3 +225,10 @@ export function getDateString(inputDateString){
 	const formattedDate = inputDate.toLocaleDateString('en-GB', options);
 	return formattedDate;
 }
+export function validatePrice(price) {
+	// Regular expression to match a valid price format
+	const priceRegex = /^\$?(\d{1,3}(,\d{3})*(\.\d{1,2})?|\d{1,3}(\.\d{3})*(,\d{1,2})?)$/;
+  
+	// Test the input against the regex
+	return priceRegex.test(price);
+  }

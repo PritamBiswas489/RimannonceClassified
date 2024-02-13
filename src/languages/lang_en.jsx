@@ -34,7 +34,7 @@ export const languages = {
     Select_delivery_date : 'Select delivery date',
     Enter_delivery_origin : 'Enter delivery origin',
     Enter_delivery_destination : 'Enter delivery destination',
-    Amt_text : '$[amount] will deduct from your wallet after publish' ,
+    Amt_text : '[amount] will deduct from your wallet after publish' ,
     //dont delete [amount] just place it where amount will show
     Account : 'Account',
     My_listing : 'My listing',
@@ -150,6 +150,12 @@ export const languages = {
     Announcement_Details : 'Announcement Details',
     Premium_Announcement : 'Premium Announcement',
     Global_Announcement_Success : 'Global Announcement Success',
+
+    callAdminText : 'To add amount in the wallet, contact admin using these buttons below:',
+
+    Price : 'Price',
+    Enter_price : 'Enter price',
+    Enter_valid_price : 'Enter valid price',
      
      
 

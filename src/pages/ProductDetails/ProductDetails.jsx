@@ -213,6 +213,7 @@ export default function ProductDetails(props) {
                 </View>
                   <Text style={styles.descTitle}>{announcement?.title}</Text>
                   <Text style={styles.descSubTitle}>{catName}</Text>
+                  <Text style={styles.descTitle}>{announcement?.price} MRU</Text>
                   <Text style={styles.descSubTitle}>{getDateString(announcement?.createdAt)}</Text>
                  {announcement.category === 'gp_delivery' && <Text style={styles.descPrice}>From: {announcement.gpDeliveryOrigin} </Text>}
                  {announcement.category === 'gp_delivery' && <Text style={styles.descPrice}>To: {announcement.gpDeliveryDestination}</Text>}
