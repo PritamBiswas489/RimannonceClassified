@@ -33,6 +33,7 @@ import * as ar_lang from '../../languages/lang_ar';
 
 //get announcement details
 export default function ProductDetails(props) {
+  
   const language = useSelector(state => state['userAccountData'].language);
   const langs = language === 'fr' ? fr_lang.languages : language === 'ar' ? ar_lang.languages : en_lang.languages;
   const categories = useSelector(state => state['settingData'].categories);
@@ -44,6 +45,7 @@ export default function ProductDetails(props) {
   const [announcement,setAnnouncement] = useState({});
   const [announcementMedia,setAnnouncementMedia] = useState([]);
   const currentUserid = useSelector(state => state['userAccountData'].id);
+  
   const [addedUnderFav,setAddedUnderFav] = useState(false);
   const [spinnberIsLoading,setSpinnberIsLoading] = useState(false);
   const [isAnnModalVisible,setAnnModalVisible] =  useState(false);
@@ -90,7 +92,7 @@ export default function ProductDetails(props) {
     }
   }
   useEffect(()=>{
-    if(parseInt(currentUserid)){
+    if(parseInt(currentUserid) > 0){
        getFavourite();
     }
   },[currentUserid])
@@ -105,7 +107,9 @@ export default function ProductDetails(props) {
   },[addedUnderFav])
  
   const onHandleShare = async () => {
-    const deeplink = `${getAppUrl()}/share/${id}`;
+   
+    const deeplink = `https://rimannonce.com/share/${id}`;
+    //console.log(deeplink)
     const description =  announcement?.description;
     try {
       const result = await Share.share({
@@ -126,6 +130,7 @@ export default function ProductDetails(props) {
   };
 
   const processAddFav = async () =>{
+     
     if(parseInt(currentUserid) ===  0){
         Alert.alert(langs?.AlertMessage22)
         return;

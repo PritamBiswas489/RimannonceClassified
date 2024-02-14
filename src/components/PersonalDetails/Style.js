@@ -6,6 +6,27 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#fff',
   },
+  passwordcontainer: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    backgroundColor: '#fff',
+    borderRadius: 8, 
+    paddingHorizontal: 14, 
+    borderColor: '#EDEDED',
+    borderWidth: 1,
+}, 
+paswordinput: { 
+    backgroundColor: '#fff',
+    flex: 1, 
+    color: '#333', 
+    paddingVertical: 10, 
+    paddingRight: 10, 
+    fontSize: 16, 
+}, 
+iconeye: { 
+    marginLeft: 10, 
+}, 
   container: {
     paddingHorizontal: 15,
     marginBottom:100,

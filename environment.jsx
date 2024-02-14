@@ -1,5 +1,5 @@
 export const env = {
-  type: 'dev', //prod staging dev
+  type: 'test', //prod staging dev
   appUrls: {
     dev: {
       apiUrl: 'http://192.168.29.117:4000',
@@ -8,7 +8,7 @@ export const env = {
       apiUrl: 'http://192.168.29.117:4000',
     },
     prod: {
-      apiUrl: 'https://classified-backend.pritamaqua.aqualeafitsol.com',
+      apiUrl: 'https://api.rimannonce.com',
     },
    
   },
@@ -21,7 +21,7 @@ export const env = {
       apiUrl: 'http://192.168.29.117:4000',
     },
     prod: {
-      apiUrl: 'https://classified-backend.pritamaqua.aqualeafitsol.com',
+      apiUrl: 'https://api.rimannonce.com',
     },
   },
 };

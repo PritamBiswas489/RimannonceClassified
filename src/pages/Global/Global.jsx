@@ -78,11 +78,10 @@ const Global = props => {
       setAnnouncements([]);
       setShowSkeletonLoader(true);
     }
+    setTriggerPages(prev => [...prev, page]);
     setTimeout(async () => {
       console.log({page});
       setIsLoading(true);
-      console.log({triggerPages});
-      setTriggerPages(prev => [...prev, page]);
       const response = await getListGlobal(page, selectedCategory, searchText,searchLocationIds);
       if (response.data.status === 200) {
         setIsLoading(false);
@@ -214,8 +213,9 @@ const Global = props => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    refreshData();
+   
     setTimeout(() => { 
+      refreshData();
       setRefreshing(false);
     }, 1000);
   }, []);

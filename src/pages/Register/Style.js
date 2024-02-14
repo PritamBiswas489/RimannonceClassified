@@ -47,6 +47,27 @@ const styles = StyleSheet.create({
     color: '#030233',
     fontFamily: 'Mulish-Bold',
   },
+  passwordcontainer: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    backgroundColor: '#fff',
+    borderRadius: 8, 
+    paddingHorizontal: 14, 
+    borderColor: '#EDEDED',
+    borderWidth: 1,
+}, 
+paswordinput: { 
+    backgroundColor: '#fff',
+    flex: 1, 
+    color: '#333', 
+    paddingVertical: 10, 
+    paddingRight: 10, 
+    fontSize: 16, 
+}, 
+iconeye: { 
+    marginLeft: 10, 
+}, 
   input: {
     backgroundColor: '#fff',
     borderColor: '#EDEDED',

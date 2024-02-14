@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import styles from './Style';
 import Icon from 'react-native-vector-icons/Feather';
 import CheckBox from '@react-native-community/checkbox';
@@ -9,6 +9,7 @@ import {
   Pressable,
   RefreshControl,
   Alert,
+  TouchableOpacity
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -44,11 +45,15 @@ const Register = props => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [tcModalVisible, setTcModalVisible] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
 
+   
   const toggleTcModal = () => {
     setTcModalVisible(false);
   };
 
+  
   const registerProcess = async () => {
     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex =
@@ -177,7 +182,15 @@ const Register = props => {
       console.log({name, email, phoneNumber, password});
     }
   };
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+  const toggleConfirmPasswordVisibility = () => {
+    setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
+  };
 
+
+   
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -235,28 +248,40 @@ const Register = props => {
                       <Icon name="lock" style={styles.labelIcon} />
                       <Text style={styles.inputLabel}>{langs?.Password}</Text>
                     </View>
+                    <View style={styles.passwordcontainer}> 
                     <TextInput
+                      
                       placeholder="***********"
-                      secureTextEntry={true}
-                      style={styles.input}
+                      secureTextEntry={!isPasswordVisible}
+                      style={styles.paswordinput}
                       placeholderTextColor="#A9A9A9"
                       value={password}
                       onChangeText={text => setPassword(text)}
+                      
                     />
+                     <TouchableOpacity onPress={togglePasswordVisibility} style={styles.iconeye}>
+                      <Icon name={isPasswordVisible ? 'eye' : 'eye-off'} size={24} color="black" />
+                    </TouchableOpacity>
+                    </View>
                   </View>
                   <View style={styles.formGroup}>
                     <View style={styles.inputIconBox}>
                       <Icon name="lock" style={styles.labelIcon} />
                       <Text style={styles.inputLabel}>{langs?.Confirm_Password}</Text>
                     </View>
+                    <View style={styles.passwordcontainer}> 
                     <TextInput
                       placeholder="***********"
-                      secureTextEntry={true}
-                      style={styles.input}
+                      secureTextEntry={!isConfirmPasswordVisible}
+                      style={styles.paswordinput}
                       placeholderTextColor="#A9A9A9"
                       value={confirmPassword}
                       onChangeText={text => setConfirmPassword(text)}
                     />
+                    <TouchableOpacity onPress={toggleConfirmPasswordVisibility} style={styles.iconeye}>
+                      <Icon name={isConfirmPasswordVisible ? 'eye' : 'eye-off'} size={24} color="black" />
+                    </TouchableOpacity>
+                  </View>
                   </View>
                   <View style={styles.checkboxForgetPassword}>
                     {/* <View style={styles.checkboxContainer}> */}

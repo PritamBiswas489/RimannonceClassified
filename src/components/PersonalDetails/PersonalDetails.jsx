@@ -44,7 +44,12 @@ import * as ar_lang from '../../languages/lang_ar';
 
 const PersonalDetails = props => {
   const ulang = useSelector(state => state['userAccountData'].language);
-  const langs = ulang === 'fr' ? fr_lang.languages : ulang === 'ar' ? ar_lang.languages : en_lang.languages;
+  const langs =
+    ulang === 'fr'
+      ? fr_lang.languages
+      : ulang === 'ar'
+      ? ar_lang.languages
+      : en_lang.languages;
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [isModalVisible, setModalVisible] = useState(false);
@@ -70,6 +75,11 @@ const PersonalDetails = props => {
   const [updateNewPassword, setUpdateNewPassword] = useState('');
 
   const [updateLanguage, setUpdateLanguage] = useState(language);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   const processWallet = async () => {
     setModalVisible(true);
@@ -157,11 +167,9 @@ const PersonalDetails = props => {
       updateNewPassword !== '' &&
       !passwordRegex.test(updateNewPassword)
     ) {
-      Alert.alert( 
-        'Error',
-         langs?.passErrorOne,
-        [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-      );
+      Alert.alert('Error', langs?.passErrorOne, [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
     } else {
       setIsLoading(true);
       const data = {
@@ -221,11 +229,9 @@ const PersonalDetails = props => {
         );
         setIsLoading(false);
         setUpdateNewPassword('');
-        Alert.alert(
-          'Success',
-          langs?.AlertMessage37 ,
-          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-        );
+        Alert.alert('Success', langs?.AlertMessage37, [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
       } else {
         setIsLoading(false);
         Alert.alert('Error', response?.data?.error?.message, [
@@ -244,11 +250,11 @@ const PersonalDetails = props => {
   }, []);
 
   const langItems = [];
- 
+
   for (let key in langlist) {
     langItems.push({label: langlist[key], value: key});
   }
-   
+
   return (
     <>
       <GestureHandlerRootView>
@@ -321,69 +327,84 @@ const PersonalDetails = props => {
                 </View>
 
                 <View style={styles.formGroup}>
-                <View style={styles.inputIconBox}>
-                  <Text style={styles.inputLabel}>
-                  {langs?.App_language} <Text style={styles.redAsterisk}>*</Text>
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 1,
-                    borderColor: '#ededed',
-                    borderRadius: 8,
-                  }}>
-                  <RNPickerSelect
-                    placeholder={{
-                      label: langs?.Select_language,
-                      value: null,
-                      color: '#9EA0A4',
-                    }}
-                    items={langItems}
-                    onValueChange={value => setUpdateLanguage(value)}
+                  <View style={styles.inputIconBox}>
+                    <Text style={styles.inputLabel}>
+                      {langs?.App_language}{' '}
+                      <Text style={styles.redAsterisk}>*</Text>
+                    </Text>
+                  </View>
+                  <View
                     style={{
-                      inputAndroid: {
-                        fontSize: 16,
-                        paddingHorizontal: 10,
-                        paddingVertical: 8,
-                        borderWidth: 1,
-                        borderColor: 'black',
-                        borderRadius: 8,
-                        color: 'black',
-                      },
-                      inputIOS: {
-                        fontSize: 16,
-                        paddingHorizontal: 10,
-                        paddingVertical: 12,
-                        borderWidth: 1,
-                        borderColor: 'gray',
-                        borderRadius: 8,
-                        color: 'black',
-                      },
-                    }}
-                    value={updateLanguage}
-                  />
+                      borderWidth: 1,
+                      borderColor: '#ededed',
+                      borderRadius: 8,
+                    }}>
+                    <RNPickerSelect
+                      placeholder={{
+                        label: langs?.Select_language,
+                        value: null,
+                        color: '#9EA0A4',
+                      }}
+                      items={langItems}
+                      onValueChange={value => setUpdateLanguage(value)}
+                      style={{
+                        inputAndroid: {
+                          fontSize: 16,
+                          paddingHorizontal: 10,
+                          paddingVertical: 8,
+                          borderWidth: 1,
+                          borderColor: 'black',
+                          borderRadius: 8,
+                          color: 'black',
+                        },
+                        inputIOS: {
+                          fontSize: 16,
+                          paddingHorizontal: 10,
+                          paddingVertical: 12,
+                          borderWidth: 1,
+                          borderColor: 'gray',
+                          borderRadius: 8,
+                          color: 'black',
+                        },
+                      }}
+                      value={updateLanguage}
+                    />
+                  </View>
                 </View>
-              </View>
 
                 <View style={styles.formGroup}>
                   <View style={styles.inputIconBox}>
                     <SimpleLineIcons name="lock" style={styles.labelIcon} />
                     <Text style={styles.inputLabel}>{langs?.New_password}</Text>
                   </View>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="***********"
-                    secureTextEntry={true}
-                    value={updateNewPassword}
-                    onChangeText={text => setUpdateNewPassword(text)}
-                    placeholderTextColor="#9c9c9c"
-                  />
+
+                  <View style={styles.passwordcontainer}>
+                    <TextInput
+                      placeholder="***********"
+                      secureTextEntry={!isPasswordVisible}
+                      style={styles.paswordinput}
+                      placeholderTextColor="#A9A9A9"
+                      value={updateNewPassword}
+                      onChangeText={text => setUpdateNewPassword(text)}
+                    />
+                    <TouchableOpacity
+                      onPress={togglePasswordVisibility}
+                      style={styles.iconeye}>
+                      <Icon
+                        name={isPasswordVisible ? 'eye' : 'eye-off'}
+                        size={24}
+                        color="black"
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
                 <View style={[styles.formGroup, styles.submit]}>
                   <Pressable
                     style={styles.tcInBtn}
                     onPress={() => setTcModalVisible(true)}>
-                    <Text style={styles.text}>{langs?.Terms_and_conditions}</Text>
+                    <Text style={styles.text}>
+                      {langs?.Terms_and_conditions}
+                    </Text>
                   </Pressable>
                 </View>
                 <View style={[styles.formGroup, styles.submit]}>

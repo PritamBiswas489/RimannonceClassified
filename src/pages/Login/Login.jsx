@@ -23,6 +23,7 @@ import {
   Pressable,
   Alert,
   SafeAreaView,
+  TouchableOpacity
 } from 'react-native';
 
 import CheckBox from '@react-native-community/checkbox';
@@ -48,6 +49,7 @@ const Login = props => {
   const [loginPhoneNumber,setPhoneNumber] =  useState('');
   const [loginPassword,setLoginPassword] =  useState('');  
   const [isForgetPassowordVisible,setForgetPassowordIsVisible] =  useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const onCloseModal = () =>{
     setForgetPassowordIsVisible(false);
@@ -150,6 +152,9 @@ const Login = props => {
 			}
     }
   }
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   return (
     <SafeAreaView>
@@ -184,14 +189,22 @@ const Login = props => {
                   <Icon name="lock" style={styles.labelIcon} />
                   <Text style={styles.inputLabel}>Password</Text>
                 </View>
-                <TextInput
-                  placeholder="***********"
-                  secureTextEntry={true}
-                  style={styles.input}
-                  value={loginPassword}
-                  onChangeText={text => setLoginPassword(text)}
-                  placeholderTextColor="#A9A9A9"
-                />
+                
+                <View style={styles.passwordcontainer}> 
+                    <TextInput
+                      
+                      placeholder="***********"
+                      secureTextEntry={!isPasswordVisible}
+                      style={styles.paswordinput}
+                      placeholderTextColor="#A9A9A9"
+                      value={loginPassword}
+                      onChangeText={text => setLoginPassword(text)}
+                      
+                    />
+                     <TouchableOpacity onPress={togglePasswordVisibility} style={styles.iconeye}>
+                      <Icon name={isPasswordVisible ? 'eye' : 'eye-off'} size={24} color="black" />
+                    </TouchableOpacity>
+                    </View>
               </View>
               <View style={styles.checkboxForgetPassword}>
                 <View>

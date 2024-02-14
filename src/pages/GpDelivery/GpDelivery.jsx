@@ -72,11 +72,11 @@ const GpDelivery = props => {
       setAnnouncements([]);
       setShowSkeletonLoader(true);
     }
+    setTriggerPages(prev => [...prev, page]);
     setTimeout(async () => {
       console.log({page});
       setIsLoading(true);
       console.log({triggerPages});
-      setTriggerPages(prev => [...prev, page]);
       const response = await getListGetGpDelivery(
         page,
         selectedCategory,

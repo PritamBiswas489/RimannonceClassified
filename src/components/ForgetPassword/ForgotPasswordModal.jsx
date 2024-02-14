@@ -35,6 +35,7 @@ const ForgotPasswordModal = ({ isVisible, onClose }) => {
     }else{
          
         setIsLoading(true);
+        
         const response = await forgetPasswordService(email);
         if (response?.data?.status === 200) {
             setIsLoading(false);

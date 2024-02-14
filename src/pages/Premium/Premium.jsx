@@ -67,11 +67,11 @@ const Premium = props => {
       setAnnouncements([]);
       setShowSkeletonLoader(true);
     }
+    setTriggerPages(prev => [...prev, page]);
     setTimeout(async () => {
       console.log({page});
       setIsLoading(true);
       console.log({triggerPages});
-      setTriggerPages(prev => [...prev, page]);
       const response = await getListPremium(page, selectedCategory, searchText,searchLocationIds);
       if (response.data.status === 200) {
         setIsLoading(false);
